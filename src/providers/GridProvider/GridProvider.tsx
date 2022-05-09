@@ -1,18 +1,20 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useCallback, useState } from 'react'
+
+import { GridProviderProps } from './interfaces'
 
 // grid context
 const GridContext = createContext({})
 
 // grid provider
-const GridProvider: React.FC<any> = ({ children }) => {
-  const [grid, setGrid] = useState<number>(68)
+const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
+  const [grid, setGrid] = useState<number>(100)
 
   // calculate grid width
-  const calculateGridWidth = (columns: number[]) => {
+  const calculateGridWidth = useCallback((columns: number, width: number) => {
     if (columns) {
-      return (100 / columns[1]) * columns[0]
+      return width / columns
     }
-  }
+  }, [])
 
   // render
   return (

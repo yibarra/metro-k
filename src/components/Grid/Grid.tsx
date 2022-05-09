@@ -4,15 +4,16 @@ import { Layer, Line } from 'react-konva'
 import type { GridProps } from './interfaces'
 
 // grid
-const Grid: React.FC<GridProps> = ({ grid, width }) => {
+const Grid: React.FC<GridProps> = ({ grid, height, width }) => {
   // create line
   const createLine = (index: string, points: number[]) => {
     return (
       <Line
         key={index}
+        opacity={0.1}
         points={points}
         stroke="#222"
-        strokeWidth={2}
+        strokeWidth={1}
       />
     )
   }

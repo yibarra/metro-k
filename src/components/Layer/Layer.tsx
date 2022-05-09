@@ -1,10 +1,16 @@
 import React from 'react'
+import { Layer as LayerKonva } from 'react-konva'
+import Point from '../Point'
 
-const Layer = () => {
+// layer
+const Layer: React.FC<any> = ({ points }) => {
+  // render
   return (
-    <div>
-      
-    </div>
+    <LayerKonva>
+      {Array.isArray(points) && points.map((point: any, index: number) =>
+        <Point key={index} {...point} />
+      )}
+    </LayerKonva>
   )
 }
 

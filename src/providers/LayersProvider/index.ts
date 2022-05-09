@@ -3,4 +3,4 @@
 // name - options
 // color
 // info line
-export { default } from './LangProvider'
+export { default } from './LayersProvider'

@@ -7,6 +7,7 @@ import Main from './layout/Main/Main'
 
 import './index.css'
 import GridProvider from './providers/GridProvider'
+import LayersProvider from './providers/LayersProvider'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,9 @@ root.render(
   <React.StrictMode>
     <MainProvider>
       <GridProvider>
-        <Main />
+        <LayersProvider>
+          <Main />
+        </LayersProvider>
       </GridProvider>
     </MainProvider>
   </React.StrictMode>
