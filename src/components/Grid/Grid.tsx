@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
-import { Layer, Line } from 'react-konva'
+import { Group } from 'react-konva'
 
+import GridLine from './GridLine'
 import type { GridProps } from './interfaces'
 
 // grid
@@ -8,34 +9,25 @@ const Grid: React.FC<GridProps> = ({ grid, height, width }) => {
   // create line
   const createLine = (index: string, points: number[]) => {
     return (
-      <Line
-        key={index}
-        opacity={0.1}
-        points={points}
-        stroke="#222"
-        strokeWidth={1}
-      />
+      <GridLine animation={true} key={index} index={index} points={points} />
     )
   }
 
   // create axis
   const createGrid = useCallback(() => {
     const axis = []
+    const size = width > height ? width : height
 
-    for (let i = 0; i < width / grid; i++) {
-      axis.push(createLine(`${i}-h`, [i * grid, 0, i * grid, width]))
-      axis.push(createLine(`${i}-v`, [0, i * grid, width, i * grid]))
+    for (let i = 0; i < size / grid; i++) {
+      axis.push(createLine(`${i}-h`, [i * grid, 0, i * grid, size]))
+      axis.push(createLine(`${i}-v`, [0, i * grid, size, i * grid]))
     }
 
     return axis
-  }, [grid, width])
+  }, [grid, height, width])
 
   // render
-  return (
-    <Layer>
-      {createGrid()}
-    </Layer>
-  )
+  return <Group>{createGrid()}</Group>
 }
 
 export default Grid

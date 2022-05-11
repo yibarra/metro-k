@@ -8,6 +8,7 @@ import Main from './layout/Main/Main'
 import './index.css'
 import GridProvider from './providers/GridProvider'
 import LayersProvider from './providers/LayersProvider'
+import ColorProvider from './providers/ColorProvider'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,11 +17,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MainProvider>
-      <GridProvider>
-        <LayersProvider>
-          <Main />
-        </LayersProvider>
-      </GridProvider>
+      <ColorProvider>
+        <GridProvider>
+          <LayersProvider>
+            <Main />
+          </LayersProvider>
+        </GridProvider>
+      </ColorProvider>
     </MainProvider>
   </React.StrictMode>
 )
