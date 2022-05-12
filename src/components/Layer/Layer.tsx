@@ -5,7 +5,7 @@ import Line from '../Line'
 import Point from '../Point'
 
 // layer
-const Layer: React.FC<any> = ({ points, size }) => {
+const Layer: React.FC<any> = ({ points, size, updateLayerPoint }) => {
   // color
   // name
   // properties: line - stroke, color, type: dash, linejoin, linecap ... point stroke, color
@@ -18,7 +18,7 @@ const Layer: React.FC<any> = ({ points, size }) => {
           <Line points={Object.values(points)} strokeWidth={size} />
 
           {points.map((point: any, index: number) =>
-            <Point key={index} size={size} {...point} />)}
+            <Point key={index} index={index} size={size / 2} updateLayerPoint={updateLayerPoint} {...point} />)}
         </>
       }
     </Group>

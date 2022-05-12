@@ -7,8 +7,8 @@ const LayersContext = createContext({} as LayersContextProps)
 
 // layers provider
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
-  const [enable, setEnable] = useState<boolean>(true)
-  const [layers, setLayers] = useState<any[]>([{ name: 'Default', points: [] }])
+  const [enable, setEnable] = useState<boolean>(false)
+  const [layers, setLayers] = useState<any[]>([{ name: 'Default', points: [{ x: 10, y: 10 }] }])
   const [current, setCurrent] = useState<number>(0) // index current
 
   // create layer
@@ -19,6 +19,18 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
         layer
       ]
     })
+  }
+
+  // update layer points
+  const createLayerPoint = (point: any) => {
+    if (!enable) {
+      return false
+    }
+
+    const temp = { ...layers[current] }
+    const points = [...temp.points, point]
+
+    updateLayer(current, { points })
   }
 
   // delete layer
@@ -34,14 +46,10 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     setLayers(Object.values({...layers, [index]: {...layers[index], ...data }}))
   }
 
-  // update layer points
-  const updateLayerPoints = (point: any) => {
-    if (!enable) {
-      return false
-    }
-
-    const temp = { ...layers[current] }
-    const points = [...temp.points, point]
+  // update layer point
+  const updateLayerPoint = (point: any, index: number) => {
+    const { points } = layers[current]
+    points[index] = { ...point }
 
     updateLayer(current, { points })
   }
@@ -51,10 +59,12 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     <LayersContext.Provider value={{
       createLayer,
       current,
+      createLayerPoint,
       deleteLayer,
+      enable,
       layers,
       updateLayer,
-      updateLayerPoints,
+      updateLayerPoint,
       setCurrent,
       setEnable,
     }}>

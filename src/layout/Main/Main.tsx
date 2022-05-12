@@ -9,12 +9,13 @@ import { MainContext } from '../../providers/MainProvider/MainProvider'
 import type { MainContextProps } from '../../providers/MainProvider/interfaces'
 import { MainSection } from './styles'
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
+import Controls from '../../components/Controls'
 
 // main
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
   const { grid, calculateGridWidth, setGrid } = useContext<any>(GridContext)
-  const { layers, updateLayerPoints } = useContext<any>(LayersContext)
+  const { layers, createLayerPoint, updateLayerPoint } = useContext<any>(LayersContext)
 
   // use effect
   useEffect(() => {
@@ -30,16 +31,18 @@ const Main: React.FC<any> = () => {
         <Stage
           className="stage"
           height={size.height}
-          onClick={({ evt }: any) => updateLayerPoints({ x: Math.round(evt.clientX / grid) * grid, y: Math.round(evt.clientY / grid) * grid })}
+          onClick={({ evt }: any) => createLayerPoint({ x: Math.round(evt.clientX / grid) * grid, y: Math.round(evt.clientY / grid) * grid })}
           width={size.width}
         >
           <LayerKonva>
             <Grid grid={grid} {...size} />
-            
+
             {Array.isArray(layers) && layers.map((layer: any, index: number) =>
-              <Layer key={index} size={grid / 2} {...layer} />)}
+              <Layer key={index} size={grid} updateLayerPoint={updateLayerPoint} {...layer} />)}
           </LayerKonva>
         </Stage>}
+
+      <Controls />
     </MainSection>
   );
 };
