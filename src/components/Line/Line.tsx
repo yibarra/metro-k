@@ -14,6 +14,7 @@ const Line: React.FC<any> = ({ points, strokeWidth }) => {
     return pointsResult
   }
 
+  // render
   return (
     <LineKonva
       shadowBlur={3}

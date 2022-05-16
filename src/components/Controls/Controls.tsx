@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
+import ControlsLayers from './ControlsLayers'
 import * as S from './styles'
 
 const Controls: React.FC<any> = () => {
@@ -8,7 +9,9 @@ const Controls: React.FC<any> = () => {
 
   return (
     <S.ControlsDiv>
-      <input type="checkbox" value={enable.toString()} onChange={() => setEnable(!enable)} />
+      <input type="checkbox" defaultValue={enable.toString()} onChange={() => setEnable(!enable)} />
+
+      <ControlsLayers />
     </S.ControlsDiv>
   )
 }

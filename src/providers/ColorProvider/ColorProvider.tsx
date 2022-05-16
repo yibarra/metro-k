@@ -1,6 +1,6 @@
 import React, { createContext } from 'react'
 
-const ColorContext = createContext({})
+const ColorContext = createContext({} as any)
 
 // color provider
 const ColorProvider: React.FC<any> = ({

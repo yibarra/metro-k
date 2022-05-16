@@ -11,7 +11,10 @@ import ToolTip from '../ToolTip'
 
 // point
 const Point: React.FC<any> = ({
+  active,
+  currentPoint,
   index,
+  setCurrentPoint,
   size = 5,
   x = 0,
   y = 0,
@@ -25,29 +28,51 @@ const Point: React.FC<any> = ({
       <ToolTip x={x} y={y - (50 + size)} />
 
       <Circle
-        draggable
+        draggable={active}
         x={x}
         y={y}
         radius={size}
         fill="#FFFFFF"
-        stroke={isDragging ? '#777777' : '#222222' }
+        stroke={(isDragging || currentPoint === index) && active  ? '#777777' : '#222222' }
         strokeWidth={2}
-        onDragStart={() => setIsDragging(true)}
+        onClick={() => {
+          if (!active) {
+            return false
+          }
+
+          setCurrentPoint(currentPoint === index ? null : index)
+        }}
+        onDragStart={() => {
+          if (!active) {
+            return false
+          }
+
+          setCurrentPoint(index)
+          setIsDragging(true)
+        }}
         onDragMove={({ evt }) => {
+          if (!active) {
+            return false
+          }
+
           updateLayerPoint(
             {
-              x: Math.round(evt.clientX / size) * size,
-              y: Math.round(evt.clientY / size) * size,
+              x: evt.clientX,
+              y: evt.clientY,
             }, index
           )}
         }
         onDragEnd={({ evt }) => {
+          if (!active) {
+            return false
+          }
+
           setIsDragging(false)
 
           updateLayerPoint(
             {
-              x: Math.round(evt.clientX / size) * size,
-              y: Math.round(evt.clientY / size) * size,
+              x: evt.clientX,
+              y: evt.clientY,
             }, index
           )}
         }
