@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import { usePrevious } from 'react-delta'
 import { Line as LineKonva } from 'react-konva'
 
 // line
-const Line: React.FC<any> = ({ points, strokeWidth }) => {
+const Line: React.FC<any> = ({ points, properties }) => {
+  const element = useRef<any>(null)
+  const propertiesPrevious = usePrevious(properties)
+
   // convert points
   const convertPoints = (items: []) => {
     const pointsResult: any[] = []
@@ -14,17 +18,21 @@ const Line: React.FC<any> = ({ points, strokeWidth }) => {
     return pointsResult
   }
 
+  // use effect
+  useEffect(() => {
+    if (typeof element.current.to !== 'undefined') {
+      element.current.to({ ...properties })
+    }
+  }, [properties])
+
   // render
   return (
     <LineKonva
+      {...(propertiesPrevious ? propertiesPrevious : properties)}
+      ref={element}
       shadowBlur={3}
       shadowOffset={{ x: 0, y: 0 }}
-      shadowColor="red"
-      lineCap="round"
-      lineJoin="round"
-      strokeWidth={strokeWidth}
-      tension={0.5}
-      stroke="#333333"
+      shadowColor="#2f5ada"
       points={convertPoints(points)}
     />
   )

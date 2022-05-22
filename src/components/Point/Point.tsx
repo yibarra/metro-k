@@ -1,84 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Circle } from 'react-konva'
-import ToolTip from '../ToolTip'
 
-// point
-// position
-// color
-// type - null - empty - circle
-// drag
-// collision
+import { WithPoint } from './withPoint'
+import ToolTip from '../ToolTip'
 
 // point
 const Point: React.FC<any> = ({
   active,
   currentPoint,
+  handlerEvents,
   index,
-  setCurrentPoint,
-  size = 5,
+  isDragging,
+  properties,
+  setClickPoint,
+  propertiesPrevious,
   x = 0,
   y = 0,
-  updateLayerPoint,
 }) => {
-  const [isDragging, setIsDragging] = useState<boolean>(false)
+  const element = useRef<any>(null)
+
+  // use effect
+  useEffect(() => {
+    if (typeof element.current.to !== 'undefined') {
+      element.current.to({ ...properties })
+    }
+  }, [properties])
 
   // render
   return (
     <>
-      <ToolTip x={x} y={y - (50 + size)} />
+      {active && <ToolTip x={x} y={y - (50 + properties.radius)} />}
 
       <Circle
+        {...(propertiesPrevious ? propertiesPrevious : properties)}
         draggable={active}
+        ref={element}
+        onClick={setClickPoint}
+        onDragStart={handlerEvents}
+        onDragMove={handlerEvents}
+        onDragEnd={handlerEvents}
+        stroke={(isDragging || currentPoint === index) ? properties.active : properties.stroke }
         x={x}
         y={y}
-        radius={size}
-        fill="#FFFFFF"
-        stroke={(isDragging || currentPoint === index) && active  ? '#777777' : '#222222' }
-        strokeWidth={2}
-        onClick={() => {
-          if (!active) {
-            return false
-          }
-
-          setCurrentPoint(currentPoint === index ? null : index)
-        }}
-        onDragStart={() => {
-          if (!active) {
-            return false
-          }
-
-          setCurrentPoint(index)
-          setIsDragging(true)
-        }}
-        onDragMove={({ evt }) => {
-          if (!active) {
-            return false
-          }
-
-          updateLayerPoint(
-            {
-              x: evt.clientX,
-              y: evt.clientY,
-            }, index
-          )}
-        }
-        onDragEnd={({ evt }) => {
-          if (!active) {
-            return false
-          }
-
-          setIsDragging(false)
-
-          updateLayerPoint(
-            {
-              x: evt.clientX,
-              y: evt.clientY,
-            }, index
-          )}
-        }
       />
     </>
   )
 }
 
-export default Point
+export default WithPoint(Point)

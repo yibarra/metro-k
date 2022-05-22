@@ -8,38 +8,82 @@ const LayersContext = createContext({} as LayersContextProps)
 // layers provider
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   const [current, setCurrent] = useState<number>(0) // index current
-  const [currentPoint, setCurrentPoint] = useState<number>(0)
   const [enable, setEnable] = useState<boolean>(false)
   const [layers, setLayers] = useState<any[]>([
     {
       name: 'Default',
+      currentPoint: 0,
       lineProperties: {
-        color: '#FF88FF',
-        border: '#222333'
+        dash: [0, 0],
+        lineCap: 'butt',
+        lineJoin: 'miter',
+        stroke: '#FF88FF',
+        strokeWidth: 2,
+        tension: 0,
       },
       pointsProperties: {
-        active: '#341341',
-        color: '#209479',
-        border: '#987443'
+        active: '#3AE341',
+        dash: [0, 0],
+        fill: '#987443',
+        lineCap: 'butt',
+        lineJoin: 'miter',
+        radius: 5,
+        stroke: '#209479',
+        strokeWidth: 2,
       },
       points: [
-        { x: 10, y: 10, properties: { color: '#222', border: '#F33FAA' } },
-        { x: 50, y: 50, properties: null },
+        {
+          x: 10,
+          y: 10,
+          properties: {
+            dash: [5, 5],
+            fill: '#987443',
+            lineCap: 'butt',
+            lineJoin: 'miter',
+            radius: 5,
+            stroke: '#209479',
+            strokeWidth: 2,
+          }
+        },
+        { x: 50, y: 50 },
       ]
     }, {
       name: 'Layer 2',
+      currentPoint: 0,
       lineProperties: {
-        color: '#FF88FF',
-        border: '#222333'
+        border: '#222333',
+        dash: [0, 0],
+        lineCap: 'butt',
+        lineJoin: 'miter',
+        stroke: '#FF844F',
+        strokeWidth: 2,
+        tension: 0,
       },
       pointsProperties: {
         active: '#341341',
-        color: '#209479',
-        border: '#987443'
+        dash: [5, 5],
+        fill: '#987443',
+        lineCap: 'butt',
+        lineJoin: 'miter',
+        radius: 5,
+        stroke: '#209479',
+        strokeWidth: 2,
       },
       points: [
-        { x: 110, y: 120, properties: { color: '#222', border: '#F33FAA' } },
-        { x: 150, y: 350, properties: null },
+        {
+          x: 110,
+          y: 120,
+          properties: {
+            dash: [5, 5],
+            fill: '#98AA43',
+            lineCap: 'butt',
+            lineJoin: 'miter',
+            radius: 5,
+            stroke: '#2EE479',
+            strokeWidth: 2,
+          }
+        },
+        { x: 150, y: 350 },
       ]
     }
   ])
@@ -67,7 +111,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       ...temp.points.slice(index),
     ]
 
-    setCurrentPoint(index)
     updateLayer(current, { points })
   }
 
@@ -81,6 +124,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
   // update layer
   const updateLayer = (index: number, data: any) => {
+    console.info(data)
     setLayers(Object.values({...layers, [index]: {...layers[index], ...data }}))
   }
 
@@ -97,7 +141,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     <LayersContext.Provider value={{
       createLayer,
       current,
-      currentPoint,
       createLayerPoint,
       deleteLayer,
       enable,
@@ -105,7 +148,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       updateLayer,
       updateLayerPoint,
       setCurrent,
-      setCurrentPoint,
       setEnable,
     }}>
       {children}

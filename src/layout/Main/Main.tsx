@@ -15,7 +15,13 @@ import Controls from '../../components/Controls'
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
   const { grid, calculateGridWidth, setGrid } = useContext<any>(GridContext)
-  const { current, currentPoint, setCurrentPoint, layers, createLayerPoint, updateLayerPoint } = useContext<any>(LayersContext)
+  const {
+    current,
+    layers,
+    createLayerPoint,
+    updateLayer,
+    updateLayerPoint,
+  } = useContext<any>(LayersContext)
 
   // use effect
   useEffect(() => {
@@ -31,7 +37,7 @@ const Main: React.FC<any> = () => {
         <Stage
           className="stage"
           height={size.height}
-          onClick={({ evt }: any) => createLayerPoint(currentPoint + 1, { x: evt.clientX, y: evt.clientY })}
+          onClick={({ evt }: any) => createLayerPoint(layers.length + 1, { x: evt.clientX, y: evt.clientY })}
           width={size.width}
         >
           <LayerKonva>
@@ -40,10 +46,10 @@ const Main: React.FC<any> = () => {
             {Array.isArray(layers) && layers.map((layer: any, index: number) =>
               <Layer
                 active={current === index}
-                currentPoint={currentPoint}
+                layer={layer}
+                index={index}
                 key={index}
-                setCurrentPoint={setCurrentPoint}
-                size={grid}
+                updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}
                 {...layer}
               />
