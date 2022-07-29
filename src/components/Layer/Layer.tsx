@@ -28,7 +28,6 @@ const Layer: React.FC<any> = ({
       {Array.isArray(points) && 
         <>
           <Line
-            index={index}
             points={Object.values(points.map((item) => {
               return [ item.x, item.y ]
             }))}

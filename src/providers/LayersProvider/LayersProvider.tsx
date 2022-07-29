@@ -17,18 +17,18 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
         dash: [0, 0],
         lineCap: 'butt',
         lineJoin: 'miter',
-        stroke: '#FF88FF',
+        stroke: '#2f5ada',
         strokeWidth: 2,
         tension: 0,
       },
       pointsProperties: {
-        active: '#3AE341',
+        active: '#222EEE',
         dash: [0, 0],
-        fill: '#987443',
+        fill: '#FFFFFF',
         lineCap: 'butt',
         lineJoin: 'miter',
         radius: 5,
-        stroke: '#209479',
+        stroke: '#222222',
         strokeWidth: 2,
       },
       points: [
@@ -90,9 +90,9 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
   // create layer
   const createLayer = (layer: any) => {
-    setLayers((oldLayer: any[]) => {
+    setLayers((oldLayers: any[]) => {
       return [
-        ...oldLayer,
+        ...oldLayers,
         layer
       ]
     })
@@ -119,6 +119,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     const resultLayers = [...layers]
     resultLayers.splice(resultLayers.findIndex((_, index) => index === id), 1)
 
+    setCurrent((id - 1 < 0) ? 0 : id - 1)
     setLayers(resultLayers)
   }
 

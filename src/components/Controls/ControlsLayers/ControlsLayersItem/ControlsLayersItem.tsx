@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Dash from '../../../Properties/Dash'
 import SelectorColor from '../../../SelectorColor'
 
 const ControlsLayersItem: React.FC<any> = ({
@@ -10,6 +11,14 @@ const ControlsLayersItem: React.FC<any> = ({
   setCurrent,
   updateLayer,
 }) => {
+
+  const dashCallback = (dash: number[]) => {
+    updateLayer(index, { lineProperties: {
+      ...layer.lineProperties,
+      dash,
+    }})
+  }
+
   // render
   return (
     <div style={{ border: current ? '1px solid red' : '' }}>
@@ -60,10 +69,10 @@ const ControlsLayersItem: React.FC<any> = ({
           <div>
             <p>color</p>
             <SelectorColor
-              color={layer.lineProperties.color}
-              setColor={(color: string) => updateLayer(index, { lineProperties: {
+              color={layer.lineProperties.stroke}
+              setColor={(stroke: string) => updateLayer(index, { lineProperties: {
                 ...layer.lineProperties,
-                color,
+                stroke,
               }})}
               type="line"
             />
@@ -100,26 +109,7 @@ const ControlsLayersItem: React.FC<any> = ({
           </div>
 
           <div>
-            <p>dash</p>
-            <input
-              name="dash0"
-              type="number"
-              defaultValue="0"
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                dash: [e.target.value, layer.lineProperties.dash[1]]
-              }})}
-            />
-
-            <input
-              name="dash1"
-              type="number"
-              defaultValue="0"
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                dash: [layer.lineProperties.dash[0], e.target.value]
-              }})}
-            />
+            <Dash dash={layer.lineProperties.dash} onChange={dashCallback} />
           </div>
 
           <div>

@@ -17,16 +17,20 @@ const MainProvider: React.FC<any> = ({ children }) => {
   // loading effects.
   useEffect(() => {
     // fetch necessary fonts.
-    WebFontLoader.load({
-      google: {
-        families: [
-          "Roboto Condensed:300,400,700",
-          "Roboto Slab:300,400,500,600"
-        ]
-      }, fontactive: () => {
-        setTimeout(() => setLoaded(true), 500)
-      }
-    })
+    try {
+      WebFontLoader.load({
+        google: {
+          families: [
+            "Roboto Condensed:300,400,700",
+            "Roboto Slab:300,400,500,600"
+          ]
+        }, fontactive: () => {
+          setTimeout(() => setLoaded(true), 500)
+        }
+      })
+    } catch (e: unknown) {
+      console.error(`[ERROR FONT LOAD: ${e}]`)
+    }
   }, [])
   
   // render

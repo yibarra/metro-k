@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import { usePrevious } from 'react-delta'
 import { Line as LineKonva } from 'react-konva'
 
+import { LineProps } from './interfaces'
+
 // line
-const Line: React.FC<any> = ({ points, properties }) => {
+const Line: React.FC<LineProps> = ({ points, properties }) => {
   const element = useRef<any>(null)
-  const propertiesPrevious = usePrevious(properties)
 
   // convert points
   const convertPoints = (items: []) => {
@@ -28,7 +28,7 @@ const Line: React.FC<any> = ({ points, properties }) => {
   // render
   return (
     <LineKonva
-      {...(propertiesPrevious ? propertiesPrevious : properties)}
+      {...properties}
       ref={element}
       shadowBlur={3}
       shadowOffset={{ x: 0, y: 0 }}

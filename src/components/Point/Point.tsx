@@ -13,7 +13,6 @@ const Point: React.FC<any> = ({
   isDragging,
   properties,
   setClickPoint,
-  propertiesPrevious,
   x = 0,
   y = 0,
 }) => {
@@ -29,10 +28,10 @@ const Point: React.FC<any> = ({
   // render
   return (
     <>
-      {active && <ToolTip x={x} y={y - (50 + properties.radius)} />}
+      {((currentPoint === index && active) || isDragging) && <ToolTip x={x} y={y - (50 + properties.radius)} />}
 
       <Circle
-        {...(propertiesPrevious ? propertiesPrevious : properties)}
+        {...properties}
         draggable={active}
         ref={element}
         onClick={setClickPoint}

@@ -1,33 +1,47 @@
-import React, { useCallback } from 'react'
-import { Group } from 'react-konva'
+import React from 'react'
+import { Context } from 'konva/lib/Context'
+import { Shape, ShapeConfig } from 'konva/lib/Shape'
+import { Group, Shape as ShapeK } from 'react-konva'
 
-import GridLine from './GridLine'
 import type { GridProps } from './interfaces'
 
 // grid
 const Grid: React.FC<GridProps> = ({ grid, height, width }) => {
-  // create line
-  const createLine = (index: string, points: number[]) => {
-    return (
-      <GridLine animation={true} key={index} index={index} points={points} />
-    )
-  }
-
   // create axis
-  const createGrid = useCallback(() => {
-    const axis = []
-    const size = width > height ? width : height
-
-    for (let i = 0; i < size / grid; i++) {
-      axis.push(createLine(`${i}-h`, [i * grid, 0, i * grid, size]))
-      axis.push(createLine(`${i}-v`, [0, i * grid, size, i * grid]))
+  const createAxis = (ctx: Context, size: number): false | void => {
+    if (!Number.isInteger(size)) {
+      return false
     }
 
-    return axis
-  }, [grid, height, width])
+    for (let i = 0; i < size / grid; i++) {
+      ctx.moveTo(i * grid, 0)
+      ctx.lineTo(i * grid, size)
+
+      ctx.moveTo(0, i * grid)
+      ctx.lineTo(size, i * grid)
+    }
+  }
+
+  // create grid scene
+  const createGridScene = (ctx: Context, shape: Shape<ShapeConfig>): void => {
+    const size = width > height ? width : height
+
+    ctx.beginPath()
+    createAxis(ctx, size) // x & y
+    ctx.closePath()
+
+    ctx.fillStrokeShape(shape)
+  }
 
   // render
-  return <Group>{createGrid()}</Group>
+  return <Group>
+    <ShapeK
+      fill="#00D2FF"
+      stroke="black"
+      strokeWidth={1}
+      sceneFunc={createGridScene}
+    />
+  </Group>
 }
 
 export default Grid

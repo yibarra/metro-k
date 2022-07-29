@@ -15,18 +15,25 @@ const Controls: React.FC<any> = () => {
           name: 'New Layer',
           currentPoint: 0,
           lineProperties: {
-            color: '#FF88FF',
-            border: '#222333'
+            border: '#222333',
+            dash: [0, 0],
+            lineCap: 'butt',
+            lineJoin: 'miter',
+            stroke: '#FF844F',
+            strokeWidth: 2,
+            tension: 0,
           },
           pointsProperties: {
             active: '#341341',
-            color: '#209479',
-            border: '#987443'
+            dash: [5, 5],
+            fill: '#987443',
+            lineCap: 'butt',
+            lineJoin: 'miter',
+            radius: 5,
+            stroke: '#209479',
+            strokeWidth: 2,
           },
-          points: [
-            { x: 110, y: 120, properties: { color: '#222', border: '#F33FAA' } },
-            { x: 150, y: 350, properties: null },
-          ]
+          points: []
         })
       }}>create layer</button>
 

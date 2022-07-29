@@ -3,6 +3,7 @@ import { usePrevious } from 'react-delta'
 
 import type { WithPointProps } from './interfaces'
 
+// with point
 export function WithPoint<T extends WithPointProps>(
   Component: React.ComponentType<T>
 ) {
@@ -43,6 +44,7 @@ export function WithPoint<T extends WithPointProps>(
       }
 
       switch (evt.type) {
+        case 'dragmove':
         case 'dragstart':
           setIsDragging(true)
           break
@@ -51,7 +53,7 @@ export function WithPoint<T extends WithPointProps>(
           setIsDragging(false)
           break
       }
-        
+      
       setPositionPoint(evt.evt)
     }, [active, setPositionPoint])
 

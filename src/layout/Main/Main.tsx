@@ -37,7 +37,13 @@ const Main: React.FC<any> = () => {
         <Stage
           className="stage"
           height={size.height}
-          onClick={({ evt }: any) => createLayerPoint(layers.length + 1, { x: evt.clientX, y: evt.clientY })}
+          onClick={
+            ({ evt }: any) =>
+              createLayerPoint(
+                layers[current].points.length + 1,
+                { x: evt.clientX, y: evt.clientY }
+              )
+          }
           width={size.width}
         >
           <LayerKonva>
