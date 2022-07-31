@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Stage, Layer as LayerKonva } from 'react-konva'
 
 import Grid from '../../components/Grid'
@@ -6,15 +6,16 @@ import Layer from '../../components/Layer'
 import { GridContext } from '../../providers/GridProvider/GridProvider'
 import { MainContext } from '../../providers/MainProvider/MainProvider'
 
-import type { MainContextProps } from '../../providers/MainProvider/interfaces'
 import { MainSection } from './styles'
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
 import Controls from '../../components/Controls'
+import type { MainContextProps } from '../../providers/MainProvider/interfaces'
+import type { KonvaEventObject } from 'konva/lib/Node'
 
 // main
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
-  const { grid, calculateGridWidth, setGrid } = useContext<any>(GridContext)
+  const { boxes, getCell } = useContext<any>(GridContext)
   const {
     current,
     layers,
@@ -23,31 +24,32 @@ const Main: React.FC<any> = () => {
     updateLayerPoint,
   } = useContext<any>(LayersContext)
 
-  // use effect
-  useEffect(() => {
-    if (size.width) {
-      setGrid(calculateGridWidth(120, size.width))
-    }
-  }, [calculateGridWidth, setGrid, size.width])
-
   // render
   return (
     <MainSection>
-      {loaded && size &&
+      {loaded === true && size.height > 0 && size.width > 0 &&
         <Stage
           className="stage"
           height={size.height}
           onClick={
-            ({ evt }: any) =>
-              createLayerPoint(
-                layers[current].points.length + 1,
-                { x: evt.clientX, y: evt.clientY }
-              )
+            ({ evt }: KonvaEventObject<MouseEvent>) => {
+              const values = getCell(evt.clientX, evt.clientY)
+
+              if (values) {
+                createLayerPoint(
+                  layers[current].points.length + 1,
+                  {
+                    x: values[0] + values[2] / 2,
+                    y: values[1] + values[2] / 2
+                  }
+                )
+              }
+            }
           }
           width={size.width}
         >
           <LayerKonva>
-            <Grid grid={grid} {...size} />
+            {boxes.length > 0 && <Grid boxes={boxes} {...size} />}
 
             {Array.isArray(layers) && layers.map((layer: any, index: number) =>
               <Layer
@@ -62,7 +64,6 @@ const Main: React.FC<any> = () => {
             )}
           </LayerKonva>
         </Stage>}
-
       <Controls />
     </MainSection>
   );

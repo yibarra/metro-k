@@ -1,5 +1,6 @@
+export type AxisType = [number, number, number] // x, y, size
 export interface GridProps {
-  grid: number
+  boxes: AxisType[]
   height: number
   width: number
 }

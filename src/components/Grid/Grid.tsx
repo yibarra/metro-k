@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Context } from 'konva/lib/Context'
 import { Shape, ShapeConfig } from 'konva/lib/Shape'
 import { Group, Shape as ShapeK } from 'react-konva'
@@ -6,24 +6,20 @@ import { Group, Shape as ShapeK } from 'react-konva'
 import type { GridProps } from './interfaces'
 
 // grid
-const Grid: React.FC<GridProps> = ({ grid, height, width }) => {
+const Grid: React.FC<GridProps> = ({ boxes, height, width }) => {
   // create axis
-  const createAxis = (ctx: Context, size: number): false | void => {
-    if (!Number.isInteger(size)) {
+  const createAxis = useCallback((ctx: Context, size: number): false | void => {
+    if (!Number.isInteger(size) && !Array.isArray(boxes)) {
       return false
     }
 
-    for (let i = 0; i < size / grid; i++) {
-      ctx.moveTo(i * grid, 0)
-      ctx.lineTo(i * grid, size)
-
-      ctx.moveTo(0, i * grid)
-      ctx.lineTo(size, i * grid)
+    for (const box of boxes) {
+      ctx.rect(...box, box[2])
     }
-  }
+  }, [boxes])
 
   // create grid scene
-  const createGridScene = (ctx: Context, shape: Shape<ShapeConfig>): void => {
+  const createGridScene = useCallback((ctx: Context, shape: Shape<ShapeConfig>): void => {
     const size = width > height ? width : height
 
     ctx.beginPath()
@@ -31,14 +27,15 @@ const Grid: React.FC<GridProps> = ({ grid, height, width }) => {
     ctx.closePath()
 
     ctx.fillStrokeShape(shape)
-  }
+  }, [createAxis, height, width])
 
   // render
   return <Group>
     <ShapeK
-      fill="#00D2FF"
-      stroke="black"
+      fill="#FFFFFF"
+      stroke="#222"
       strokeWidth={1}
+      opacity={0.1}
       sceneFunc={createGridScene}
     />
   </Group>
