@@ -26,6 +26,7 @@ const Point: React.FC<any> = ({
   // on drag start point
   const onDragStartPoint = () => {
     setIsDragging(true)
+    setClickPoint()
   }
 
   // on grad point

@@ -13,7 +13,7 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   const { size } = useContext<MainContextProps>(MainContext)
 
   const [boxes, setBoxes] = useState<AxisType[]>([])
-  const [sizeBox, setSizeBox] = useState<number>(20)
+  const [sizeBox, setSizeBox] = useState<number>(15)
 
   // calculate sizeBox width
   const calculateGridWidth = useCallback((size: number) => {

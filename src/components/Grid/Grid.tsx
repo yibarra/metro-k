@@ -35,7 +35,7 @@ const Grid: React.FC<GridProps> = ({ boxes, height, width }) => {
       fill="#FFFFFF"
       stroke="#222"
       strokeWidth={1}
-      opacity={0.1}
+      opacity={0.05}
       sceneFunc={createGridScene}
     />
   </Group>

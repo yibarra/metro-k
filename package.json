@@ -22,6 +22,7 @@
     "react-delta": "^1.1.2",
     "react-dom": "^18.1.0",
     "react-i18next": "^11.16.9",
+    "react-id-generator": "^3.0.2",
     "react-konva": "^18.1.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
