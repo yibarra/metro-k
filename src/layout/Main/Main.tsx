@@ -56,6 +56,7 @@ const Main: React.FC<any> = () => {
                 active={current === index}
                 layer={layer}
                 index={index}
+                getCell={getCell}
                 key={index}
                 updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}
@@ -64,7 +65,8 @@ const Main: React.FC<any> = () => {
             )}
           </LayerKonva>
         </Stage>}
-      <Controls />
+
+        {Array.isArray(layers) && <Controls />}
     </MainSection>
   );
 };

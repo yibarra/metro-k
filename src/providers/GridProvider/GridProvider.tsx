@@ -20,11 +20,27 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
     return size >= sizeBox ? sizeBox : size
   }, [sizeBox])
 
+  // fix position center
+  const fixPositionCenter = useCallback(
+    (value: number, sizeAxis: number, axis: number, sizeBox: number) => {
+    return value + (sizeAxis - (axis * sizeBox)) / 2
+  }, [])
+
+  // get grid axis
+  const getGridAxis = useCallback((width: number, height: number) => {
+    const xGrid: number = Math.ceil(width / sizeBox)
+    const yGrid: number = Math.ceil(height / sizeBox)
+
+    return {
+      xGrid,
+      yGrid
+    }
+  }, [sizeBox])
+
   // create grid boxes
   const createGridBoxes = useCallback((width: number, height: number) => {
     const gridBox: AxisType[] = []
-    const xGrid: number = Math.ceil(width / sizeBox)
-    const yGrid: number = Math.ceil(height / sizeBox)
+    const { xGrid, yGrid } = getGridAxis(width, height)
     
     for (let i = 0; i < xGrid; i++) {
       for (let j = 0; j < yGrid; j++) {
@@ -32,15 +48,15 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
         const y = sizeBox * j
 
         gridBox.push([
-          x + (width - (xGrid * sizeBox)) / 2,
-          y + (height - (yGrid * sizeBox)) / 2,
+          fixPositionCenter(x, width, xGrid, sizeBox),
+          fixPositionCenter(y, height, yGrid, sizeBox),
           sizeBox,
         ])
       }
     }
 
     setBoxes(gridBox)
-  }, [sizeBox])
+  }, [getGridAxis, fixPositionCenter, sizeBox])
 
   // get cell
   const getCell = (x: number, y: number): AxisType | void => {

@@ -10,6 +10,7 @@ const Layer: React.FC<any> = ({
   index,
   layer,
   points,
+  getCell,
   updateLayer,
   updateLayerPoint,
 }) => {
@@ -40,6 +41,7 @@ const Layer: React.FC<any> = ({
               currentPoint={layer.currentPoint}
               index={index}
               key={index}
+              getCell={getCell}
               properties={{ ...layer.pointsProperties, ...point.properties }}
               setCurrentPoint={setCurrentPoint}
               updateLayerPoint={updateLayerPoint}

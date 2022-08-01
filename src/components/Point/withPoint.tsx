@@ -14,6 +14,7 @@ export function WithPoint<T extends WithPointProps>(
     const {
       active,
       index,
+      getCell,
       properties,
       setCurrentPoint,
       updateLayerPoint,
@@ -28,14 +29,18 @@ export function WithPoint<T extends WithPointProps>(
 
     // set position point
     const setPositionPoint = useCallback((event: MouseEvent) => {
-      updateLayerPoint(
-        {
-          properties: {...properties},
-          x: event.clientX,
-          y: event.clientY,
-        }, index
-      )
-    }, [index, properties, updateLayerPoint])
+      const point = getCell(event.clientX, event.clientY)
+
+      if (Array.isArray(point)) {
+        updateLayerPoint(
+          {
+            properties: {...properties},
+            x: point[0] + point[2],
+            y: point[1] + point[2],
+          }, index
+        )
+      }
+    }, [getCell, index, properties, updateLayerPoint])
 
     // type
     const handlerEvents = useCallback((evt: any) => {

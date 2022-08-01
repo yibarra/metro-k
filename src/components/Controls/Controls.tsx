@@ -1,18 +1,20 @@
 import React, { useContext } from 'react'
+import nextId from 'react-id-generator'
 
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
 import ControlsLayers from './ControlsLayers'
 import * as S from './styles'
 
 const Controls: React.FC<any> = () => {
-  const { createLayer, enable, setEnable } = useContext(LayersContext)
+  const { createLayer, enable, layers, setEnable } = useContext(LayersContext)
 
   return (
     <S.ControlsDiv>
       <input type="checkbox" defaultValue={enable.toString()} onChange={() => setEnable(!enable)} />
       <button onClick={() => {
         createLayer({
-          name: 'New Layer',
+          id: nextId('layer-'),
+          name: `New Layer ${layers.length}`,
           currentPoint: 0,
           lineProperties: {
             border: '#222333',

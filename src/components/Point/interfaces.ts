@@ -3,6 +3,7 @@ export interface WithPointProps {
   currentPoint?: number
   isDragging?: boolean
   index: number
+  getCell: any
   properties: any
   setCurrentPoint(index: number): void
   updateLayerPoint(props: any, index: number): void

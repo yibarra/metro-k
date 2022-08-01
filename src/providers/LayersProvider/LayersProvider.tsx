@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react'
 
 import type { LayersContextProps, LayersProvidersProps } from './interfaces'
+import { layerDefault } from './LayersProviderContext'
 
 // layers context
 const LayersContext = createContext({} as LayersContextProps)
@@ -9,84 +10,7 @@ const LayersContext = createContext({} as LayersContextProps)
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   const [current, setCurrent] = useState<number>(0) // index current
   const [enable, setEnable] = useState<boolean>(false)
-  const [layers, setLayers] = useState<any[]>([
-    {
-      name: 'Default',
-      currentPoint: 0,
-      lineProperties: {
-        dash: [0, 0],
-        lineCap: 'butt',
-        lineJoin: 'miter',
-        stroke: '#2f5ada',
-        strokeWidth: 2,
-        tension: 0,
-      },
-      pointsProperties: {
-        active: '#222EEE',
-        dash: [0, 0],
-        fill: '#FFFFFF',
-        lineCap: 'butt',
-        lineJoin: 'miter',
-        radius: 5,
-        stroke: '#222222',
-        strokeWidth: 2,
-      },
-      points: [
-        {
-          x: 10,
-          y: 10,
-          properties: {
-            dash: [5, 5],
-            fill: '#987443',
-            lineCap: 'butt',
-            lineJoin: 'miter',
-            radius: 5,
-            stroke: '#209479',
-            strokeWidth: 2,
-          }
-        },
-        { x: 50, y: 50 },
-      ]
-    }, {
-      name: 'Layer 2',
-      currentPoint: 0,
-      lineProperties: {
-        border: '#222333',
-        dash: [0, 0],
-        lineCap: 'butt',
-        lineJoin: 'miter',
-        stroke: '#FF844F',
-        strokeWidth: 2,
-        tension: 0,
-      },
-      pointsProperties: {
-        active: '#341341',
-        dash: [5, 5],
-        fill: '#987443',
-        lineCap: 'butt',
-        lineJoin: 'miter',
-        radius: 5,
-        stroke: '#209479',
-        strokeWidth: 2,
-      },
-      points: [
-        {
-          x: 110,
-          y: 120,
-          properties: {
-            dash: [5, 5],
-            fill: '#98AA43',
-            lineCap: 'butt',
-            lineJoin: 'miter',
-            radius: 5,
-            stroke: '#2EE479',
-            strokeWidth: 2,
-          }
-        },
-        { x: 150, y: 350 },
-      ]
-    }
-  ])
+  const [layers, setLayers] = useState<any[]>([layerDefault])
 
   // create layer
   const createLayer = (layer: any) => {
@@ -131,6 +55,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
   // update layer point
   const updateLayerPoint = (point: any, index: number) => {
+    console.info(point)
     const { points } = layers[current]
     points[index] = { ...point }
 
