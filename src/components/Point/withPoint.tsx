@@ -12,7 +12,6 @@ export function WithPoint<T extends WithPointProps>(
   // point
   const Point = (props: WithPointProps) => {
     const {
-      active,
       index,
       getCell,
       properties,
@@ -35,38 +34,17 @@ export function WithPoint<T extends WithPointProps>(
         updateLayerPoint(
           {
             properties: {...properties},
-            x: point[0] + point[2],
-            y: point[1] + point[2],
+            x: point[0] + point[2] / 2,
+            y: point[1] + point[2] / 2,
           }, index
         )
       }
     }, [getCell, index, properties, updateLayerPoint])
 
-    // type
-    const handlerEvents = useCallback((evt: any) => {
-      if (!active || !evt) {
-        return false
-      }
-
-      switch (evt.type) {
-        case 'dragmove':
-        case 'dragstart':
-          setIsDragging(true)
-          break
-        case 'dragend':
-        default:
-          setIsDragging(false)
-          break
-      }
-      
-      setPositionPoint(evt.evt)
-    }, [active, setPositionPoint])
-
     // render
     return (
       <Component
         {...(props as T)}
-        handlerEvents={handlerEvents}
         isDragging={isDragging}
         propertiesPrevious={propertiesPrevious}
         setClickPoint={setClickPoint}

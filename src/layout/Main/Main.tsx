@@ -40,7 +40,7 @@ const Main: React.FC<any> = () => {
                   layers[current].points.length + 1,
                   {
                     x: values[0] + values[2] / 2,
-                    y: values[1] + values[2] / 2
+                    y: values[1] + values[2] / 2,
                   }
                 )
               }
@@ -53,14 +53,14 @@ const Main: React.FC<any> = () => {
 
             {Array.isArray(layers) && layers.map((layer: any, index: number) =>
               <Layer
+                {...layer}
                 active={current === index}
-                layer={layer}
-                index={index}
                 getCell={getCell}
+                index={index}
+                layer={layer}
                 key={index}
                 updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}
-                {...layer}
               />
             )}
           </LayerKonva>
