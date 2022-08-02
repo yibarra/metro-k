@@ -26,16 +26,15 @@ const Line: React.FC<LineProps> = ({
   // use effect
   useEffect(() => {
     if (typeof element.current.to !== 'undefined') {
-      element.current.to({ ...properties })
+      element.current.to({ ...properties, opacity: isDragging || !active ? 0.4 : 1 })
     }
-  }, [properties])
+  }, [active, isDragging, properties])
 
   // render
   return (
     <LineKonva
       {...properties}
       ref={element}
-      opacity={isDragging ? 0.4 : 1}
       points={convertPoints(points)}
       shadowBlur={3}
       shadowOffset={{ x: 0, y: 0 }}

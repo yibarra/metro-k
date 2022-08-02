@@ -64,11 +64,15 @@ const Point: React.FC<any> = ({
     }
   }, [properties])
 
+  // pos
+  const posX = !isDragging && !active ? x : xy.x
+  const posY = !isDragging && !active ? y : xy.y
+
   // render
   return (
     <>
-      {((currentPoint === index && active) || isDragging) &&
-        <ToolTip x={x} y={y - (50 + properties.radius)} />}
+      {(currentPoint === index && active && isDragging) &&
+        <ToolTip x={posX} y={posY - (50 + properties.radius)} />}
 
       <Circle
         {...properties}
@@ -79,8 +83,8 @@ const Point: React.FC<any> = ({
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
         stroke={(isDragging || currentPoint === index) ? properties.active : properties.stroke }
-        x={!isDragging && !active ? x : xy.x}
-        y={!isDragging && !active ? y : xy.y}
+        x={posX}
+        y={posY}
       />
     </>
   )
