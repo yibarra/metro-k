@@ -1,16 +1,17 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Circle } from 'react-konva'
+import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { WithPoint } from './withPoint'
 import ToolTip from '../ToolTip'
-import { KonvaEventObject } from 'konva/lib/Node'
-import { useState } from 'react'
 
 // point
 const Point: React.FC<any> = ({
   active,
   currentPoint,
   getCell,
+  height,
+  width,
   index,
   isDragging,
   properties,
@@ -36,7 +37,7 @@ const Point: React.FC<any> = ({
 
   // on drag end point
   const onDragEndPoint = (event: KonvaEventObject<DragEvent>) => {    
-    const point = getCell(event.evt.clientX, event.evt.clientY)
+    const point = getCell(event.evt.clientX, event.evt.clientY, width, height)
 
     if (active && point && element.current) {
       element.current.to({

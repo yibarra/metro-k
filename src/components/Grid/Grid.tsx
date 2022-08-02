@@ -6,28 +6,35 @@ import { Group, Shape as ShapeK } from 'react-konva'
 import type { GridProps } from './interfaces'
 
 // grid
-const Grid: React.FC<GridProps> = ({ boxes, height, width }) => {
+const Grid: React.FC<GridProps> = ({ createGridBoxes, width, height }) => {
   // create axis
-  const createAxis = useCallback((ctx: Context, size: number): false | void => {
-    if (!Number.isInteger(size) && !Array.isArray(boxes)) {
-      return false
-    }
+  const createAxis = useCallback((ctx: Context): false | void => {
+    console.info('CREATE GRID ESCENE', width, height)
+    createGridBoxes(ctx, width, height)
 
+    /*
     for (const box of boxes) {
       ctx.rect(...box, box[2])
     }
-  }, [boxes])
+    
+    for (let i = 0; i < (size / 2) / boxSize; i++) {
+      ctx.moveTo(i * grid, 0)
+      ctx.lineTo(i * grid, size)
+      
+      ctx.moveTo(0, i * grid)
+      ctx.lineTo(size, i * grid)
+    }
+    */
+  }, [createGridBoxes, height, width])
 
   // create grid scene
   const createGridScene = useCallback((ctx: Context, shape: Shape<ShapeConfig>): void => {
-    const size = width > height ? width : height
-
     ctx.beginPath()
-    createAxis(ctx, size) // x & y
+    createAxis(ctx) // x & y
     ctx.closePath()
 
     ctx.fillStrokeShape(shape)
-  }, [createAxis, height, width])
+  }, [createAxis])
 
   // render
   return <Group>
@@ -35,7 +42,7 @@ const Grid: React.FC<GridProps> = ({ boxes, height, width }) => {
       fill="#FFFFFF"
       stroke="#222"
       strokeWidth={1}
-      opacity={0.05}
+      opacity={0.25}
       sceneFunc={createGridScene}
     />
   </Group>

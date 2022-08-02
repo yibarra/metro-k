@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { usePrevious } from 'react-delta'
+import UseWindowSize from '../../hooks/useWindowSize'
 
 import type { WithPointProps } from './interfaces'
 
@@ -18,6 +19,8 @@ export function WithPoint<T extends WithPointProps>(
       setCurrentPoint,
       updateLayerPoint,
     } = props
+    const { height, width } = UseWindowSize()
+
     const propertiesPrevious = usePrevious(properties)
     const [isDragging, setIsDragging] = useState<boolean>(false)
 
@@ -28,7 +31,7 @@ export function WithPoint<T extends WithPointProps>(
 
     // set position point
     const setPositionPoint = useCallback((event: MouseEvent) => {
-      const point = getCell(event.clientX, event.clientY)
+      const point = getCell(event.clientX, event.clientY, width, height)
 
       if (Array.isArray(point)) {
         updateLayerPoint(
@@ -39,17 +42,19 @@ export function WithPoint<T extends WithPointProps>(
           }, index
         )
       }
-    }, [getCell, index, properties, updateLayerPoint])
+    }, [getCell, height, index, properties, updateLayerPoint, width])
 
     // render
     return (
       <Component
         {...(props as T)}
+        height={height}
         isDragging={isDragging}
         propertiesPrevious={propertiesPrevious}
         setClickPoint={setClickPoint}
         setIsDragging={setIsDragging}
         setPositionPoint={setPositionPoint}
+        width={width}
       />
     )
   }

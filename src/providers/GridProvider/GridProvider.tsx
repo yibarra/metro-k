@@ -1,19 +1,15 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useState } from 'react'
 
-import { MainContextProps } from '../MainProvider/interfaces'
-import { MainContext } from '../MainProvider/MainProvider'
 import type { AxisType } from '../../components/Grid/interfaces'
 import type { GridProviderProps } from './interfaces'
+import type { Context } from 'konva/lib/Context'
 
 // sizeBox context
 const GridContext = createContext({})
 
 // sizeBox provider
 const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
-  const { size } = useContext<MainContextProps>(MainContext)
-
-  const [boxes, setBoxes] = useState<AxisType[]>([])
-  const [sizeBox, setSizeBox] = useState<number>(15)
+  const [sizeBox, setSizeBox] = useState<number>(35)
 
   // calculate sizeBox width
   const calculateGridWidth = useCallback((size: number) => {
@@ -23,7 +19,7 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   // fix position center
   const fixPositionCenter = useCallback(
     (value: number, sizeAxis: number, axis: number, sizeBox: number) => {
-    return value + (sizeAxis - (axis * sizeBox)) / 2
+    return Math.floor(value + (sizeAxis - Math.floor(axis * sizeBox)) / 2)
   }, [])
 
   // get grid axis
@@ -38,54 +34,42 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   }, [sizeBox])
 
   // create grid boxes
-  const createGridBoxes = useCallback((width: number, height: number) => {
-    const gridBox: AxisType[] = []
+  const createGridBoxes = useCallback((ctx: Context, width: number, height: number) => {
     const { xGrid, yGrid } = getGridAxis(width, height)
+
+    const size = width > height ? width : height
+    const diffX = Math.floor(width / 2 - (xGrid / 2 * sizeBox))
+    const diffY = Math.floor(height / 2 - (yGrid / 2 * sizeBox))
     
-    for (let i = 0; i < xGrid; i++) {
-      for (let j = 0; j < yGrid; j++) {
-        const x = sizeBox * i
-        const y = sizeBox * j
+    for (let i = 0; i < size / sizeBox; i++) {
+      const x = (i * sizeBox) + diffX
+      const y = (i * sizeBox) + diffY
 
-        gridBox.push([
-          fixPositionCenter(x, width, xGrid, sizeBox),
-          fixPositionCenter(y, height, yGrid, sizeBox),
-          sizeBox,
-        ])
-      }
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, size)
+
+      ctx.moveTo(0, y)
+      ctx.lineTo(size, y)
     }
-
-    setBoxes(gridBox)
-  }, [getGridAxis, fixPositionCenter, sizeBox])
+  }, [getGridAxis, sizeBox])
 
   // get cell
-  const getCell = (x: number, y: number): AxisType | void => {
-    for (let i = 0; i < boxes.length; i++) {
-      const block = boxes[i]
+  const getCell = (x: number, y: number, width: number, height: number): AxisType | void => {
+    const { xGrid, yGrid } = getGridAxis(width, height)
 
-      if (
-        x > block[0] &&
-        x < block[0] + block[2] &&
-        y > block[1] &&
-        y < block[1] + block[2]
-      ) {
-        return block
-      }
+    if (xGrid && yGrid) {
+      const posX = fixPositionCenter(Math.floor(x / sizeBox) * sizeBox, width, xGrid, sizeBox)
+      const posY = fixPositionCenter(Math.floor(y / sizeBox) * sizeBox, height, yGrid, sizeBox)
+      
+      return [posX, posY, sizeBox]
     }
   }
-
-  // use effect
-  useEffect(() => {
-    if (size.width > 0 && size.height > 0) {
-      createGridBoxes(size.width, size.height)
-    }
-  }, [createGridBoxes, size])
 
   // render
   return (
     <GridContext.Provider value={{
-      boxes,
       calculateGridWidth,
+      createGridBoxes,
       getCell,
       sizeBox,
       setSizeBox,

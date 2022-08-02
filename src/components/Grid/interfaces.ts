@@ -1,6 +1,6 @@
 export type AxisType = [number, number, number] // x, y, size
 export interface GridProps {
-  boxes: AxisType[]
+  createGridBoxes: any
   height: number
   width: number
 }

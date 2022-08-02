@@ -15,7 +15,7 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 // main
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
-  const { boxes, getCell } = useContext<any>(GridContext)
+  const { createGridBoxes, getCell } = useContext<any>(GridContext)
   const {
     current,
     layers,
@@ -33,7 +33,7 @@ const Main: React.FC<any> = () => {
           height={size.height}
           onClick={
             ({ evt }: KonvaEventObject<MouseEvent>) => {
-              const values = getCell(evt.clientX, evt.clientY)
+              const values = getCell(evt.clientX, evt.clientY, size.width, size.height)
 
               if (values) {
                 createLayerPoint(
@@ -49,7 +49,7 @@ const Main: React.FC<any> = () => {
           width={size.width}
         >
           <LayerKonva>
-            {boxes.length > 0 && <Grid boxes={boxes} {...size} />}
+            <Grid createGridBoxes={createGridBoxes} {...size} />
 
             {Array.isArray(layers) && layers.map((layer: any, index: number) =>
               <Layer
