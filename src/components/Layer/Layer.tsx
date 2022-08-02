@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Group } from 'react-konva'
 
 import Line from '../Line'
@@ -13,13 +13,15 @@ const Layer: React.FC<any> = ({
   getCell,
   updateLayer,
   updateLayerPoint,
+  fixPositionCenter,
 }) => {
+  const [isDragging, setIsDragging] = useState<boolean>(false)
+
   // color
   // name
   // properties: line - stroke, color, type: dash, linejoin, linecap ... point stroke, color
 
   const setCurrentPoint = (value: number) => {
-    console.info(value)
     updateLayer(index, { currentPoint: value })
   }
 
@@ -29,23 +31,26 @@ const Layer: React.FC<any> = ({
       {Array.isArray(points) && 
         <>
           <Line
-            points={Object.values(points.map((item) => {
-              return [ item.x, item.y ]
-            }))}
+            active={active}
+            isDragging={isDragging}
+            points={Object.values(points.map((item) => [ item.x, item.y ]))}
             properties={layer.lineProperties}
           />
 
           {points.map((point: any, index: number) =>
             <Point
+              {...point}
               active={active}
               currentPoint={layer.currentPoint}
               index={index}
+              isDragging={isDragging}
               key={index}
               getCell={getCell}
               properties={{ ...layer.pointsProperties, ...point.properties }}
+              setIsDragging={setIsDragging}
               setCurrentPoint={setCurrentPoint}
               updateLayerPoint={updateLayerPoint}
-              {...point}
+              fixPositionCenter={fixPositionCenter}
             />
           )}
         </>

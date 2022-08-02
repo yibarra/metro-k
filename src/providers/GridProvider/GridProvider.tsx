@@ -1,31 +1,26 @@
 import React, { createContext, useCallback, useState } from 'react'
 
 import type { AxisType } from '../../components/Grid/interfaces'
-import type { GridProviderProps } from './interfaces'
+import type { GridContextProps, GridProviderProps } from './interfaces'
 import type { Context } from 'konva/lib/Context'
 
 // sizeBox context
-const GridContext = createContext({})
+const GridContext = createContext({} as GridContextProps)
 
 // sizeBox provider
 const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
-  const [sizeBox, setSizeBox] = useState<number>(35)
-
-  // calculate sizeBox width
-  const calculateGridWidth = useCallback((size: number) => {
-    return size >= sizeBox ? sizeBox : size
-  }, [sizeBox])
+  const [sizeBox, setSizeBox] = useState<number>(18)
 
   // fix position center
   const fixPositionCenter = useCallback(
-    (value: number, sizeAxis: number, axis: number, sizeBox: number) => {
+    (value: number, sizeAxis: number, axis: number, sizeBox: number): number => {
     return Math.floor(value + (sizeAxis - Math.floor(axis * sizeBox)) / 2)
   }, [])
 
   // get grid axis
   const getGridAxis = useCallback((width: number, height: number) => {
-    const xGrid: number = Math.ceil(width / sizeBox)
-    const yGrid: number = Math.ceil(height / sizeBox)
+    const xGrid: number = Math.floor(width / sizeBox)
+    const yGrid: number = Math.floor(height / sizeBox)
 
     return {
       xGrid,
@@ -34,7 +29,7 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   }, [sizeBox])
 
   // create grid boxes
-  const createGridBoxes = useCallback((ctx: Context, width: number, height: number) => {
+  const createGridBoxes = useCallback((ctx: Context, width: number, height: number): void => {
     const { xGrid, yGrid } = getGridAxis(width, height)
 
     const size = width > height ? width : height
@@ -58,8 +53,8 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
     const { xGrid, yGrid } = getGridAxis(width, height)
 
     if (xGrid && yGrid) {
-      const posX = fixPositionCenter(Math.floor(x / sizeBox) * sizeBox, width, xGrid, sizeBox)
-      const posY = fixPositionCenter(Math.floor(y / sizeBox) * sizeBox, height, yGrid, sizeBox)
+      const posX = fixPositionCenter(Math.floor(Math.floor(x / sizeBox) * sizeBox), width, xGrid, sizeBox)
+      const posY = fixPositionCenter(Math.floor(Math.floor(y / sizeBox) * sizeBox), height, yGrid, sizeBox)
       
       return [posX, posY, sizeBox]
     }
@@ -68,11 +63,11 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   // render
   return (
     <GridContext.Provider value={{
-      calculateGridWidth,
       createGridBoxes,
       getCell,
       sizeBox,
       setSizeBox,
+      fixPositionCenter,
     }}>
       {children}
     </GridContext.Provider>

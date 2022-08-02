@@ -6,7 +6,9 @@ export interface WithPointProps {
   getCell: any
   properties: any
   setCurrentPoint(index: number): void
+  setIsDragging(val: boolean): void
   updateLayerPoint(props: any, index: number): void
+  fixPositionCenter(value: number, sizeAxis: number, axis: number, sizeBox: number): number
 }
 
 export interface PointProps {

@@ -18,6 +18,7 @@ const Point: React.FC<any> = ({
   setClickPoint,
   setIsDragging,
   setPositionPoint,
+  fixPositionCenter,
   x = 0,
   y = 0,
 }) => {
@@ -40,13 +41,16 @@ const Point: React.FC<any> = ({
     const point = getCell(event.evt.clientX, event.evt.clientY, width, height)
 
     if (active && point && element.current) {
+      const posX = Math.floor(point[0] + point[2] / 2)
+      const posY = Math.floor(point[1] + point[2] / 2)
+
       element.current.to({
-        x: point[0] + point[2] / 2,
-        y: point[1] + point[2] / 2,
+        x: posX,
+        y: posY,
         duration: 0.4,
       })
       
-      setPositionPoint(event.evt)
+      setPositionPoint(posX, posY)
       setIsDragging(false)
     } else {
       element.current.to({ x, y, duration: 0.2 })
@@ -75,8 +79,8 @@ const Point: React.FC<any> = ({
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
         stroke={(isDragging || currentPoint === index) ? properties.active : properties.stroke }
-        x={!isDragging ? x : xy.x}
-        y={!isDragging ? y : xy.y}
+        x={!isDragging && !active ? x : xy.x}
+        y={!isDragging && !active ? y : xy.y}
       />
     </>
   )

@@ -1,21 +1,21 @@
 import React, { useContext } from 'react'
 import { Stage, Layer as LayerKonva } from 'react-konva'
+import type { KonvaEventObject } from 'konva/lib/Node'
 
+import Controls from '../../components/Controls'
 import Grid from '../../components/Grid'
 import Layer from '../../components/Layer'
 import { GridContext } from '../../providers/GridProvider/GridProvider'
 import { MainContext } from '../../providers/MainProvider/MainProvider'
-
-import { MainSection } from './styles'
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
-import Controls from '../../components/Controls'
 import type { MainContextProps } from '../../providers/MainProvider/interfaces'
-import type { KonvaEventObject } from 'konva/lib/Node'
+import type { GridContextProps } from '../../providers/GridProvider/interfaces'
+import { MainSection } from './styles'
 
 // main
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
-  const { createGridBoxes, getCell } = useContext<any>(GridContext)
+  const { createGridBoxes, fixPositionCenter, getCell } = useContext<GridContextProps>(GridContext)
   const {
     current,
     layers,
@@ -23,6 +23,8 @@ const Main: React.FC<any> = () => {
     updateLayer,
     updateLayerPoint,
   } = useContext<any>(LayersContext)
+
+  console.info('INIT')
 
   // render
   return (
@@ -59,6 +61,7 @@ const Main: React.FC<any> = () => {
                 index={index}
                 layer={layer}
                 key={index}
+                fixPositionCenter={fixPositionCenter}
                 updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}
               />

@@ -4,7 +4,12 @@ import { Line as LineKonva } from 'react-konva'
 import { LineProps } from './interfaces'
 
 // line
-const Line: React.FC<LineProps> = ({ points, properties }) => {
+const Line: React.FC<LineProps> = ({
+  active = false,
+  isDragging = false,
+  points,
+  properties,
+}) => {
   const element = useRef<any>(null)
 
   // convert points
@@ -30,10 +35,11 @@ const Line: React.FC<LineProps> = ({ points, properties }) => {
     <LineKonva
       {...properties}
       ref={element}
+      opacity={isDragging ? 0.4 : 1}
+      points={convertPoints(points)}
       shadowBlur={3}
       shadowOffset={{ x: 0, y: 0 }}
       shadowColor="#2f5ada"
-      points={convertPoints(points)}
     />
   )
 }
