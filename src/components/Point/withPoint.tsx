@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import { usePrevious } from 'react-delta'
 import UseWindowSize from '../../hooks/useWindowSize'
 
 import type { WithPointProps } from './interfaces'
@@ -21,8 +20,6 @@ export function WithPoint<T extends WithPointProps>(
       updateLayerPoint,
     } = props
     const { height, width } = UseWindowSize()
-
-    const propertiesPrevious = usePrevious(properties)
 
     // set click point
     const setClickPoint = useCallback(() => {
@@ -50,7 +47,6 @@ export function WithPoint<T extends WithPointProps>(
         {...(props as T)}
         height={height}
         isDragging={isDragging}
-        propertiesPrevious={propertiesPrevious}
         setClickPoint={setClickPoint}
         setIsDragging={setIsDragging}
         setPositionPoint={setPositionPoint}

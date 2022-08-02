@@ -21,7 +21,8 @@ const Layer: React.FC<any> = ({
   // name
   // properties: line - stroke, color, type: dash, linejoin, linecap ... point stroke, color
 
-  const setCurrentPoint = (value: number) => {
+  // set current point
+  const setCurrentPoint = (value: number): void => {
     updateLayer(index, { currentPoint: value })
   }
 
@@ -46,11 +47,10 @@ const Layer: React.FC<any> = ({
               isDragging={isDragging}
               key={index}
               getCell={getCell}
-              properties={{ ...layer.pointsProperties, ...point.properties }}
+              properties={layer.pointsProperties}
               setIsDragging={setIsDragging}
               setCurrentPoint={setCurrentPoint}
               updateLayerPoint={updateLayerPoint}
-              fixPositionCenter={fixPositionCenter}
             />
           )}
         </>

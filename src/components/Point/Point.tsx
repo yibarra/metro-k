@@ -18,7 +18,6 @@ const Point: React.FC<any> = ({
   setClickPoint,
   setIsDragging,
   setPositionPoint,
-  fixPositionCenter,
   x = 0,
   y = 0,
 }) => {

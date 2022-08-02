@@ -55,7 +55,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
   // update layer point
   const updateLayerPoint = (point: any, index: number) => {
-    console.info(point)
     const { points } = layers[current]
     points[index] = { ...point }
 

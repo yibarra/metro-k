@@ -22,19 +22,10 @@ export const layerDefault =
       strokeWidth: 2,
     },
     points: [
-      {
-        x: 10,
-        y: 10,
-        properties: {
-          dash: [5, 5],
-          fill: '#987443',
-          lineCap: 'butt',
-          lineJoin: 'miter',
-          radius: 5,
-          stroke: '#209479',
-          strokeWidth: 2,
-        }
-      },
+      { x: 10, y: 10 },
       { x: 50, y: 50 },
+      { x: 150, y: 395 },
+      { x: 520, y: 250 },
+      { x: 175, y: 750 },
     ]
   }
