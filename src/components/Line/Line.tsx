@@ -26,7 +26,7 @@ const Line: React.FC<LineProps> = ({
   // use effect
   useEffect(() => {
     if (typeof element.current.to !== 'undefined') {
-      element.current.to({ ...properties, opacity: isDragging || !active ? 0.4 : 1 })
+      element.current.to({ ...properties })
     }
   }, [active, isDragging, properties])
 
@@ -36,9 +36,6 @@ const Line: React.FC<LineProps> = ({
       {...properties}
       ref={element}
       points={convertPoints(points)}
-      shadowBlur={3}
-      shadowOffset={{ x: 0, y: 0 }}
-      shadowColor="#2f5ada"
     />
   )
 }

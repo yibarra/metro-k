@@ -20,6 +20,7 @@ const Point: React.FC<any> = ({
   setPositionPoint,
   x = 0,
   y = 0,
+  setNewPoint,
 }) => {
   const element = useRef<any>(null)
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
@@ -32,7 +33,11 @@ const Point: React.FC<any> = ({
 
   // on grad point
   const onDragMovePoint = (event: KonvaEventObject<DragEvent>) => {
-    setXY({ x: event.evt.clientX, y: event.evt.clientY })
+    const x = event.evt.clientX
+    const y = event.evt.clientY
+    
+    setXY({ x, y })
+    setNewPoint({ x, y })
   }
 
   // on drag end point
