@@ -11,16 +11,16 @@ const Point: React.FC<any> = ({
   currentPoint,
   getCell,
   height,
-  width,
   index,
   isDragging,
   properties,
   setClickPoint,
   setIsDragging,
+  setNewPoint,
   setPositionPoint,
+  width,
   x = 0,
   y = 0,
-  setNewPoint,
 }) => {
   const element = useRef<any>(null)
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
@@ -35,7 +35,7 @@ const Point: React.FC<any> = ({
   const onDragMovePoint = (event: KonvaEventObject<DragEvent>) => {
     const x = event.evt.clientX
     const y = event.evt.clientY
-    
+
     setXY({ x, y })
     setNewPoint({ x, y })
   }
@@ -86,7 +86,7 @@ const Point: React.FC<any> = ({
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
-        stroke={(isDragging || currentPoint === index) ? properties.active : properties.stroke }
+        stroke={(currentPoint === index) ? properties.active : properties.stroke }
         x={posX}
         y={posY}
       />

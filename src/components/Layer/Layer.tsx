@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Group } from 'react-konva'
 
-import Line from '../Line'
+import LayerLine from './LayerLine'
 import Point from '../Point'
+import type { PointTypePosition } from '../Point/interfaces'
 
 // layer
 const Layer: React.FC<any> = ({
@@ -14,26 +15,16 @@ const Layer: React.FC<any> = ({
   updateLayer,
   updateLayerPoint,
 }) => {
-  const [isDragging, setIsDragging] = useState<boolean>(false)
-  const [newPoint, setNewPoint] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
-
   // color
   // name
   // properties: line - stroke, color, type: dash, linejoin, linecap ... point stroke, color
 
+  const [isDragging, setIsDragging] = useState<boolean>(false)
+  const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0 })
+
   // set current point
   const setCurrentPoint = (value: number): void => {
     updateLayer(index, { currentPoint: value })
-  }
-
-  // line alternative
-  const lineAlternative = (points: any) => {
-    return Object.values(
-      points.map(
-        (item: any, index: number) =>
-          index === layer.currentPoint ? [newPoint.x, newPoint.y] : [ item.x, item.y ]
-      )
-    )
   }
 
   // render
@@ -41,28 +32,12 @@ const Layer: React.FC<any> = ({
     <Group>
       {Array.isArray(points) && 
         <>
-          <Line
+          <LayerLine
             active={active}
             isDragging={isDragging}
-            points={Object.values(points.map((item) => [ item.x, item.y ]))}
-            properties={{
-              ...layer.lineProperties,
-              opacity: isDragging || !active ? 0.4 : 1,
-              shadowColor: "#2f5ada"
-            }}
-          />
-
-          <Line
-            active={active}
-            isDragging={isDragging}
-            points={lineAlternative(points)}
-            properties={{
-              ...layer.lineProperties,
-              strokeWidth: layer.lineProperties.strokeWidth / 3,
-              dash: [3, 3],
-              opacity: isDragging || !active ? 0.5 : 0,
-              shadowColor: "#2f5ada",
-            }}
+            newPoint={newPoint}
+            layer={layer}
+            points={points}
           />
 
           {points.map((point: any, index: number) =>
