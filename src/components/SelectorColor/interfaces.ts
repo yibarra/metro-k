@@ -6,5 +6,6 @@ export interface SelectorColorProps<T = HTMLDivElement>
   extends HTMLAttributes<T> {
   color: string
   setColor(color: string): void
-  type?: TypeSelector
+  radius?: boolean
+  variation?: TypeSelector
 }

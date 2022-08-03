@@ -1,27 +1,27 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
+
 import UseClickOutSide from '../../hooks/useClickOutSide'
-
 import type { SelectorColorProps } from './interfaces'
-
 import * as S from './styles'
 
 // selector color
 const SelectorColor: React.FC<SelectorColorProps> = ({
   color,
+  radius = false,
   setColor,
-  type = 'default',
+  variation = 'default',
 }) => {
-  const element = useRef<React.ReactNode | any>(null)
+  const element = useRef<any>(null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   UseClickOutSide(element, () => setIsOpen(false), '')
 
   // get type
-  const getType = (type: string) => {
-    switch (type) {
+  const getType = (variation: string) => {
+    switch (variation) {
       case 'line':
-        return { backgroundColor: color, height: 5 }
+        return { backgroundColor: color, height: 3 }
       
       case 'border':
         return { borderColor: color }
@@ -34,17 +34,20 @@ const SelectorColor: React.FC<SelectorColorProps> = ({
 
   // render
   return (
-    <S.SelectorColorDiv>
-      <S.SelectorColorDiv
-        className="swatch"
-        style={getType(type)}
+    <S.SelectorColorDiv type={variation}>
+      <S.SelectorColorButton
+        radius={radius ? 'true' : 'false'}
         onClick={() => setIsOpen(!isOpen)}
+        style={getType(variation)}
+        variation={variation}
       />
 
       {isOpen && (
-        <div className="popover" ref={element}>
+        <S.SelectorColorPopOver ref={element} radius={radius}>
           <HexColorPicker color={color} onChange={setColor} />
-        </div>
+
+          <S.SelectorColorArrow></S.SelectorColorArrow>
+        </S.SelectorColorPopOver>
       )}
     </S.SelectorColorDiv>
   );

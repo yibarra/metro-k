@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Dash from '../../../Properties/Dash'
 import SelectorColor from '../../../SelectorColor'
+import SelectorDash from '../../../SelectorDash'
 
 const ControlsLayersItem: React.FC<any> = ({
   current,
@@ -74,7 +75,7 @@ const ControlsLayersItem: React.FC<any> = ({
                 ...layer.lineProperties,
                 stroke,
               }})}
-              type="line"
+              variation="line"
             />
           </div>
 
@@ -132,15 +133,30 @@ const ControlsLayersItem: React.FC<any> = ({
       <div>
         <label>points</label>
 
-        <div>
-          <p>background</p>
-
+        <div style={{ display: 'inline-flex', gap: 10 }}>
           <SelectorColor
             color={layer.pointsProperties.stroke}
+            radius
+            setColor={(stroke: string) => updateLayer(index, { pointsProperties: {
+              ...layer.pointsProperties,
+              stroke,
+            }})}
+            variation="border"
+          />
+
+          <SelectorColor
+            color={layer.pointsProperties.fill}
+            radius
             setColor={(fill: string) => updateLayer(index, { pointsProperties: {
               ...layer.pointsProperties,
               fill,
             }})}
+          />
+
+          <SelectorDash
+            index={index}
+            layer={layer}
+            updateLayer={updateLayer}
           />
         </div>
 
@@ -189,29 +205,6 @@ const ControlsLayersItem: React.FC<any> = ({
             <option value="square">square</option>
           </select>
         </div>
-
-        <div>
-            <p>dash</p>
-            <input
-              name="dash0"
-              type="number"
-              defaultValue="0"
-              onChange={(e) => updateLayer(index, { pointsProperties: {
-                ...layer.pointsProperties,
-                dash: [e.target.value, layer.pointsProperties.dash[1]]
-              }})}
-            />
-
-            <input
-              name="dash1"
-              type="number"
-              defaultValue="0"
-              onChange={(e) => updateLayer(index, { pointsProperties: {
-                ...layer.pointsProperties,
-                dash: [layer.pointsProperties.dash[0], e.target.value]
-              }})}
-            />
-          </div>
       </div>
     </div>
   )

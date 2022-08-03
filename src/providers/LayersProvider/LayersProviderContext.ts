@@ -14,7 +14,7 @@ export const layerDefault = [
     pointsProperties: {
       active: '#222EEE',
       dash: [0, 0],
-      fill: '#FFFFFF',
+      fill: '#FFF000',
       lineCap: 'butt',
       lineJoin: 'miter',
       radius: 5,
@@ -43,7 +43,7 @@ export const layerDefault = [
     pointsProperties: {
       active: '#222EEE',
       dash: [0, 0],
-      fill: '#FFFFFF',
+      fill: '#AAAAAA',
       lineCap: 'butt',
       lineJoin: 'miter',
       radius: 5,
