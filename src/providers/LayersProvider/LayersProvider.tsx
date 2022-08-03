@@ -10,7 +10,7 @@ const LayersContext = createContext({} as LayersContextProps)
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   const [current, setCurrent] = useState<number>(0) // index current
   const [enable, setEnable] = useState<boolean>(false)
-  const [layers, setLayers] = useState<any[]>([layerDefault])
+  const [layers, setLayers] = useState<any[]>(layerDefault)
 
   // create layer
   const createLayer = (layer: any) => {

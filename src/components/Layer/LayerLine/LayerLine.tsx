@@ -50,7 +50,7 @@ const LayerLine: React.FC<LayerLineProps> = ({
           ...layer.lineProperties,
           strokeWidth: layer.lineProperties?.strokeWidth ?? 5 / 3,
           dash: [3, 3],
-          opacity: isDragging || !active ? 0.5 : 0,
+          opacity: isDragging && active ? 0.5 : 0,
           shadowColor: "#2f5ada",
         }}
       />
