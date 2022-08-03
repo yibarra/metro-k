@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import Dash from '../../../Properties/Dash'
+import React from 'react'
+
 import SelectorColor from '../../../SelectorColor'
 import SelectorDash from '../../../SelectorDash'
 
@@ -13,9 +13,16 @@ const ControlsLayersItem: React.FC<any> = ({
   updateLayer,
 }) => {
 
-  const dashCallback = (dash: number[]) => {
+  const updateLineDashProperties = (properties: any, dash: number[]) => {
     updateLayer(index, { lineProperties: {
-      ...layer.lineProperties,
+      ...properties,
+      dash,
+    }})
+  }
+
+  const updatePointsDashProperties = (properties: any, dash: number[]) => {
+    updateLayer(index, { pointsProperties: {
+      ...properties,
       dash,
     }})
   }
@@ -110,7 +117,11 @@ const ControlsLayersItem: React.FC<any> = ({
           </div>
 
           <div>
-            <Dash dash={layer.lineProperties.dash} onChange={dashCallback} />
+            <SelectorDash
+              index={index}
+              properties={layer.lineProperties}
+              updateDashProperty={updateLineDashProperties}
+            />
           </div>
 
           <div>
@@ -131,9 +142,7 @@ const ControlsLayersItem: React.FC<any> = ({
       </div>
 
       <div>
-        <label>points</label>
-
-        <div style={{ display: 'inline-flex', gap: 10 }}>
+        <div style={{ display: 'inline-flex', gap: 10, alignItems: 'center' }}>
           <SelectorColor
             color={layer.pointsProperties.stroke}
             radius
@@ -155,8 +164,8 @@ const ControlsLayersItem: React.FC<any> = ({
 
           <SelectorDash
             index={index}
-            layer={layer}
-            updateLayer={updateLayer}
+            properties={layer.pointsProperties}
+            updateDashProperty={updatePointsDashProperties}
           />
         </div>
 
