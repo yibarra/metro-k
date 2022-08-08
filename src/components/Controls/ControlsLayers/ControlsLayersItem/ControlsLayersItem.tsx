@@ -2,6 +2,7 @@ import React from 'react'
 
 import SelectorColor from '../../../SelectorColor'
 import SelectorDash from '../../../SelectorDash'
+import SelectorLineType from '../../../SelectorLineType'
 
 const ControlsLayersItem: React.FC<any> = ({
   current,
@@ -24,6 +25,34 @@ const ControlsLayersItem: React.FC<any> = ({
     updateLayer(index, { pointsProperties: {
       ...properties,
       dash,
+    }})
+  }
+
+  const updateLayerPointJoinProperties = (lineJoin: number) => {
+    updateLayer(index, { pointsProperties: {
+      ...layer.pointsProperties,
+      lineJoin,
+    }})
+  }
+
+  const updateLayerPointCapProperties = (lineCap: number) => {
+    updateLayer(index, { pointsProperties: {
+      ...layer.pointsProperties,
+      lineCap,
+    }})
+  }
+
+  const updateLayerLineJoinProperties = (lineJoin: number) => {
+    updateLayer(index, { lineProperties: {
+      ...layer.lineProperties,
+      lineJoin,
+    }})
+  }
+
+  const updateLayerLineCapProperties = (lineCap: number) => {
+    updateLayer(index, { lineProperties: {
+      ...layer.lineProperties,
+      lineCap,
     }})
   }
 
@@ -55,89 +84,63 @@ const ControlsLayersItem: React.FC<any> = ({
         active
       </button>
 
-      <div>
-        <label>line</label>
-
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
         <div>
-          <div>
-            <p>width</p>
-            <input
-              name="size-line"
-              min={2}
-              max={10}
-              type="number"
-              defaultValue="2"
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                strokeWidth: parseInt(e.target.value, 10),
-              }})}
-            />
-          </div>
+          <p>width</p>
+          <input
+            name="size-line"
+            min={2}
+            max={10}
+            type="number"
+            defaultValue="2"
+            onChange={(e) => updateLayer(index, { lineProperties: {
+              ...layer.lineProperties,
+              strokeWidth: parseInt(e.target.value, 10),
+            }})}
+          />
+        </div>
+        
+        <SelectorColor
+          color={layer.lineProperties.stroke}
+          setColor={(stroke: string) => updateLayer(index, { lineProperties: {
+            ...layer.lineProperties,
+            stroke,
+          }})}
+          variation="line"
+        />
 
-          <div>
-            <p>color</p>
-            <SelectorColor
-              color={layer.lineProperties.stroke}
-              setColor={(stroke: string) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                stroke,
-              }})}
-              variation="line"
-            />
-          </div>
+        <SelectorDash
+          index={index}
+          properties={layer.lineProperties}
+          updateDashProperty={updateLineDashProperties}
+        />
 
-          <div>
-            <p>lineJoin</p>
-            <select
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                lineJoin: e.target.value,
-              }})}
-              value={layer.lineProperties.lineJoin}
-            >
-              <option value="miter">miter</option>
-              <option value="round">round</option>
-              <option value="bevel">bevel</option>
-            </select>
-          </div>
+        <SelectorLineType
+          onChangeValue={updateLayerLineCapProperties}
+          items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
+          variant="cap"
+        />
 
-          <div>
-            <p>lineCap</p>
-            <select
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                lineCap: e.target.value,
-              }})}
-              value={layer.lineProperties.lineCap}
-            >
-              <option value="butt">butt</option>
-              <option value="round">round</option>
-              <option value="square">square</option>
-            </select>
-          </div>
+        <SelectorLineType
+          onChangeValue={updateLayerLineJoinProperties}
+          items={[{ name: 'miter' }, { name: 'round'}, { name: 'bevel' }]}
+        />
+      </div>
 
-          <div>
-            <SelectorDash
-              index={index}
-              properties={layer.lineProperties}
-              updateDashProperty={updateLineDashProperties}
-            />
-          </div>
-
-          <div>
-            <p>tension</p>
-            <input
-              name="tension"
-              type="range"
-              min={0}
-              max={100}
-              defaultValue="0"
-              onChange={(e) => updateLayer(index, { lineProperties: {
-                ...layer.lineProperties,
-                tension: parseInt(e.target.value, 10) / 100
-              }})}
-            />
-          </div>
+      <div>
+        <div>
+          <p>tension</p>
+          <input
+            name="tension"
+            type="range"
+            min={0}
+            max={100}
+            defaultValue="0"
+            onChange={(e) => updateLayer(index, { lineProperties: {
+              ...layer.lineProperties,
+              tension: parseInt(e.target.value, 10) / 100
+            }})}
+          />
         </div>
       </div>
 
@@ -167,6 +170,17 @@ const ControlsLayersItem: React.FC<any> = ({
             properties={layer.pointsProperties}
             updateDashProperty={updatePointsDashProperties}
           />
+
+          <SelectorLineType
+            items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
+            onChangeValue={updateLayerPointCapProperties}
+            variant="cap"
+          />
+
+          <SelectorLineType
+            items={[{ name: 'miter' }, { name: 'round'}, { name: 'bevel' }]}
+            onChangeValue={updateLayerPointJoinProperties}
+          />
         </div>
 
         <div>
@@ -183,36 +197,6 @@ const ControlsLayersItem: React.FC<any> = ({
               radius: parseInt(e.target.value, 10),
             }})}
           />
-        </div>
-
-        <div>
-          <p>lineJoin</p>
-          <select
-            onChange={(e) => updateLayer(index, { pointsProperties: {
-              ...layer.pointsProperties,
-              lineJoin: e.target.value,
-            }})}
-            value={layer.pointsProperties.lineJoin}
-          >
-            <option value="miter">miter</option>
-            <option value="round">round</option>
-            <option value="bevel">bevel</option>
-          </select>
-        </div>
-
-        <div>
-          <p>lineCap</p>
-          <select
-            onChange={(e) => updateLayer(index, { pointsProperties: {
-              ...layer.pointsProperties,
-              lineCap: e.target.value,
-            }})}
-            value={layer.pointsProperties.lineCap}
-          >
-            <option value="butt">butt</option>
-            <option value="round">round</option>
-            <option value="square">square</option>
-          </select>
         </div>
       </div>
     </div>
