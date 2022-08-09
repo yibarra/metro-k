@@ -3,7 +3,11 @@ import React from 'react'
 import SelectorColor from '../../../SelectorColor'
 import SelectorDash from '../../../SelectorDash'
 import SelectorLineType from '../../../SelectorLineType'
+import SelectorSize from '../../../SelectorSize'
 
+import * as S from './styles'
+
+// controls layers item
 const ControlsLayersItem: React.FC<any> = ({
   current,
   disabledDelete = true,
@@ -56,9 +60,30 @@ const ControlsLayersItem: React.FC<any> = ({
     }})
   }
 
+  const updateLayerSizeLineProperties = (strokeWidth: number) => {
+    updateLayer(index, { lineProperties: {
+      ...layer.lineProperties,
+      strokeWidth,
+    }})
+  }
+
+  const updateLayerStrokeWidthPointsProperties = (strokeWidth: number) => {
+    updateLayer(index, { pointsProperties: {
+      ...layer.pointsProperties,
+      strokeWidth,
+    }})
+  }
+
+  const updateLayerSizePointsProperties = (radius: number) => {
+    updateLayer(index, { pointsProperties: {
+      ...layer.pointsProperties,
+      radius,
+    }})
+  }
+
   // render
   return (
-    <div style={{ border: current ? '1px solid red' : '' }}>
+    <S.ControlsLayersItemDiv style={{ border: current ? '1px solid red' : '' }}>
       <input
         type="text"
         defaultValue={layer.name}
@@ -66,8 +91,8 @@ const ControlsLayersItem: React.FC<any> = ({
       />
 
       <button>
-      <span className="material-symbols-rounded" data-any="_off">
-        visibility
+        <span className="material-symbols-rounded" data-any="_off">
+          visibility
         </span>
       </button>
 
@@ -76,7 +101,7 @@ const ControlsLayersItem: React.FC<any> = ({
         onClick={() => deleteLayer(index)}
       >
         <span className="material-symbols-rounded">
-        delete_forever
+          delete_forever
         </span>
       </button>
 
@@ -84,21 +109,12 @@ const ControlsLayersItem: React.FC<any> = ({
         active
       </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-        <div>
-          <p>width</p>
-          <input
-            name="size-line"
-            min={2}
-            max={10}
-            type="number"
-            defaultValue="2"
-            onChange={(e) => updateLayer(index, { lineProperties: {
-              ...layer.lineProperties,
-              strokeWidth: parseInt(e.target.value, 10),
-            }})}
-          />
-        </div>
+      <div style={{ display: 'flex', alignItems: 'stretch', gap: 5, justifyContent: 'flex-start' }}>
+        <SelectorSize
+          strokeColor={layer.lineProperties.stroke}
+          onChangeValue={updateLayerSizeLineProperties}
+          value={layer.lineProperties.strokeWidth}
+        />
         
         <SelectorColor
           color={layer.lineProperties.stroke}
@@ -145,7 +161,21 @@ const ControlsLayersItem: React.FC<any> = ({
       </div>
 
       <div>
-        <div style={{ display: 'inline-flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'inline-flex', gap: 5, alignItems: 'stretch', justifyContent: 'flex-start' }}>
+          <SelectorSize
+            fill={layer.pointsProperties.fill}
+            onChangeValue={updateLayerSizePointsProperties}
+            value={layer.pointsProperties.radius}
+            variant="block"
+          />
+
+          <SelectorSize
+            fill={layer.pointsProperties.fill}
+            onChangeValue={updateLayerStrokeWidthPointsProperties}
+            value={layer.pointsProperties.strokeWidth}
+            variant="border"
+          />
+
           <SelectorColor
             color={layer.pointsProperties.stroke}
             radius
@@ -182,24 +212,8 @@ const ControlsLayersItem: React.FC<any> = ({
             onChangeValue={updateLayerPointJoinProperties}
           />
         </div>
-
-        <div>
-          <p>size</p>
-
-          <input
-            name="size-point"
-            min={3}
-            max={10}
-            type="number"
-            defaultValue="3"
-            onChange={(e) => updateLayer(index, { pointsProperties: {
-              ...layer.pointsProperties,
-              radius: parseInt(e.target.value, 10),
-            }})}
-          />
-        </div>
       </div>
-    </div>
+    </S.ControlsLayersItemDiv>
   )
 }
 

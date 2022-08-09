@@ -41,7 +41,7 @@ const SelectorColor: React.FC<SelectorColorProps> = ({
         style={getType(variation)}
         variation={variation}
       />
-
+      
       {isOpen && (
         <S.SelectorColorPopOver ref={element} radius={radius}>
           <HexColorPicker color={color} onChange={setColor} />

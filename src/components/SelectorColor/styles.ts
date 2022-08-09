@@ -4,7 +4,15 @@ export const SelectorColorDiv = styled.div<{ type?: string }>`
   position: relative;
   vertical-align: top;
   
-  ${({ type }) => (type === '' ? '' : '')}
+  ${({ type }) => {
+    switch (type) {
+      case 'line':
+        return 'display: flex; width: 30px;'
+      case 'border':
+      default:
+        return 'align-items: center; display: flex; justify-content: center;'
+    }
+  }}
 `
   
 export const SelectorColorButton = styled.button<{ radius?: string, variation?: string }>`
@@ -20,7 +28,7 @@ export const SelectorColorButton = styled.button<{ radius?: string, variation?: 
         return 'background-color: transparent; border: 3px solid;'
       
       case 'line':
-        return 'border: none; height: 5px;'
+        return 'border: none; position: absolute; top: 50%; transform: translate(0, -50%); width: 100%;'
       
       default:
         return 'border: none;'
@@ -31,6 +39,7 @@ export const SelectorColorButton = styled.button<{ radius?: string, variation?: 
 export const SelectorColorPopOver = styled.div<{ radius?: boolean }>`
   bottom: calc(100% + 10px);
   border: 3px solid #333;
+  border-radius: 6px;
   left: 50%;
   position: absolute;
   transform: translate(-50%, 0);

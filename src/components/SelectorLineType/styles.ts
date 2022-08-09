@@ -6,7 +6,7 @@ const inOption = keyframes`
 `;
 
 export const SelectorLineTypeDiv = styled.div`
-  width: 50px;
+  width: 40px;
 `
 
 export const SelectorLineTypeItemDiv = styled.div<{ active: boolean }>`
@@ -133,7 +133,7 @@ export const SelectorLineTypeIconCap = styled.div<{ typeLine: string }>`
   background-color: #FFF;
   border: 5px solid #333;
   height: 0;
-  margin: 10px 7px;
+  margin: 10px 0;
   padding: 0;
   position: relative;
   width: 100%;
