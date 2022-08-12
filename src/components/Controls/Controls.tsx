@@ -6,11 +6,13 @@ import ControlsLayers from './ControlsLayers'
 import * as S from './styles'
 
 const Controls: React.FC<any> = () => {
-  const { createLayer, enable, layers, setEnable } = useContext(LayersContext)
+  const { createLayer, enable, layers, removePoints } = useContext(LayersContext)
 
   return (
     <S.ControlsDiv>
-      <input type="checkbox" defaultValue={enable.toString()} onChange={() => setEnable(!enable)} />
+      <p>{enable ? 'ENABLED' : 'DISABLED'}</p> -
+      <p>{removePoints ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</p>
+
       <button onClick={() => {
         createLayer({
           id: nextId('layer-'),

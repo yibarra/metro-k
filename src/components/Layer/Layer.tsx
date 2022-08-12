@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Group } from 'react-konva'
 
 import LayerLine from './LayerLine'
-import Point from '../Point'
+import LayerPoints from './LayerPoints'
 import type { PointTypePosition } from '../Point/interfaces'
 
 // layer
@@ -25,7 +25,7 @@ const Layer: React.FC<any> = ({
 
   // render
   return (
-    <Group>
+    <Group listening={active}>
       {Array.isArray(points) && 
         <>
           <LayerLine
@@ -36,23 +36,18 @@ const Layer: React.FC<any> = ({
             points={points}
           />
 
-          {points.map((point: any, index: number) =>
-            <Point
-              {...point}
-              active={active}
-              currentPoint={layer.currentPoint}
-              index={index}
-              isDragging={isDragging}
-              key={index}
-              getCell={getCell}
-              properties={layer.pointsProperties}
-              setIsDragging={setIsDragging}
-              setCurrentPoint={setCurrentPoint}
-              updateLayerPoint={updateLayerPoint}
-              newPoint={newPoint}
-              setNewPoint={setNewPoint}
-            />
-          )}
+          <LayerPoints
+            active={active}
+            getCell={getCell}
+            isDragging={isDragging}
+            newPoint={newPoint}
+            layer={layer}
+            points={points}
+            setCurrentPoint={setCurrentPoint}
+            setIsDragging={setIsDragging}
+            setNewPoint={setNewPoint}
+            updateLayerPoint={updateLayerPoint}
+          />
         </>
       }
     </Group>

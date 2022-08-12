@@ -10,6 +10,7 @@ const LayersContext = createContext({} as LayersContextProps)
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   const [current, setCurrent] = useState<number>(0) // index current
   const [enable, setEnable] = useState<boolean>(false)
+  const [removePoints, setRemovePoints] = useState<boolean>(false)
   const [layers, setLayers] = useState<any[]>(layerDefault)
 
   // create layer
@@ -28,14 +29,27 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       return false
     }
 
-    const temp = { ...layers[current] }
-    const points = [
-      ...temp.points.slice(0, index),
-      point,
-      ...temp.points.slice(index),
-    ]
+    const layerSelected = { ...layers[current] }
+    const layerProperties: Record<string, string | any> = {
+      points: [],
+      currentPoint: index
+    }
 
-    updateLayer(current, { points })
+    if (layerSelected.points.length - 1 === layerSelected.currentPoint) {
+      layerProperties.points = [...layerSelected.points, point]
+    } else {
+      const currentPoint = layerSelected.currentPoint + 1
+
+      layerProperties.points = [
+        ...layerSelected.points.slice(0, currentPoint),
+        point,
+        ...layerSelected.points.slice(currentPoint),
+      ]
+
+      layerProperties.currentPoint = currentPoint
+    }
+
+    updateLayer(current, { ...layerProperties })
   }
 
   // delete layer
@@ -69,10 +83,12 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       deleteLayer,
       enable,
       layers,
-      updateLayer,
-      updateLayerPoint,
+      removePoints,
       setCurrent,
       setEnable,
+      setRemovePoints,
+      updateLayer,
+      updateLayerPoint,
     }}>
       {children}
     </LayersContext.Provider>

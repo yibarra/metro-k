@@ -14,11 +14,11 @@ export function WithPoint<T extends WithPointProps>(
     const {
       index,
       isDragging,
-      properties,
       setCurrentPoint,
       setIsDragging,
       updateLayerPoint,
     } = props
+    
     const { height, width } = UseWindowSize()
 
     // set click point
@@ -34,12 +34,11 @@ export function WithPoint<T extends WithPointProps>(
 
       updateLayerPoint(
         {
-          properties: {...properties},
           x: posX,
           y: posY,
         }, index
       )
-    }, [index, properties, updateLayerPoint])
+    }, [index, updateLayerPoint])
 
     // render
     return (

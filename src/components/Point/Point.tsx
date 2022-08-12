@@ -75,8 +75,8 @@ const Point: React.FC<any> = ({
   }, [properties])
 
   // pos
-  const posX = !isDragging && !active ? x : xy.x
-  const posY = !isDragging && !active ? y : xy.y
+  const posX = !isDragging ? x : xy.x
+  const posY = !isDragging ? y : xy.y
 
   // render
   return (
