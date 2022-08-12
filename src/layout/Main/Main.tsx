@@ -15,11 +15,12 @@ import { MainSection } from './styles'
 // main
 const Main: React.FC<any> = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
+  const { setEnable } = useContext<any>(LayersContext)
   const { createGridBoxes, fixPositionCenter, getCell } = useContext<GridContextProps>(GridContext)
   const {
+    createLayerPoint,
     current,
     layers,
-    createLayerPoint,
     updateLayer,
     updateLayerPoint,
   } = useContext<any>(LayersContext)
@@ -28,14 +29,31 @@ const Main: React.FC<any> = () => {
 
   // render
   return (
-    <MainSection>
+    <MainSection
+      onKeyUp={() => setEnable(false)}
+      onKeyDown={(event: KeyboardEvent) => {
+        if (event.shiftKey && event.altKey) {
+          console.info(event, 'REMOVE POINT')
+          return
+        }
+
+        if (event.shiftKey) {
+          setEnable(true)
+          console.info(event, 'ADD POINT')
+        }
+      }}
+      tabindex={1}
+    >
       {loaded === true && size.height > 0 && size.width > 0 &&
         <Stage
           className="stage"
+          tabIndex={0}
           height={size.height}
           onClick={
-            ({ evt }: KonvaEventObject<MouseEvent>) => {
-              const values = getCell(evt.clientX, evt.clientY, size.width, size.height)
+            (event: KonvaEventObject<MouseEvent>) => {
+              event.cancelBubble = true
+
+              const values = getCell(event.evt.clientX, event.evt.clientY, size.width, size.height)
 
               if (values) {
                 createLayerPoint(

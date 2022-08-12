@@ -34,6 +34,7 @@ const Line: React.FC<LineProps> = ({
   return (
     <LineKonva
       {...properties}
+      listening={false}
       ref={element}
       points={convertPoints(points)}
     />

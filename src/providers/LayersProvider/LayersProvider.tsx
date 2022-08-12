@@ -49,7 +49,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
   // update layer
   const updateLayer = (index: number, data: any) => {
-    console.info(data)
     setLayers(Object.values({...layers, [index]: {...layers[index], ...data }}))
   }
 

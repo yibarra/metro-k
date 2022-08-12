@@ -15,10 +15,6 @@ const Layer: React.FC<any> = ({
   updateLayer,
   updateLayerPoint,
 }) => {
-  // color
-  // name
-  // properties: line - stroke, color, type: dash, linejoin, linecap ... point stroke, color
-
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0 })
 

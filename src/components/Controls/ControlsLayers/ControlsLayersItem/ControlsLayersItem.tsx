@@ -84,83 +84,83 @@ const ControlsLayersItem: React.FC<any> = ({
   // render
   return (
     <S.ControlsLayersItemDiv style={{ border: current ? '1px solid red' : '' }}>
-      <input
-        type="text"
-        defaultValue={layer.name}
-        onChange={(e) => updateLayer(index, { name: e.currentTarget.value })}
-      />
-
-      <button>
-        <span className="material-symbols-rounded" data-any="_off">
-          visibility
-        </span>
-      </button>
-
-      <button
-        disabled={disabledDelete}
-        onClick={() => deleteLayer(index)}
-      >
-        <span className="material-symbols-rounded">
-          delete_forever
-        </span>
-      </button>
-
-      <button onClick={() => setCurrent(index)}>
-        active
-      </button>
-
-      <div style={{ display: 'flex', alignItems: 'stretch', gap: 5, justifyContent: 'flex-start' }}>
-        <SelectorSize
-          strokeColor={layer.lineProperties.stroke}
-          onChangeValue={updateLayerSizeLineProperties}
-          value={layer.lineProperties.strokeWidth}
-        />
-        
-        <SelectorColor
-          color={layer.lineProperties.stroke}
-          setColor={(stroke: string) => updateLayer(index, { lineProperties: {
-            ...layer.lineProperties,
-            stroke,
-          }})}
-          variation="line"
+      <S.ControlsLayersItemHeaderDiv>
+        <input
+          type="text"
+          defaultValue={layer.name}
+          onChange={(e) => updateLayer(index, { name: e.currentTarget.value })}
         />
 
-        <SelectorDash
-          index={index}
-          properties={layer.lineProperties}
-          updateDashProperty={updateLineDashProperties}
-        />
+        <button>
+          <span className="material-symbols-rounded" data-any="_off">
+            visibility
+          </span>
+        </button>
 
-        <SelectorLineType
-          onChangeValue={updateLayerLineCapProperties}
-          items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
-          variant="cap"
-        />
+        <button
+          disabled={disabledDelete}
+          onClick={() => deleteLayer(index)}
+        >
+          <span className="material-symbols-rounded">
+            delete_forever
+          </span>
+        </button>
 
-        <SelectorLineType
-          onChangeValue={updateLayerLineJoinProperties}
-          items={[{ name: 'miter' }, { name: 'round'}, { name: 'bevel' }]}
-        />
-      </div>
+        <button onClick={() => setCurrent(index)}>
+          active
+        </button>
+      </S.ControlsLayersItemHeaderDiv>
 
-      <div>
-        <div>
-          <p>tension</p>
-          <input
-            name="tension"
-            type="range"
-            min={0}
-            max={100}
-            defaultValue="0"
-            onChange={(e) => updateLayer(index, { lineProperties: {
-              ...layer.lineProperties,
-              tension: parseInt(e.target.value, 10) / 100
-            }})}
+      <S.ControlsLayersItemContainer toggle={current ? 'true' : 'false'}>
+        <div style={{ display: 'flex', alignItems: 'stretch', gap: 5, justifyContent: 'flex-start' }}>
+          <SelectorSize
+            strokeColor={layer.lineProperties.stroke}
+            onChangeValue={updateLayerSizeLineProperties}
+            value={layer.lineProperties.strokeWidth}
           />
-        </div>
-      </div>
+          
+          <SelectorColor
+            color={layer.lineProperties.stroke}
+            setColor={(stroke: string) => updateLayer(index, { lineProperties: {
+              ...layer.lineProperties,
+              stroke,
+            }})}
+            variation="line"
+          />
 
-      <div>
+          <SelectorDash
+            index={index}
+            properties={layer.lineProperties}
+            updateDashProperty={updateLineDashProperties}
+          />
+
+          <SelectorLineType
+            onChangeValue={updateLayerLineCapProperties}
+            items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
+            variant="cap"
+          />
+
+          <SelectorLineType
+            onChangeValue={updateLayerLineJoinProperties}
+            items={[{ name: 'miter' }, { name: 'round'}, { name: 'bevel' }]}
+          />
+
+          <div>
+            <p>tension</p>
+            <input
+              name="tension"
+              type="range"
+              min={0}
+              max={100}
+              defaultValue="0"
+              onChange={(e) => updateLayer(index, { lineProperties: {
+                ...layer.lineProperties,
+                tension: parseInt(e.target.value, 10) / 100
+              }})}
+            />
+          </div>
+        </div>
+
         <div style={{ display: 'inline-flex', gap: 5, alignItems: 'stretch', justifyContent: 'flex-start' }}>
           <SelectorSize
             fill={layer.pointsProperties.fill}
@@ -212,7 +212,7 @@ const ControlsLayersItem: React.FC<any> = ({
             onChangeValue={updateLayerPointJoinProperties}
           />
         </div>
-      </div>
+      </S.ControlsLayersItemContainer>
     </S.ControlsLayersItemDiv>
   )
 }

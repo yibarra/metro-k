@@ -25,6 +25,7 @@ const Grid: React.FC<GridProps> = ({ createGridBoxes, width, height }) => {
   return <Group>
     <ShapeK
       fill="#FFFFFF"
+      listening={false}
       stroke="#222"
       strokeWidth={1}
       opacity={0.05}

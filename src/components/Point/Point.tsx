@@ -26,13 +26,17 @@ const Point: React.FC<any> = ({
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
   // on drag start point
-  const onDragStartPoint = () => {
+  const onDragStartPoint = (event: KonvaEventObject<DragEvent>) => {
+    event.cancelBubble = true
+
     setIsDragging(true)
     setClickPoint()
   }
 
   // on grad point
   const onDragMovePoint = (event: KonvaEventObject<DragEvent>) => {
+    event.cancelBubble = true
+
     const x = event.evt.clientX
     const y = event.evt.clientY
 
@@ -41,7 +45,9 @@ const Point: React.FC<any> = ({
   }
 
   // on drag end point
-  const onDragEndPoint = (event: KonvaEventObject<DragEvent>) => {    
+  const onDragEndPoint = (event: KonvaEventObject<DragEvent>) => {
+    event.cancelBubble = true
+    
     const point = getCell(event.evt.clientX, event.evt.clientY, width, height)
 
     if (active && point && element.current) {

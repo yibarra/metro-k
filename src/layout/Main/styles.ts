@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const MainSection = styled.section`
+export const MainSection = styled.div<any>`
   float: left;
   height: 100vh;
   position: relative;
@@ -8,8 +8,9 @@ export const MainSection = styled.section`
 
   .stage,
   .konvajs-content {
-    position: absolute;
     left: 0;
+    position: absolute;
+    tabindex: 0;
     top: 0;
   }
 `
