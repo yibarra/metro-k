@@ -6,6 +6,7 @@ import { LineProps } from './interfaces'
 // line
 const Line: React.FC<LineProps> = ({
   active = false,
+  getCell,
   isDragging = false,
   points,
   properties,
@@ -17,7 +18,12 @@ const Line: React.FC<LineProps> = ({
     const pointsResult: any[] = []
 
     for (const item of items) {
-      pointsResult.push(...Object.values(item))
+      const point = getCell(item[0], item[1], window.innerWidth, window.innerHeight)
+      const x = Math.floor(point[0] + point[2] / 2)
+      const y = Math.floor(point[1] + point[2] / 2)
+
+      pointsResult.push(x)
+      pointsResult.push(y)
     }
 
     return pointsResult

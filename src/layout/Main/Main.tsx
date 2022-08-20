@@ -13,10 +13,11 @@ import type { GridContextProps } from '../../providers/GridProvider/interfaces'
 import { MainSection } from './styles'
 
 // main
-const Main: React.FC<any> = () => {
+const Main: React.FC = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
   const { setEnable, setRemovePoints } = useContext<any>(LayersContext)
   const { createGridBoxes, fixPositionCenter, getCell } = useContext<GridContextProps>(GridContext)
+
   const {
     createLayerPoint,
     current,
@@ -41,7 +42,6 @@ const Main: React.FC<any> = () => {
 
         if (event.shiftKey) {
           setEnable(true)
-          console.info(event, 'ADD POINT')
         }
       }}
       tabindex={1}
@@ -55,14 +55,16 @@ const Main: React.FC<any> = () => {
             (event: KonvaEventObject<MouseEvent>) => {
               event.cancelBubble = true
 
+              const position = Number(layers[current].currentPoint) + 1
               const values = getCell(event.evt.clientX, event.evt.clientY, size.width, size.height)
-
+              
               if (values) {
                 createLayerPoint(
-                  layers[current].points.length + 1,
+                  position,
                   {
                     x: values[0] + values[2] / 2,
                     y: values[1] + values[2] / 2,
+                    position,
                   }
                 )
               }

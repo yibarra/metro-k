@@ -29,27 +29,33 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       return false
     }
 
-    const layerSelected = { ...layers[current] }
+    const layerSelected = layers[current]
     const layerProperties: Record<string, string | any> = {
       points: [],
       currentPoint: index
     }
 
-    if (layerSelected.points.length - 1 === layerSelected.currentPoint) {
-      layerProperties.points = [...layerSelected.points, point]
-    } else {
-      const currentPoint = layerSelected.currentPoint + 1
+    const pointsOrder = []
 
-      layerProperties.points = [
-        ...layerSelected.points.slice(0, currentPoint),
-        point,
-        ...layerSelected.points.slice(currentPoint),
-      ]
+    for (let i = 0; i < layerSelected.points.length; i++) {
+      const item = layerSelected.points[i]
+      
+      if (index > item?.position) {
+        pointsOrder.push(item)
+      } else {
+        const itemUpdate = {
+          ...item,
+          position: Number(item?.position) + 1,
+        }
 
-      layerProperties.currentPoint = currentPoint
+        pointsOrder.push(itemUpdate)
+      }
     }
 
-    updateLayer(current, { ...layerProperties })
+    pointsOrder.push(point)
+    layerProperties.points = pointsOrder
+
+    updateLayer(current, layerProperties)
   }
 
   // delete layer

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Circle } from 'react-konva'
+import { Circle, Group } from 'react-konva'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { WithPoint } from './withPoint'
@@ -13,14 +13,14 @@ const Point: React.FC<any> = ({
   height,
   index,
   isDragging,
+  position,
   properties,
-  setClickPoint,
   setIsDragging,
   setNewPoint,
   setPositionPoint,
   width,
-  x = 0,
-  y = 0,
+  x,
+  y,
 }) => {
   const element = useRef<any>(null)
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
@@ -30,7 +30,6 @@ const Point: React.FC<any> = ({
     event.cancelBubble = true
 
     setIsDragging(true)
-    setClickPoint()
   }
 
   // on grad point
@@ -60,43 +59,45 @@ const Point: React.FC<any> = ({
         duration: 0.4,
       })
       
-      setPositionPoint(posX, posY)
+      setPositionPoint(posX, posY, currentPoint)
       setIsDragging(false)
     } else {
       element.current.to({ x, y, duration: 0.2 })
     }
   }
 
-  // use effect
   useEffect(() => {
     if (typeof element.current.to !== 'undefined') {
       element.current.to({ ...properties })
     }
   }, [properties])
 
-  // pos
-  const posX = !isDragging ? x : xy.x
-  const posY = !isDragging ? y : xy.y
+  // pos tooltip
+  const posX = xy.x
+  const posY = xy.y - (50 + properties.radius)
+
+  const point = getCell(x, y, window.innerWidth, window.innerHeight)
+  const xPoint = Math.floor(point[0] + point[2] / 2)
+  const yPoint = Math.floor(point[1] + point[2] / 2)
 
   // render
   return (
-    <>
+    <Group>
       {(currentPoint === index && active && isDragging) &&
-        <ToolTip x={posX} y={posY - (50 + properties.radius)} />}
+        <ToolTip x={posX} y={posY} />}
 
       <Circle
         {...properties}
+        x={xPoint ?? x}
+        y={yPoint ?? y}
         draggable={active}
         ref={element}
-        onClick={setClickPoint}
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
         stroke={(currentPoint === index) ? properties.active : properties.stroke }
-        x={posX}
-        y={posY}
       />
-    </>
+    </Group>
   )
 }
 

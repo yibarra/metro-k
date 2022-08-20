@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import Line from '../../Line'
 import type { PointTypePosition } from '../../Point/interfaces'
@@ -7,6 +7,7 @@ import type { LayerLineProps } from './interfaces'
 // layer line
 const LayerLine: React.FC<LayerLineProps> = ({
   active,
+  getCell,
   isDragging,
   newPoint,
   layer,
@@ -22,19 +23,29 @@ const LayerLine: React.FC<LayerLineProps> = ({
       points.map(
         (item: any, index: number) =>
           index === layer.currentPoint && type === 'ref'
-            ? [newPoint.x, newPoint.y]
+            ? [ newPoint.x, newPoint.y ]
             : [ item.x, item.y ]
       )
     )
   }
+
+  const orderPoints = useCallback((): PointTypePosition[] => {
+    return points.sort((a: PointTypePosition, b: PointTypePosition) => {
+      if (a.position > b.position) return 1
+      if (a.position < b.position) return -1
+
+      return 0
+    })
+  }, [points])
 
   // render
   return (
     <>
       <Line
         active={active}
+        getCell={getCell}
         isDragging={isDragging}
-        points={pointUpdate(points)}
+        points={pointUpdate(orderPoints())}
         properties={{
           ...layer.lineProperties,
           opacity: isDragging || !active ? 0.4 : 1,
@@ -44,6 +55,7 @@ const LayerLine: React.FC<LayerLineProps> = ({
 
       <Line
         active={active}
+        getCell={getCell}
         isDragging={isDragging}
         points={pointUpdate(points, 'ref')}
         properties={{

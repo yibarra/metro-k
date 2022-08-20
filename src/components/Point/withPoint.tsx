@@ -22,20 +22,23 @@ export function WithPoint<T extends WithPointProps>(
     const { height, width } = UseWindowSize()
 
     // set click point
-    const setClickPoint = useCallback(() => {
-      setCurrentPoint(index)
-    }, [index, setCurrentPoint])
+    const setClickPoint = useCallback(
+      () => setCurrentPoint(index), [index, setCurrentPoint]
+    )
 
     // set position point
-    const setPositionPoint = useCallback((posX: number, posY: number) => {
+    const setPositionPoint = useCallback((posX: number, posY: number, position: number) => {
+      console.info('UPDATE POINT', posX, posY, posY, index)
       if (!posX || !posY) {
         return false;
       }
 
+      
       updateLayerPoint(
         {
           x: posX,
           y: posY,
+          position,
         }, index
       )
     }, [index, updateLayerPoint])

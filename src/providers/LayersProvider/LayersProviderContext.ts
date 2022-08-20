@@ -22,11 +22,11 @@ export const layerDefault = [
       strokeWidth: 2,
     },
     points: [
-      { x: 10, y: 10 },
-      { x: 50, y: 50 },
-      { x: 150, y: 395 },
-      { x: 520, y: 250 },
-      { x: 175, y: 750 },
+      { x: 10, y: 10, position: 0 },
+      { x: 50, y: 50, position: 1 },
+      { x: 150, y: 395, position: 3 },
+      { x: 520, y: 250, position: 2 },
+      { x: 175, y: 750, position: 4 },
     ]
   }, {
     id: 2,
@@ -51,16 +51,16 @@ export const layerDefault = [
       strokeWidth: 2,
     },
     points: [
-      { x: 305, y: 69 },
-      { x: 323, y: 393 },
-      { x: 215, y: 483 },
-      { x: 467, y: 465 },
-      { x: 575, y: 447 },
-      { x: 683, y: 375 },
-      { x: 539, y: 339 },
-      { x: 431, y: 231 },
-      { x: 647, y: 123 },
-      { x: 719, y: 195 }
+      { x: 305, y: 69, position: 0 },
+      { x: 323, y: 393, position: 5 },
+      { x: 215, y: 483, position: 4 },
+      { x: 467, y: 465, position: 3 },
+      { x: 575, y: 447, position: 2 },
+      { x: 683, y: 375, position: 1 },
+      { x: 539, y: 339, position: 6 },
+      { x: 431, y: 231, position: 9 },
+      { x: 647, y: 123, position: 8 },
+      { x: 719, y: 195, position: 7 }
     ]
   }
 ]

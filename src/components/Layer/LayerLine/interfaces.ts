@@ -7,4 +7,5 @@ export interface LayerLineProps {
   newPoint: PointTypePosition
   layer: LayerProps
   points: PointTypePosition[]
+  getCell: any
 }

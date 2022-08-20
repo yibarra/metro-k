@@ -16,7 +16,7 @@ const Layer: React.FC<any> = ({
   updateLayerPoint,
 }) => {
   const [isDragging, setIsDragging] = useState<boolean>(false)
-  const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0 })
+  const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0, position: 0 })
 
   // set current point
   const setCurrentPoint = (value: number): void => {
@@ -25,11 +25,12 @@ const Layer: React.FC<any> = ({
 
   // render
   return (
-    <Group listening={active}>
+    <>
       {Array.isArray(points) && 
-        <>
+        <Group zIndex={index - 1000}>
           <LayerLine
             active={active}
+            getCell={getCell}
             isDragging={isDragging}
             newPoint={newPoint}
             layer={layer}
@@ -48,9 +49,9 @@ const Layer: React.FC<any> = ({
             setNewPoint={setNewPoint}
             updateLayerPoint={updateLayerPoint}
           />
-        </>
+        </Group>
       }
-    </Group>
+    </>
   )
 }
 

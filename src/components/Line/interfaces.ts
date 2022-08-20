@@ -3,4 +3,5 @@ export interface LineProps {
   isDragging?: boolean
   points: any
   properties: any
+  getCell: any
 }
