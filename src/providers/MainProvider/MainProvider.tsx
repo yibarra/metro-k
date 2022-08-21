@@ -1,18 +1,21 @@
 import React, { createContext, useEffect, useState } from 'react'
 import WebFontLoader from 'webfontloader'
+import UseLocalStorage from '../../hooks/useLocalStorage'
 
 import UseWindowSize from '../../hooks/useWindowSize'
-import type { MainContextProps } from './interfaces'
+import { dataDefault } from './MainProviderDefault'
+import type { MainContextProps, MainProviderProps } from './interfaces'
 
 // main context
 const MainContext = createContext({} as MainContextProps)
 
 // main provider
-const MainProvider: React.FC<any> = ({ children }) => {
+const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
+  const [data, setData] = UseLocalStorage('map_k', dataDefault)
   const size = UseWindowSize()
 
-  const [ animate, setAnimate ] = useState<boolean>(true)
-  const [ loaded, setLoaded ] = useState<boolean>(false)
+  const [animate, setAnimate] = useState<boolean>(true)
+  const [loaded, setLoaded] = useState<boolean>(false)
 
   // loading effects.
   useEffect(() => {
@@ -32,13 +35,18 @@ const MainProvider: React.FC<any> = ({ children }) => {
       console.error(`[ERROR FONT LOAD: ${e}]`)
     }
   }, [])
+
+  // use effect
+  
   
   // render
   return (
     <MainContext.Provider value={{
       animate,
+      data,
       loaded,
       setAnimate,
+      setData,
       setLoaded,
       size,
     }}>

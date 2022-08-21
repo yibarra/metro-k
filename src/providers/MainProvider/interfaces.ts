@@ -1,3 +1,5 @@
+import React from 'react'
+
 export type SizeType = {
   height: number
   width: number
@@ -5,8 +7,14 @@ export type SizeType = {
 
 export interface MainContextProps {
   animate: boolean
+  data: any
   loaded: boolean
   setAnimate(val: boolean): void
+  setData(val: any): void
   setLoaded(val: boolean): void
   size: SizeType
+}
+
+export interface MainProviderProps {
+  children: React.ReactNode
 }

@@ -2,16 +2,24 @@ import React, { useContext } from 'react'
 import nextId from 'react-id-generator'
 
 import { LayersContext } from '../../providers/LayersProvider/LayersProvider'
+import { MainContext } from '../../providers/MainProvider/MainProvider'
 import ControlsLayers from './ControlsLayers'
 import * as S from './styles'
 
 const Controls: React.FC<any> = () => {
+  const { data, setData } = useContext(MainContext)
   const { createLayer, enable, layers, removePoint } = useContext(LayersContext)
 
   return (
     <S.ControlsDiv>
       <p>{enable ? 'ENABLED' : 'DISABLED'}</p> -
       <p>{removePoint ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</p>
+
+      <button onClick={() => {
+        setData({ ...data, layers })
+      }}>
+        Save local storage
+      </button>
 
       <button onClick={() => {
         createLayer({

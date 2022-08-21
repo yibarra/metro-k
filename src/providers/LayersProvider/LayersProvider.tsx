@@ -1,18 +1,21 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
+import { MainContext } from '../MainProvider/MainProvider'
+import type { MainContextProps } from '../MainProvider/interfaces'
 import type { PointTypePosition } from '../../components/Point/interfaces'
 import type { LayersContextProps, LayersProvidersProps } from './interfaces'
-import { layerDefault } from './LayersProviderContext'
 
 // layers context
 const LayersContext = createContext({} as LayersContextProps)
 
 // layers provider
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
+  const { data } = useContext<MainContextProps>(MainContext)
+
   const [current, setCurrent] = useState<number>(0) // index current
   const [enable, setEnable] = useState<boolean>(false)
   const [removePoint, setRemovePoint] = useState<boolean>(false)
-  const [layers, setLayers] = useState<any[]>(layerDefault)
+  const [layers, setLayers] = useState<any[]>(data.layers)
 
   // create layer
   const createLayer = (layer: any) => {
