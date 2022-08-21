@@ -18,7 +18,7 @@ const SelectorLineType: React.FC<SelectorLineTypeProps> = ({
     <S.SelectorLineTypeDiv>
       <ComboBox
         callback={(value: any) => {
-          onChangeValue(value)
+          onChangeValue(items[current].name)
           setCurrent(value)
         }}
         max={items.length - 1}

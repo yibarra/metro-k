@@ -27,7 +27,7 @@ const Grid: React.FC<GridProps> = ({ createGridBoxes, width, height }) => {
       fill="#FFFFFF"
       listening={false}
       stroke="#222"
-      strokeWidth={1}
+      strokeWidth={0.5}
       opacity={0.05}
       sceneFunc={createGridScene}
     />

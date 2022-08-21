@@ -28,11 +28,9 @@ export function WithPoint<T extends WithPointProps>(
 
     // set position point
     const setPositionPoint = useCallback((posX: number, posY: number, position: number) => {
-      console.info('UPDATE POINT', posX, posY, posY, index)
       if (!posX || !posY) {
         return false;
       }
-
       
       updateLayerPoint(
         {

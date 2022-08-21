@@ -8,11 +8,11 @@ import type { PointTypePosition } from '../Point/interfaces'
 // layer
 const Layer: React.FC<any> = ({
   active,
+  deleteLayerPoint,
   getCell,
   index,
   layer,
   points,
-  removeLayerPoint,
   removePoint,
   updateLayer,
   updateLayerPoint,
@@ -41,12 +41,12 @@ const Layer: React.FC<any> = ({
 
           <LayerPoints
             active={active}
+            deleteLayerPoint={deleteLayerPoint}
             getCell={getCell}
             isDragging={isDragging}
             newPoint={newPoint}
             layer={layer}
             points={points}
-            removeLayerPoint={removeLayerPoint}
             removePoint={removePoint}
             setCurrentPoint={setCurrentPoint}
             setIsDragging={setIsDragging}

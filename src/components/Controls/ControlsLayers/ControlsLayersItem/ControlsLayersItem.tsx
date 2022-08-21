@@ -32,28 +32,28 @@ const ControlsLayersItem: React.FC<any> = ({
     }})
   }
 
-  const updateLayerPointJoinProperties = (lineJoin: number) => {
+  const updateLayerPointJoinProperties = (lineJoin: string) => {
     updateLayer(index, { pointsProperties: {
       ...layer.pointsProperties,
       lineJoin,
     }})
   }
 
-  const updateLayerPointCapProperties = (lineCap: number) => {
+  const updateLayerPointCapProperties = (lineCap: string) => {
     updateLayer(index, { pointsProperties: {
       ...layer.pointsProperties,
       lineCap,
     }})
   }
 
-  const updateLayerLineJoinProperties = (lineJoin: number) => {
+  const updateLayerLineJoinProperties = (lineJoin: string) => {
     updateLayer(index, { lineProperties: {
       ...layer.lineProperties,
       lineJoin,
     }})
   }
 
-  const updateLayerLineCapProperties = (lineCap: number) => {
+  const updateLayerLineCapProperties = (lineCap: string) => {
     updateLayer(index, { lineProperties: {
       ...layer.lineProperties,
       lineCap,
@@ -136,7 +136,7 @@ const ControlsLayersItem: React.FC<any> = ({
 
           <SelectorLineType
             onChangeValue={updateLayerLineCapProperties}
-            items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
+            items={[{ name: 'round' }, { name: 'butt' }, { name: 'square' }]}
             variant="cap"
           />
 

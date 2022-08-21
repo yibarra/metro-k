@@ -16,7 +16,7 @@ import { MainSection } from './styles'
 const Main: React.FC = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
   const {
-    removeLayerPoint,
+    deleteLayerPoint,
     removePoint,
     setEnable,
     setRemovePoint
@@ -95,7 +95,7 @@ const Main: React.FC = () => {
                 layer={layer}
                 key={index}
                 fixPositionCenter={fixPositionCenter}
-                removeLayerPoint={removeLayerPoint}
+                deleteLayerPoint={deleteLayerPoint}
                 removePoint={removePoint}
                 updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}

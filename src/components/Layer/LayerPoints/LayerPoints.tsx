@@ -6,12 +6,12 @@ import Point from '../../Point'
 // layer points
 const LayerPoints: React.FC<any> = ({
   active,
+  deleteLayerPoint,
   isDragging,
   getCell,
   layer,
   newPoint,
   points,
-  removeLayerPoint,
   removePoint,
   setCurrentPoint,
   setIsDragging,
@@ -52,7 +52,7 @@ const LayerPoints: React.FC<any> = ({
 
               if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
                 if (removePoint) {
-                  removeLayerPoint(index)
+                  deleteLayerPoint(index)
                 } else {
                   setCurrentPoint(index)
                 }
@@ -62,7 +62,7 @@ const LayerPoints: React.FC<any> = ({
         }}
       />
 
-      {!removePoint && <Point
+      {!removePoint && active && <Point
         {...point}
         active={active}
         currentPoint={layer.currentPoint}

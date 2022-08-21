@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react'
 
+import type { PointTypePosition } from '../../components/Point/interfaces'
 import type { LayersContextProps, LayersProvidersProps } from './interfaces'
 import { layerDefault } from './LayersProviderContext'
 
@@ -68,24 +69,30 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   }
 
   // remove layer point
-  const removeLayerPoint = (index: number) => {
-    const temp = []
-    const points = layers[current].points
-    delete points[index]
+  const deleteLayerPoint = (index: number) => {
+    const currentPoint = index > 0 ? index - 1 : 0
+    const points: PointTypePosition[] = []
 
-    for(let i = 0; i < points.length; i++) {
-      const point = points[i]
+    const temp = layers[current].points
+    delete temp[index]
+
+    for(let i = 0; i < temp.length; i++) {
+      const point = temp[i]
       
       if (point) {
+        console.info(point)
         if (index < i) {
           point.position = point.position - 1
         }
   
-        temp.push(point)
+        points.push(point)
       }
     }
 
-    updateLayer(current, { points: temp })
+    updateLayer(current, {
+      points,
+      currentPoint
+    })
   }
 
   // update layer
@@ -110,7 +117,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       deleteLayer,
       enable,
       layers,
-      removeLayerPoint,
+      deleteLayerPoint,
       removePoint,
       setCurrent,
       setEnable,
