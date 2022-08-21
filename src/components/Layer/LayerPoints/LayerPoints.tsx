@@ -9,12 +9,14 @@ const LayerPoints: React.FC<any> = ({
   isDragging,
   getCell,
   layer,
-  points,
-  setIsDragging,
-  setCurrentPoint,
-  updateLayerPoint,
   newPoint,
+  points,
+  removeLayerPoint,
+  removePoint,
+  setCurrentPoint,
+  setIsDragging,
   setNewPoint,
+  updateLayerPoint,
 }) => {
   const point = points[layer.currentPoint]
 
@@ -49,14 +51,18 @@ const LayerPoints: React.FC<any> = ({
               const valuesPoint = getCell(point.x, point.y, window.innerWidth, window.innerHeight)
 
               if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
-                setCurrentPoint(index)
+                if (removePoint) {
+                  removeLayerPoint(index)
+                } else {
+                  setCurrentPoint(index)
+                }
               }
             }
           }
         }}
       />
 
-      <Point
+      {!removePoint && <Point
         {...point}
         active={active}
         currentPoint={layer.currentPoint}
@@ -69,7 +75,7 @@ const LayerPoints: React.FC<any> = ({
         updateLayerPoint={updateLayerPoint}
         newPoint={newPoint}
         setNewPoint={setNewPoint}
-      />
+      />}
     </>
   )
 }

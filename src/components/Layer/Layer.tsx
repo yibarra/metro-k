@@ -8,10 +8,12 @@ import type { PointTypePosition } from '../Point/interfaces'
 // layer
 const Layer: React.FC<any> = ({
   active,
+  getCell,
   index,
   layer,
   points,
-  getCell,
+  removeLayerPoint,
+  removePoint,
   updateLayer,
   updateLayerPoint,
 }) => {
@@ -44,6 +46,8 @@ const Layer: React.FC<any> = ({
             newPoint={newPoint}
             layer={layer}
             points={points}
+            removeLayerPoint={removeLayerPoint}
+            removePoint={removePoint}
             setCurrentPoint={setCurrentPoint}
             setIsDragging={setIsDragging}
             setNewPoint={setNewPoint}

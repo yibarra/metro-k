@@ -15,8 +15,18 @@ import { MainSection } from './styles'
 // main
 const Main: React.FC = () => {
   const { loaded, size } = useContext<MainContextProps>(MainContext)
-  const { setEnable, setRemovePoints } = useContext<any>(LayersContext)
-  const { createGridBoxes, fixPositionCenter, getCell } = useContext<GridContextProps>(GridContext)
+  const {
+    removeLayerPoint,
+    removePoint,
+    setEnable,
+    setRemovePoint
+  } = useContext<any>(LayersContext)
+
+  const {
+    createGridBoxes,
+    getCell,
+    fixPositionCenter,
+  } = useContext<GridContextProps>(GridContext)
 
   const {
     createLayerPoint,
@@ -33,15 +43,16 @@ const Main: React.FC = () => {
     <MainSection
       onKeyUp={() => {
         setEnable(false)
-        setRemovePoints(false)
+        setRemovePoint(false)
       }}
       onKeyDown={(event: KeyboardEvent) => {
-        if (event.shiftKey && event.altKey) {
-          setRemovePoints(true)
-        }
-
         if (event.shiftKey) {
           setEnable(true)
+        }
+        
+        if (event.shiftKey && event.altKey) {
+          setEnable(false)
+          setRemovePoint(true)
         }
       }}
       tabindex={1}
@@ -84,6 +95,8 @@ const Main: React.FC = () => {
                 layer={layer}
                 key={index}
                 fixPositionCenter={fixPositionCenter}
+                removeLayerPoint={removeLayerPoint}
+                removePoint={removePoint}
                 updateLayer={updateLayer}
                 updateLayerPoint={updateLayerPoint}
               />

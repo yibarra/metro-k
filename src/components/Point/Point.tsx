@@ -13,7 +13,6 @@ const Point: React.FC<any> = ({
   height,
   index,
   isDragging,
-  position,
   properties,
   setIsDragging,
   setNewPoint,
