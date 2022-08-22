@@ -10,15 +10,17 @@ const LayerLine: React.FC<LayerLineProps> = ({
   currentPoint,
   getCell,
   isDragging,
-  newPoint,
   points,
   properties,
+  newPoint,
 }) => {
   // update points line
   const pointUpdate = (points: PointTypePosition[], type: string = ''): number[][] => {
     if (!Array.isArray(points)) {
       return []
     }
+
+    console.info(currentPoint)
 
     return Object.values(
       points.map(

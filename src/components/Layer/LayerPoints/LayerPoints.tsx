@@ -5,23 +5,25 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 import Point from '../../Point'
 import type { Context } from 'konva/lib/Context'
 import type { Shape as ShapeType } from 'konva/lib/Shape'
+import type { LayerPointsProps } from './interfaces'
 
 // layer points
-const LayerPoints: React.FC<any> = ({
+const LayerPoints: React.FC<LayerPointsProps> = ({
   active,
+  currentPoint,
   deleteLayerPoint,
   isDragging,
   getCell,
-  layer,
   newPoint,
   points,
+  properties,
   remove,
   setCurrentPoint,
   setIsDragging,
   setNewPoint,
   updateLayerPoint,
 }) => {
-  const point = points[layer.currentPoint]
+  const point = points[currentPoint]
 
   // draw points
   const drawPoints = (context: Context, shape: ShapeType) => {
@@ -34,8 +36,8 @@ const LayerPoints: React.FC<any> = ({
         const x = values[0] + values[2] / 2
         const y = values[1] + values[2] / 2
 
-        shape.fill(layer.pointsProperties.fill)
-        context.arc(x, y, layer.pointsProperties.radius, 0, 2 * Math.PI, false)
+        shape.fill(properties.fill.toString())
+        context.arc(x, y, properties.radius, 0, 2 * Math.PI, false)
       }
       
       context.closePath()
@@ -76,15 +78,15 @@ const LayerPoints: React.FC<any> = ({
       {!remove && active && <Point
         {...point}
         active={active}
-        currentPoint={layer.currentPoint}
-        index={layer.currentPoint}
+        currentPoint={currentPoint}
+        index={currentPoint}
         isDragging={isDragging}
         getCell={getCell}
-        properties={layer.pointsProperties}
+        newPoint={newPoint}
+        properties={properties}
         setIsDragging={setIsDragging}
         setCurrentPoint={setCurrentPoint}
         updateLayerPoint={updateLayerPoint}
-        newPoint={newPoint}
         setNewPoint={setNewPoint}
       />}
     </>
