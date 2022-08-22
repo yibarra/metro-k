@@ -6,4 +6,5 @@ export const ControlsDiv = styled.div`
   position: absolute;
   top: 0;
   width: 320px;
+  z-index: 2;
 `

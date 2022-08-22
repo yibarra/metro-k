@@ -7,13 +7,13 @@ import ControlsLayers from './ControlsLayers'
 import * as S from './styles'
 
 const Controls: React.FC<any> = () => {
-  const { data, setData } = useContext(MainContext)
-  const { createLayer, enable, layers, removePoint } = useContext(LayersContext)
+  const { data, enable, remove, setData } = useContext(MainContext)
+  const { createLayer, layers } = useContext(LayersContext)
 
   return (
     <S.ControlsDiv>
       <p>{enable ? 'ENABLED' : 'DISABLED'}</p> -
-      <p>{removePoint ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</p>
+      <p>{remove ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</p>
 
       <button onClick={() => {
         setData({ ...data, layers })

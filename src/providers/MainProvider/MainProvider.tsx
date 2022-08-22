@@ -15,7 +15,9 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
   const size = UseWindowSize()
 
   const [animate, setAnimate] = useState<boolean>(true)
+  const [enable, setEnable] = useState<boolean>(false)
   const [loaded, setLoaded] = useState<boolean>(false)
+  const [remove, setRemove] = useState<boolean>(false)
 
   // loading effects.
   useEffect(() => {
@@ -44,10 +46,14 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
     <MainContext.Provider value={{
       animate,
       data,
+      enable,
       loaded,
+      remove,
       setAnimate,
       setData,
+      setEnable,
       setLoaded,
+      setRemove,
       size,
     }}>
       {children}

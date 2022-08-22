@@ -7,11 +7,12 @@ import type { LayerLineProps } from './interfaces'
 // layer line
 const LayerLine: React.FC<LayerLineProps> = ({
   active,
+  currentPoint,
   getCell,
   isDragging,
   newPoint,
-  layer,
   points,
+  properties,
 }) => {
   // update points line
   const pointUpdate = (points: PointTypePosition[], type: string = ''): number[][] => {
@@ -22,13 +23,14 @@ const LayerLine: React.FC<LayerLineProps> = ({
     return Object.values(
       points.map(
         (item: any, index: number) =>
-          index === layer.currentPoint && type === 'ref'
+          index === currentPoint && type === 'ref'
             ? [ newPoint.x, newPoint.y ]
             : [ item.x, item.y ]
       )
     )
   }
 
+  // order points
   const orderPoints = useCallback((): PointTypePosition[] => {
     return points.sort((a: PointTypePosition, b: PointTypePosition) => {
       if (a.position > b.position) return 1
@@ -47,7 +49,7 @@ const LayerLine: React.FC<LayerLineProps> = ({
         isDragging={isDragging}
         points={pointUpdate(orderPoints())}
         properties={{
-          ...layer.lineProperties,
+          ...properties,
           opacity: isDragging || !active ? 0.4 : 1,
           shadowColor: "#2f5ada"
         }}
@@ -59,8 +61,8 @@ const LayerLine: React.FC<LayerLineProps> = ({
         isDragging={isDragging}
         points={pointUpdate(points, 'ref')}
         properties={{
-          ...layer.lineProperties,
-          strokeWidth: layer.lineProperties?.strokeWidth ?? 5 / 3,
+          ...properties,
+          strokeWidth: properties?.strokeWidth ?? 5 / 3,
           dash: [3, 3],
           opacity: isDragging && active ? 0.5 : 0,
           shadowColor: "#2f5ada",

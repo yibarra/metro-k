@@ -10,11 +10,9 @@ const LayersContext = createContext({} as LayersContextProps)
 
 // layers provider
 const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
-  const { data } = useContext<MainContextProps>(MainContext)
+  const { data, enable, remove } = useContext<MainContextProps>(MainContext)
 
   const [current, setCurrent] = useState<number>(0) // index current
-  const [enable, setEnable] = useState<boolean>(false)
-  const [removePoint, setRemovePoint] = useState<boolean>(false)
   const [layers, setLayers] = useState<any[]>(data.layers)
 
   // create layer
@@ -28,7 +26,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   }
 
   // update layer points
-  const createLayerPoint = (index: number, point: any) => {
+  const createLayerPoint = (index: number, point: any): void | boolean => {
     if (!enable) {
       return false
     }
@@ -72,7 +70,11 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   }
 
   // remove layer point
-  const deleteLayerPoint = (index: number) => {
+  const deleteLayerPoint = (index: number): void | boolean => {
+    if (!remove) {
+      return false
+    }
+
     const currentPoint = index > 0 ? index - 1 : 0
     const points: PointTypePosition[] = []
 
@@ -83,7 +85,6 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       const point = temp[i]
       
       if (point) {
-        console.info(point)
         if (index < i) {
           point.position = point.position - 1
         }
@@ -99,12 +100,12 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   }
 
   // update layer
-  const updateLayer = (index: number, data: any) => {
+  const updateLayer = (index: number, data: any): void => {
     setLayers(Object.values({...layers, [index]: {...layers[index], ...data }}))
   }
 
   // update layer point
-  const updateLayerPoint = (point: any, index: number) => {
+  const updateLayerPoint = (point: any, index: number): void => {
     const { points } = layers[current]
     points[index] = { ...point }
 
@@ -118,13 +119,9 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       current,
       createLayerPoint,
       deleteLayer,
-      enable,
       layers,
       deleteLayerPoint,
-      removePoint,
       setCurrent,
-      setEnable,
-      setRemovePoint,
       updateLayer,
       updateLayerPoint,
     }}>

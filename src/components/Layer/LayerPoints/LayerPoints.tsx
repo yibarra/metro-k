@@ -1,7 +1,10 @@
 import React from 'react'
 import { Shape } from 'react-konva'
+import type { KonvaEventObject } from 'konva/lib/Node'
 
 import Point from '../../Point'
+import type { Context } from 'konva/lib/Context'
+import type { Shape as ShapeType } from 'konva/lib/Shape'
 
 // layer points
 const LayerPoints: React.FC<any> = ({
@@ -12,7 +15,7 @@ const LayerPoints: React.FC<any> = ({
   layer,
   newPoint,
   points,
-  removePoint,
+  remove,
   setCurrentPoint,
   setIsDragging,
   setNewPoint,
@@ -20,49 +23,57 @@ const LayerPoints: React.FC<any> = ({
 }) => {
   const point = points[layer.currentPoint]
 
+  // draw points
+  const drawPoints = (context: Context, shape: ShapeType) => {
+    context.beginPath()
+
+    for (const point of points) {
+      const values = getCell(point.x, point.y, window.innerWidth, window.innerHeight)
+        
+      if (values) {
+        const x = values[0] + values[2] / 2
+        const y = values[1] + values[2] / 2
+
+        shape.fill(layer.pointsProperties.fill)
+        context.arc(x, y, layer.pointsProperties.radius, 0, 2 * Math.PI, false)
+      }
+      
+      context.closePath()
+    }
+    
+    context.fillShape(shape)
+  }
+
+  // on click
+  const onClickPoint = (event: KonvaEventObject<MouseEvent>) => {
+    const values = getCell(
+      event.evt.clientX,
+      event.evt.clientY,
+      window.innerWidth,
+      window.innerHeight
+    )
+
+    if (values) {
+      for (const [index, point] of points.entries()) {
+        const valuesPoint = getCell(point.x, point.y, window.innerWidth, window.innerHeight)
+
+        if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
+          if (remove) {
+            deleteLayerPoint(index)
+          } else {
+            setCurrentPoint(index)
+          }
+        }
+      }
+    }
+  }
+
   // render
   return (
     <>
-      <Shape
-        sceneFunc={(context, shape) => {
-          context.beginPath()
+      <Shape sceneFunc={drawPoints} onClick={onClickPoint}/>
 
-          for (const point of points) {
-            const values = getCell(point.x, point.y, window.innerWidth, window.innerHeight)
-              
-            if (values) {
-              const x = values[0] + values[2] / 2
-              const y = values[1] + values[2] / 2
-
-              shape.fill(layer.pointsProperties.fill)
-              context.arc(x, y, layer.pointsProperties.radius, 0, 2 * Math.PI, false)
-            }
-            
-            context.closePath()
-          }
-          
-          context.fillShape(shape)
-        }}
-        onClick={(e) => {
-          const values = getCell(e.evt.clientX, e.evt.clientY, window.innerWidth, window.innerHeight)
-
-          if (values) {
-            for (const [index, point] of points.entries()) {
-              const valuesPoint = getCell(point.x, point.y, window.innerWidth, window.innerHeight)
-
-              if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
-                if (removePoint) {
-                  deleteLayerPoint(index)
-                } else {
-                  setCurrentPoint(index)
-                }
-              }
-            }
-          }
-        }}
-      />
-
-      {!removePoint && active && <Point
+      {!remove && active && <Point
         {...point}
         active={active}
         currentPoint={layer.currentPoint}
