@@ -15,6 +15,7 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
   const size = UseWindowSize()
 
   const [animate, setAnimate] = useState<boolean>(true)
+  const [curve, setCurve] = useState<boolean>(false)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [enable, setEnable] = useState<boolean>(false)
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -46,6 +47,7 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
   return (
     <MainContext.Provider value={{
       animate,
+      curve,
       data,
       enable,
       isDragging,
@@ -56,6 +58,7 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
       setEnable,
       setIsDragging,
       setLoaded,
+      setCurve,
       setRemove,
       size,
     }}>

@@ -5,19 +5,23 @@ export type SizeType = {
   width: number
 }
 
+export type SetOption = (val: boolean) => void
+
 export interface MainContextProps {
   animate: boolean
+  curve: boolean
   data: any
   enable: boolean
   remove: boolean
   loaded: boolean
   isDragging: boolean
-  setAnimate(val: boolean): void
+  setAnimate: SetOption
+  setCurve: SetOption
   setData(val: any): void
-  setIsDragging(val: boolean): void
-  setLoaded(val: boolean): void
-  setEnable(enable: boolean): void
-  setRemove(val: boolean): void
+  setIsDragging: SetOption
+  setLoaded: SetOption
+  setEnable: SetOption
+  setRemove: SetOption
   size: SizeType
 }
 

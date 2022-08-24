@@ -28,8 +28,10 @@ const MenuPoint: React.FC<MenuPointProps> = ({
         top: point.y
       }}
     >
+      <button>create curve</button>
       <button>add text</button>
       <button>add icon</button>
+      <button>point hidden - visible</button>
     </S.MenuPointDiv>
   )
 }
