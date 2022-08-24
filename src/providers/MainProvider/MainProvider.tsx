@@ -15,6 +15,7 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
   const size = UseWindowSize()
 
   const [animate, setAnimate] = useState<boolean>(true)
+  const [isDragging, setIsDragging] = useState<boolean>(false)
   const [enable, setEnable] = useState<boolean>(false)
   const [loaded, setLoaded] = useState<boolean>(false)
   const [remove, setRemove] = useState<boolean>(false)
@@ -47,11 +48,13 @@ const MainProvider: React.FC<MainProviderProps> = ({ children }) => {
       animate,
       data,
       enable,
+      isDragging,
       loaded,
       remove,
       setAnimate,
       setData,
       setEnable,
+      setIsDragging,
       setLoaded,
       setRemove,
       size,

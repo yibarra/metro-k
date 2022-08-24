@@ -7,8 +7,10 @@ export interface LayerProps
     Partial<LayersContextProps> {
   active?: boolean
   index: number
+  isDragging: boolean
   layer: any
   getCell: any
   remove?: boolean
+  setIsDragging(val: boolean): void
   updateLayer: any
 }

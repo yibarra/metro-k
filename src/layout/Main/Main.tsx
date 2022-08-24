@@ -5,15 +5,18 @@ import Header from '../Header'
 import { MainContext } from '../../providers/MainProvider/MainProvider'
 import type { MainContextProps } from '../../providers/MainProvider/interfaces'
 import { MainSection } from './styles'
+import MenuPoint from '../../components/MenuPoint'
 
 // main
 const Main: React.FC = () => {
   const {
+    isDragging,
     loaded,
     remove,
     size,
     setEnable,
     setRemove,
+    setIsDragging,
   } = useContext<MainContextProps>(MainContext)
 
   console.info('INIT')
@@ -47,7 +50,14 @@ const Main: React.FC = () => {
 
       {loaded === true && size.height > 0 && size.width > 0 &&
         <>
-          <Stage remove={remove} size={size} />
+          <Stage
+            isDragging={isDragging}
+            remove={remove}
+            setIsDragging={setIsDragging}
+            size={size}
+          />
+
+          <MenuPoint isDragging={isDragging} />
         </>
       }
     </MainSection>

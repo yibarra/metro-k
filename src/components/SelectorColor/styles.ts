@@ -36,7 +36,7 @@ export const SelectorColorButton = styled.button<{ radius?: string, variation?: 
   }}
 `
 
-export const SelectorColorPopOver = styled.div<{ radius?: boolean }>`
+export const SelectorColorPopOver = styled.div<{ radius?: string }>`
   bottom: calc(100% + 10px);
   border: 3px solid #333;
   border-radius: 6px;
@@ -70,7 +70,7 @@ export const SelectorColorPopOver = styled.div<{ radius?: boolean }>`
     }
 
     ${({ radius }) => 
-      radius === true ? '.react-colorful { &__hue { &-pointer { border-radius: 100%; }} &__saturation { &-pointer { border-radius: 100%; } } }' : ''}
+      radius === 'true' ? '.react-colorful { &__hue { &-pointer { border-radius: 100%; }} &__saturation { &-pointer { border-radius: 100%; } } }' : ''}
   }
 `
 

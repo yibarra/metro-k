@@ -19,7 +19,7 @@ export const ControlsLayersItemContainer = styled.div<{ toggle: string }>`
   ${({ toggle }) => {
     switch (toggle) {
       case 'true':
-        return 'max-height: 500px; padding: 10px; transition: max-height 0.25s ease-in;'
+        return 'max-height: 500px; padding: 10px; transition: max-height 0.25s ease-in; overflow: initial;'
     }
   }}
 `

@@ -15,10 +15,7 @@ export const dataDefault = {
       },
       pointsProperties: {
         active: '#222EEE',
-        dash: [0, 0],
         fill: '#FFF000',
-        lineCap: 'butt',
-        lineJoin: 'miter',
         radius: 5,
         stroke: '#222222',
         strokeWidth: 2,
@@ -44,10 +41,7 @@ export const dataDefault = {
       },
       pointsProperties: {
         active: '#222EEE',
-        dash: [0, 0],
         fill: '#AAAAAA',
-        lineCap: 'butt',
-        lineJoin: 'miter',
         radius: 5,
         stroke: '#222222',
         strokeWidth: 2,

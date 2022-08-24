@@ -12,13 +12,14 @@ const Layer: React.FC<LayerProps> = ({
   deleteLayerPoint,
   getCell,
   index,
+  isDragging = false,
   layer,
   remove = false,
+  setIsDragging,
   updateLayer,
   updateLayerPoint,
 }) => {
   const { currentPoint, lineProperties, points, pointsProperties } = layer
-  const [isDragging, setIsDragging] = useState<boolean>(false)
   const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0, position: 0 })
 
   // set current point

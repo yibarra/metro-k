@@ -25,27 +25,6 @@ const ControlsLayersItem: React.FC<any> = ({
     }})
   }
 
-  const updatePointsDashProperties = (properties: any, dash: number[]) => {
-    updateLayer(index, { pointsProperties: {
-      ...properties,
-      dash,
-    }})
-  }
-
-  const updateLayerPointJoinProperties = (lineJoin: string) => {
-    updateLayer(index, { pointsProperties: {
-      ...layer.pointsProperties,
-      lineJoin,
-    }})
-  }
-
-  const updateLayerPointCapProperties = (lineCap: string) => {
-    updateLayer(index, { pointsProperties: {
-      ...layer.pointsProperties,
-      lineCap,
-    }})
-  }
-
   const updateLayerLineJoinProperties = (lineJoin: string) => {
     updateLayer(index, { lineProperties: {
       ...layer.lineProperties,
@@ -83,7 +62,7 @@ const ControlsLayersItem: React.FC<any> = ({
 
   // render
   return (
-    <S.ControlsLayersItemDiv style={{ border: current ? '1px solid red' : '' }}>
+    <S.ControlsLayersItemDiv style={{ border: current ? '1px solid red' : '', overflow: current ? 'initial' : 'hidden' }}>
       <S.ControlsLayersItemHeaderDiv>
         <input
           type="text"
@@ -193,23 +172,6 @@ const ControlsLayersItem: React.FC<any> = ({
               ...layer.pointsProperties,
               fill,
             }})}
-          />
-
-          <SelectorDash
-            index={index}
-            properties={layer.pointsProperties}
-            updateDashProperty={updatePointsDashProperties}
-          />
-
-          <SelectorLineType
-            items={[{ name: 'round' }, { name: 'butt'}, { name: 'square' }]}
-            onChangeValue={updateLayerPointCapProperties}
-            variant="cap"
-          />
-
-          <SelectorLineType
-            items={[{ name: 'miter' }, { name: 'round'}, { name: 'bevel' }]}
-            onChangeValue={updateLayerPointJoinProperties}
           />
         </div>
       </S.ControlsLayersItemContainer>

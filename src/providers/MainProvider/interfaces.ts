@@ -11,8 +11,10 @@ export interface MainContextProps {
   enable: boolean
   remove: boolean
   loaded: boolean
+  isDragging: boolean
   setAnimate(val: boolean): void
   setData(val: any): void
+  setIsDragging(val: boolean): void
   setLoaded(val: boolean): void
   setEnable(enable: boolean): void
   setRemove(val: boolean): void

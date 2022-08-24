@@ -13,8 +13,10 @@ import type { LayerProps } from '../../../providers/LayersProvider/interfaces'
 
 // stage
 const Stage: React.FC<StageProps> = ({
+  isDragging = false,
   size,
   remove,
+  setIsDragging,
 }) => {
   const { deleteLayerPoint } = useContext<any>(LayersContext)
 
@@ -69,10 +71,12 @@ const Stage: React.FC<StageProps> = ({
             deleteLayerPoint={deleteLayerPoint}
             fixPositionCenter={fixPositionCenter}
             getCell={getCell}
+            isDragging={isDragging}
             index={index}
             layer={layer}
             key={index}
             remove={remove}
+            setIsDragging={setIsDragging}
             updateLayer={updateLayer}
             updateLayerPoint={updateLayerPoint}
           />

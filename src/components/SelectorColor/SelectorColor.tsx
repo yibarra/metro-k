@@ -36,14 +36,14 @@ const SelectorColor: React.FC<SelectorColorProps> = ({
   return (
     <S.SelectorColorDiv type={variation}>
       <S.SelectorColorButton
-        radius={radius ? 'true' : 'false'}
+        radius={radius.toString()}
         onClick={() => setIsOpen(!isOpen)}
         style={getType(variation)}
         variation={variation}
       />
       
       {isOpen && (
-        <S.SelectorColorPopOver ref={element} radius={radius}>
+        <S.SelectorColorPopOver ref={element} radius={radius.toString()}>
           <HexColorPicker color={color} onChange={setColor} />
 
           <S.SelectorColorArrow></S.SelectorColorArrow>
