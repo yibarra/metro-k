@@ -5,10 +5,12 @@ import LayerLine from './LayerLine'
 import LayerPoints from './LayerPoints'
 import type { PointTypePosition } from '../Point/interfaces'
 import type { LayerProps } from './interfaces'
+import LayerPointCurve from './LayerPointCurve'
 
 // layer
 const Layer: React.FC<LayerProps> = ({
   active,
+  curve = false,
   deleteLayerPoint,
   getCell,
   index,
@@ -44,6 +46,7 @@ const Layer: React.FC<LayerProps> = ({
 
           <LayerPoints
             active={active}
+            curve={curve}
             currentPoint={currentPoint}
             deleteLayerPoint={deleteLayerPoint}
             getCell={getCell}
@@ -56,6 +59,14 @@ const Layer: React.FC<LayerProps> = ({
             setIsDragging={setIsDragging}
             setNewPoint={setNewPoint}
             updateLayerPoint={updateLayerPoint}
+          />
+
+          <LayerPointCurve
+            isDragging={isDragging}
+            getCell={getCell}
+            pointInit={{ x: 10, y: 10, position: 0 }}
+            pointEnd={{ x: 40, y: 140, position: 1 }}
+            setIsDragging={setIsDragging}
           />
         </>
       }

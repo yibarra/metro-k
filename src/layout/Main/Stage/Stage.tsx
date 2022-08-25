@@ -9,30 +9,30 @@ import { GridContext } from '../../../providers/GridProvider/GridProvider'
 import type { GridContextProps } from '../../../providers/GridProvider/interfaces'
 import type { KonvaEventObject } from 'konva/lib/Node'
 import type { StageProps } from './interfaces'
-import type { LayerProps } from '../../../providers/LayersProvider/interfaces'
+import type { LayerProps, LayersContextProps } from '../../../providers/LayersProvider/interfaces'
 
 // stage
 const Stage: React.FC<StageProps> = ({
+  curve,
   isDragging = false,
   size,
   remove,
   setIsDragging,
 }) => {
-  const { deleteLayerPoint } = useContext<any>(LayersContext)
+  const {
+    createLayerPoint,
+    deleteLayerPoint,
+    current,
+    layers,
+    updateLayer,
+    updateLayerPoint,
+  } = useContext<LayersContextProps>(LayersContext)
 
   const {
     createGridBoxes,
     getCell,
     fixPositionCenter,
   } = useContext<GridContextProps>(GridContext)
-
-  const {
-    createLayerPoint,
-    current,
-    layers,
-    updateLayer,
-    updateLayerPoint,
-  } = useContext<any>(LayersContext)
 
   // create point layer active
   const createPoint = (event: KonvaEventObject<MouseEvent>) => {
@@ -68,6 +68,7 @@ const Stage: React.FC<StageProps> = ({
         {Array.isArray(layers) && layers.map((layer: LayerProps, index: number) =>
           <Layer
             active={current === index}
+            curve={curve}
             deleteLayerPoint={deleteLayerPoint}
             fixPositionCenter={fixPositionCenter}
             getCell={getCell}

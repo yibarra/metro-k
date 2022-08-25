@@ -22,6 +22,7 @@ const Point: React.FC<any> = ({
   y,
 }) => {
   const element = useRef<any>(null)
+  const point = getCell(x, y, window.innerWidth, window.innerHeight)
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
   // on drag start point
@@ -65,17 +66,16 @@ const Point: React.FC<any> = ({
     }
   }
 
+  // use effect
   useEffect(() => {
-    if (typeof element.current.to !== 'undefined') {
-      element.current.to({ ...properties })
+    if (element.current) {
+      if (typeof element.current.to !== 'undefined') {
+        element.current.to({ ...properties })
+      }
     }
   }, [properties])
 
-  // pos tooltip
-  const posX = xy.x
-  const posY = xy.y - (50 + properties.radius)
-
-  const point = getCell(x, y, window.innerWidth, window.innerHeight)
+  // position
   const xPoint = Math.floor(point[0] + point[2] / 2)
   const yPoint = Math.floor(point[1] + point[2] / 2)
 
@@ -83,7 +83,7 @@ const Point: React.FC<any> = ({
   return (
     <Group>
       {(currentPoint === index && active && isDragging) &&
-        <ToolTip x={posX} y={posY} />}
+        <ToolTip x={xy.x} y={xy.y - (50 + properties.radius)} />}
 
       <Circle
         {...properties}

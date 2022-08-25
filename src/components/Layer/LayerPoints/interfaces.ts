@@ -1,15 +1,17 @@
 import type { GridProviderProps } from '../../../providers/GridProvider/interfaces'
-import type { AxisType } from '../../Grid/interfaces'
+import type { MainContextProps } from '../../../providers/MainProvider/interfaces'
 import type { PointTypePosition } from '../../Point/interfaces'
 import type { LayerProps } from '../interfaces'
 
 export interface LayerPointsProps
-  extends Partial<LayerProps>, Partial<GridProviderProps> {
+  extends
+    Partial<LayerProps>,
+    Partial<GridProviderProps>,
+    Partial<MainContextProps> {
   currentPoint: number
   isDragging: boolean
   deleteLayerPoint: any
   newPoint: PointTypePosition
-  getCell(x: number, y: number, width: number, height: number ): AxisType
   points: any
   properties: Record<string, string | number>
   remove: boolean
