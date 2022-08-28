@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Group } from 'react-konva'
 
 import LayerLine from './LayerLine'
-import LayerPoints from './LayerPoints'
-import type { PointTypePosition } from '../Point/interfaces'
-import type { LayerProps } from './interfaces'
 import LayerPointCurve from './LayerPointCurve'
+import LayerPoints from './LayerPoints'
+import { getPointByPosition } from '../../providers/LayersProvider/LayersProviderTools'
+import type { LayerProps } from './interfaces'
+import type { PointTypePosition } from '../Point/interfaces'
 
 // layer
 const Layer: React.FC<LayerProps> = ({
@@ -19,9 +20,17 @@ const Layer: React.FC<LayerProps> = ({
   remove = false,
   setIsDragging,
   updateLayer,
+  updateLayerCurvePoint,
   updateLayerPoint,
 }) => {
-  const { currentPoint, lineProperties, points, pointsProperties } = layer
+  const {
+    curves,
+    currentPoint,
+    lineProperties,
+    points,
+    pointsProperties,
+  } = layer
+
   const [newPoint, setNewPoint] = useState<PointTypePosition>({ x: 0, y: 0, position: 0 })
 
   // set current point
@@ -36,6 +45,7 @@ const Layer: React.FC<LayerProps> = ({
         <>
           <LayerLine
             active={active}
+            curves={curves}
             currentPoint={currentPoint}
             getCell={getCell}
             isDragging={isDragging}
@@ -61,13 +71,19 @@ const Layer: React.FC<LayerProps> = ({
             updateLayerPoint={updateLayerPoint}
           />
 
-          <LayerPointCurve
-            isDragging={isDragging}
-            getCell={getCell}
-            pointInit={{ x: 10, y: 10, position: 0 }}
-            pointEnd={{ x: 40, y: 140, position: 1 }}
-            setIsDragging={setIsDragging}
-          />
+          {active && curves.map((curve: any, index: number) => (
+            <LayerPointCurve
+              curve={curve?.curve}
+              pointInit={getPointByPosition(points, curve?.pointInit)}
+              pointEnd={getPointByPosition(points, curve?.pointEnd)}
+              isDragging={isDragging}
+              getCell={getCell}
+              index={index}
+              key={index}
+              setIsDragging={setIsDragging}
+              updateLayerCurvePoint={updateLayerCurvePoint}
+            />))
+          }
         </>
       }
     </Group>

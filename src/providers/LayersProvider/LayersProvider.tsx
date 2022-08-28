@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 
 import { MainContext } from '../MainProvider/MainProvider'
+import { getPointByPosition, OrderPoints } from './LayersProviderTools'
 import type { MainContextProps } from '../MainProvider/interfaces'
 import type { PointTypePosition } from '../../components/Point/interfaces'
 import type { LayersContextProps, LayersProvidersProps } from './interfaces'
@@ -37,27 +38,14 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       currentPoint: index
     }
 
-    const pointsOrder = []
+    const pointsOrder = OrderPoints(layerSelected.points, index)
 
-    for (let i = 0; i < layerSelected.points.length; i++) {
-      const item = layerSelected.points[i]
-      
-      if (index > item?.position) {
-        pointsOrder.push(item)
-      } else {
-        const itemUpdate = {
-          ...item,
-          position: Number(item?.position) + 1,
-        }
-
-        pointsOrder.push(itemUpdate)
-      }
+    if (pointsOrder) {
+      pointsOrder.push(point)
+      layerProperties.points = pointsOrder
+  
+      updateLayer(current, layerProperties)
     }
-
-    pointsOrder.push(point)
-    layerProperties.points = pointsOrder
-
-    updateLayer(current, layerProperties)
   }
 
   // delete layer
@@ -93,10 +81,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       }
     }
 
-    updateLayer(current, {
-      points,
-      currentPoint
-    })
+    updateLayer(current, { points, currentPoint })
   }
 
   // update layer
@@ -105,11 +90,39 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
   }
 
   // update layer point
-  const updateLayerPoint = (point: any, index: number): void => {
+  const updateLayerPoint = (point: PointTypePosition, index: number): void => {
     const { points } = layers[current]
     points[index] = { ...point }
 
     updateLayer(current, { points })
+  }
+
+  // update layer curve point
+  const updateLayerCurvePoint = (
+    index: number,
+    init: number,
+    end: number,
+    curve: number[]
+  ) => {
+    const { points, curves: curveOld } = layers[current]
+    const item = curveOld[index] // current curve
+    
+    if (item) {
+      const curves = [...curveOld]
+
+      const pointInit = getPointByPosition(points, init)
+      const pointEnd = getPointByPosition(points, end)
+
+      if (pointInit && pointEnd) {
+        curves[index] = {
+          curve,
+          pointInit: pointInit.position,
+          pointEnd: pointEnd.position,
+        }
+
+        updateLayer(current, { curves })
+      }
+    }
   }
 
   // render
@@ -124,6 +137,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       setCurrent,
       updateLayer,
       updateLayerPoint,
+      updateLayerCurvePoint,
     }}>
       {children}
     </LayersContext.Provider>

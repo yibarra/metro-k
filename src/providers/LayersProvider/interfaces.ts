@@ -31,6 +31,7 @@ export interface LayersContextProps {
   deleteLayerPoint(index: number): void
   setCurrent(current: number): void
   updateLayer(index: number, data: Record<string, unknown>): void
+  updateLayerCurvePoint(index: number, init: number, end: number, curve: number[]): void
   updateLayerPoint: any
 }
 

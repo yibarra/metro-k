@@ -26,6 +26,7 @@ const Stage: React.FC<StageProps> = ({
     layers,
     updateLayer,
     updateLayerPoint,
+    updateLayerCurvePoint,
   } = useContext<LayersContextProps>(LayersContext)
 
   const {
@@ -79,6 +80,7 @@ const Stage: React.FC<StageProps> = ({
             remove={remove}
             setIsDragging={setIsDragging}
             updateLayer={updateLayer}
+            updateLayerCurvePoint={updateLayerCurvePoint}
             updateLayerPoint={updateLayerPoint}
           />
         )}

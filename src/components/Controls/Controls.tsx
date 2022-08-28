@@ -23,6 +23,7 @@ const Controls: React.FC<any> = () => {
       <p><small>{remove ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</small></p>
 
       <button onClick={() => {
+        console.info(layers, data, 'LAYERS')
         setData({ ...data, layers })
       }}>
         Save local storage

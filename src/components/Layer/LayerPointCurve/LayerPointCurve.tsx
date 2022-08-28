@@ -6,21 +6,23 @@ import type { Context } from 'konva/lib/Context'
 import type { Shape as ShapeType } from 'konva/lib/Shape'
 
 const LayerPointCurve: React.FC<any> = ({
+  curve,
   isDragging,
+  index,
   getCell,
   setIsDragging,
   pointInit,
   pointEnd,
+  updateLayerCurvePoint,
 }) => {
   const { innerHeight, innerWidth } = window
-  
-  const x = ((pointInit.x + pointEnd.x) / 2) - pointInit.x
-  const y = ((pointInit.y + pointEnd.y) / 2) - pointInit.y
-  
-  console.info(x, y)
+
+  const x = curve[0] ?? ((pointInit.x + pointEnd.x) / 2)
+  const y = curve[1] ?? ((pointInit.y + pointEnd.y) / 2)
 
   const element = useRef<any>(null)
   const point = getCell(x, y, innerWidth, innerHeight)
+  
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
   // on drag start point
@@ -56,12 +58,14 @@ const LayerPointCurve: React.FC<any> = ({
         duration: 0.4,
       })
       
+      updateLayerCurvePoint(index, pointInit.position, pointEnd.position, [posX, posY])
       setIsDragging(false)
     } else {
       element.current.to({ x, y, duration: 0.2 })
     }
   }
 
+  // draw lines
   const drawLines = (context: Context, shape: ShapeType) => {
     context.beginPath()
 
@@ -82,6 +86,7 @@ const LayerPointCurve: React.FC<any> = ({
   const xPoint = Math.floor(point[0] + point[2] / 2)
   const yPoint = Math.floor(point[1] + point[2] / 2)
 
+  // render
   return (
     <>
       <Rect
@@ -91,9 +96,9 @@ const LayerPointCurve: React.FC<any> = ({
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
-        onClick={() => console.info('HA')}
         x={xPoint}
         y={yPoint}
+        rotation={45}
         width={10}
         fill="red"
       />

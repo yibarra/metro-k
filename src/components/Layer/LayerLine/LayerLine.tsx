@@ -7,6 +7,7 @@ import type { LayerLineProps } from './interfaces'
 // layer line
 const LayerLine: React.FC<LayerLineProps> = ({
   active,
+  curves,
   currentPoint,
   getCell,
   isDragging,
@@ -19,8 +20,6 @@ const LayerLine: React.FC<LayerLineProps> = ({
     if (!Array.isArray(points)) {
       return []
     }
-
-    console.info(currentPoint)
 
     return Object.values(
       points.map(
@@ -47,6 +46,7 @@ const LayerLine: React.FC<LayerLineProps> = ({
     <>
       <Line
         active={active}
+        curves={curves}
         getCell={getCell}
         isDragging={isDragging}
         points={pointUpdate(orderPoints())}
