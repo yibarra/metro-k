@@ -6,6 +6,7 @@ import type { Context } from 'konva/lib/Context'
 import type { Shape as ShapeType } from 'konva/lib/Shape'
 
 const LayerPointCurve: React.FC<any> = ({
+  active,
   curve,
   isDragging,
   index,
@@ -13,6 +14,7 @@ const LayerPointCurve: React.FC<any> = ({
   setIsDragging,
   pointInit,
   pointEnd,
+  properties,
   updateLayerCurvePoint,
 }) => {
   const { innerHeight, innerWidth } = window
@@ -70,7 +72,6 @@ const LayerPointCurve: React.FC<any> = ({
     context.beginPath()
 
     context.moveTo(pointInit.x, pointInit.y)
-    shape.stroke('blue')
 
     context.quadraticCurveTo(
       xy.x,
@@ -103,7 +104,7 @@ const LayerPointCurve: React.FC<any> = ({
         fill="red"
       />
 
-      <Shape sceneFunc={drawLines} />
+      <Shape {...properties} sceneFunc={drawLines} />
     </>
   )
 }

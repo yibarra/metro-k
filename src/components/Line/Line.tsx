@@ -1,38 +1,107 @@
 import React, { useEffect, useRef } from 'react'
 import { Line as LineKonva } from 'react-konva'
+import type { Context } from 'konva/lib/Context'
+import type { Shape } from 'konva/lib/Shape'
 
-import { LineProps } from './interfaces'
+import type { LineProps } from './interfaces'
 
 // line
 const Line: React.FC<LineProps> = ({
   active = false,
+  curves,
   getCell,
   isDragging = false,
   points,
   properties,
 }) => {
-  const element = useRef<any>(null)
+  const elementLayerRef = useRef<any>(null)
+
+  // find point curve
+  const findPointCurve = (index: number) => {
+    let translate = false
+    let pointInitial = false
+
+    const element = curves.filter((item: any) => {
+      if (item.pointEnd === index || item.pointInit === index) {
+        if (item.pointInit === index) {
+          translate = true
+        }
+
+        if (item.pointEnd === index) {
+          pointInitial = true
+        }
+
+        return true
+      }
+
+      return false
+    })
+
+    return {
+      element: element[0],
+      pointInitial,
+      translate
+    }
+  }
 
   // convert points
-  const convertPoints = (items: []) => {
-    const pointsResult: any[] = []
+  const convertPoints = (items: number[][]): number[][] => {
+    const { innerHeight, innerWidth } = window
+    const result: number[][] = []
 
-    for (const item of items) {
-      const point = getCell(item[0], item[1], window.innerWidth, window.innerHeight)
-      const x = Math.floor(point[0] + point[2] / 2)
-      const y = Math.floor(point[1] + point[2] / 2)
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index]
+      const point = getCell(item[0], item[1], innerWidth, innerHeight)
 
-      pointsResult.push(x)
-      pointsResult.push(y)
+      if (point) {
+        const { element } = findPointCurve(index)
+        const x: number = Math.floor(point[0] + point[2] / 2)
+        const y: number = Math.floor(point[1] + point[2] / 2)
+
+        if (!element) {
+          result.push([x, y, 0])
+        }
+
+        if (element) {
+          if (element.pointInit === index && element.pointInit < element.pointEnd) {
+            result.push([x, y, 0])
+          } else {
+            result.push([x, y, 1])
+          }
+        }
+      }
     }
 
-    return pointsResult
+    return result
+  }
+
+  // draw line
+  const drawLine = (context: Context, shape: Shape) => {
+    const lines = convertPoints(points)
+
+    context.beginPath()
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+
+      if (line) {
+        const [ x, y, move ] = line
+  
+        if (move) {
+          context.moveTo(x, y)
+        } else {
+          context.lineTo(x, y)
+        }
+      }
+    }
+    
+    context.fillStrokeShape(shape)
   }
 
   // use effect
   useEffect(() => {
-    if (typeof element.current.to !== 'undefined') {
-      element.current.to({ ...properties })
+    if (typeof elementLayerRef.current.to !== 'undefined') {
+      elementLayerRef.current.to({ ...properties })
     }
   }, [active, isDragging, properties])
 
@@ -41,8 +110,8 @@ const Line: React.FC<LineProps> = ({
     <LineKonva
       {...properties}
       listening={false}
-      ref={element}
-      points={convertPoints(points)}
+      ref={elementLayerRef}
+      sceneFunc={drawLine}
     />
   )
 }

@@ -23,7 +23,7 @@ const LayerLine: React.FC<LayerLineProps> = ({
 
     return Object.values(
       points.map(
-        (item: any, index: number) =>
+        (item: PointTypePosition, index: number) =>
           index === currentPoint && type === 'ref'
             ? [ newPoint.x, newPoint.y ]
             : [ item.x, item.y ]
@@ -59,9 +59,10 @@ const LayerLine: React.FC<LayerLineProps> = ({
 
       <Line
         active={active}
+        curves={curves}
         getCell={getCell}
         isDragging={isDragging}
-        points={pointUpdate(points, 'ref')}
+        points={pointUpdate(orderPoints(), 'ref')}
         properties={{
           ...properties,
           strokeWidth: properties?.strokeWidth ?? 5 / 3,

@@ -71,8 +71,9 @@ const Layer: React.FC<LayerProps> = ({
             updateLayerPoint={updateLayerPoint}
           />
 
-          {active && curves.map((curve: any, index: number) => (
+          {curves.map((curve: any, index: number) => (
             <LayerPointCurve
+              active={active}
               curve={curve?.curve}
               pointInit={getPointByPosition(points, curve?.pointInit)}
               pointEnd={getPointByPosition(points, curve?.pointEnd)}
@@ -80,6 +81,7 @@ const Layer: React.FC<LayerProps> = ({
               getCell={getCell}
               index={index}
               key={index}
+              properties={lineProperties}
               setIsDragging={setIsDragging}
               updateLayerCurvePoint={updateLayerCurvePoint}
             />))
