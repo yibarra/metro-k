@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Group } from 'react-konva'
 
 import LayerLine from './LayerLine'
-import LayerPointCurve from './LayerPointCurve'
 import LayerPoints from './LayerPoints'
+import LineCurve from '../LineCurve'
 import { getPointByPosition } from '../../providers/LayersProvider/LayersProviderTools'
 import type { LayerProps } from './interfaces'
 import type { PointTypePosition } from '../Point/interfaces'
@@ -43,6 +43,22 @@ const Layer: React.FC<LayerProps> = ({
     <Group>
       {Array.isArray(points) && 
         <>
+          {curves.map((curve: any, index: number) => (
+            <LineCurve
+              active={active}
+              curve={curve?.curve}
+              pointInit={getPointByPosition(points, curve?.pointInit)}
+              pointEnd={getPointByPosition(points, curve?.pointEnd)}
+              isDragging={isDragging}
+              getCell={getCell}
+              index={index}
+              key={index}
+              properties={lineProperties}
+              setIsDragging={setIsDragging}
+              updateLayerCurvePoint={updateLayerCurvePoint}
+            />)
+          )}
+          
           <LayerLine
             active={active}
             curves={curves}
@@ -70,22 +86,6 @@ const Layer: React.FC<LayerProps> = ({
             setNewPoint={setNewPoint}
             updateLayerPoint={updateLayerPoint}
           />
-
-          {curves.map((curve: any, index: number) => (
-            <LayerPointCurve
-              active={active}
-              curve={curve?.curve}
-              pointInit={getPointByPosition(points, curve?.pointInit)}
-              pointEnd={getPointByPosition(points, curve?.pointEnd)}
-              isDragging={isDragging}
-              getCell={getCell}
-              index={index}
-              key={index}
-              properties={lineProperties}
-              setIsDragging={setIsDragging}
-              updateLayerCurvePoint={updateLayerCurvePoint}
-            />))
-          }
         </>
       }
     </Group>
