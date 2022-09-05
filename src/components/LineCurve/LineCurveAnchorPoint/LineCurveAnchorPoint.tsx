@@ -56,16 +56,22 @@ const LineCurveAnchorPoint: React.FC<any> = ({
 
   // draw point anchor
   const drawPointAnchor = (context: Context, shape: ShapeType) => {
+    const pointAnchorEnd = getCell(pointInit.x, pointInit.y, innerWidth, innerHeight)
+    const pointAnchorInit = getCell(pointEnd.x, pointEnd.y, innerWidth, innerHeight)
+    const pointAnchorCurve = getCell(x, y, innerWidth, innerHeight)
+
     // position
     context.beginPath()
 
-    context.moveTo(pointInit.x, pointInit.y)
-    context.lineTo(x, y)
-    context.moveTo(pointEnd.x, pointEnd.y)
-    context.lineTo(x, y)
+    context.moveTo(pointAnchorEnd[0] + pointAnchorEnd[2] / 2, pointAnchorEnd[1] + pointAnchorEnd[2] / 2)
+    context.lineTo(pointAnchorCurve[0] + pointAnchorCurve[2] / 2, pointAnchorCurve[1] + pointAnchorCurve[2] / 2)
+    context.moveTo(pointAnchorInit[0] + pointAnchorInit[2] / 2, pointAnchorInit[1] + pointAnchorInit[2] / 2)
+    context.lineTo(pointAnchorCurve[0] + pointAnchorCurve[2] / 2, pointAnchorCurve[1] + pointAnchorCurve[2] / 2)
 
     context.fillStrokeShape(shape)
   }
+
+  const posPoint = getCell(x, y, innerWidth, innerHeight)
 
   // render
   return (
@@ -85,8 +91,8 @@ const LineCurveAnchorPoint: React.FC<any> = ({
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
-        x={x}
-        y={y}
+        x={posPoint[0] + 8}
+        y={posPoint[1]}
         rotation={45}
         width={10}
         fill="red"

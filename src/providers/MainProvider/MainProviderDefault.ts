@@ -95,6 +95,10 @@ export const dataDefault = {
         pointInit: 0,
         pointEnd: 1,
         curve: [15, 65]
+      }, {
+        pointInit: 6,
+        pointEnd: 7,
+        curve: [500, 400]
       }]
     },
     {
