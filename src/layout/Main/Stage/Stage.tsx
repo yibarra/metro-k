@@ -47,8 +47,8 @@ const Stage: React.FC<StageProps> = ({
       createLayerPoint(
         position,
         {
-          x: values[0] + values[2] / 2,
-          y: values[1] + values[2] / 2,
+          x: values[0],
+          y: values[1],
           position,
         }
       )

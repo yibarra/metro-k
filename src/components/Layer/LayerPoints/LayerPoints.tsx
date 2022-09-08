@@ -51,8 +51,8 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
       const values = getCell(point.x, point.y, innerWidth, innerHeight)
         
       if (values) {
-        const x = values[0] + values[2] / 2
-        const y = values[1] + values[2] / 2
+        const x = values[0]
+        const y = values[1]
 
         shape.fill(properties.fill.toString())
         context.arc(x, y, properties.radius, 0, 2 * Math.PI, false)
@@ -75,6 +75,7 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
       for (const [index, point] of points.entries()) {
         const valuesPoint = getCell(point.x, point.y, innerWidth, innerHeight)
 
+        console.info('quehlfaisdf', remove, valuesPoint, values)
         if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
           if (remove) {
             deleteLayerPoint(index)

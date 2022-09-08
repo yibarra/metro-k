@@ -44,8 +44,8 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     const point = getCell(event.evt.clientX, event.evt.clientY, innerWidth, innerHeight)
 
     if (point) {
-      const posX = Math.floor(point[0] + point[2] / 2)
-      const posY = Math.floor(point[1] + point[2] / 2)
+      const posX = point[0]
+      const posY = point[1]
       
       updateLayerCurvePoint(index, pointInit.position, pointEnd.position, [posX, posY])
       setIsDragging(false)
@@ -63,10 +63,10 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     // position
     context.beginPath()
 
-    context.moveTo(pointAnchorEnd[0] + pointAnchorEnd[2] / 2, pointAnchorEnd[1] + pointAnchorEnd[2] / 2)
-    context.lineTo(pointAnchorCurve[0] + pointAnchorCurve[2] / 2, pointAnchorCurve[1] + pointAnchorCurve[2] / 2)
-    context.moveTo(pointAnchorInit[0] + pointAnchorInit[2] / 2, pointAnchorInit[1] + pointAnchorInit[2] / 2)
-    context.lineTo(pointAnchorCurve[0] + pointAnchorCurve[2] / 2, pointAnchorCurve[1] + pointAnchorCurve[2] / 2)
+    context.moveTo(pointAnchorEnd[0], pointAnchorEnd[1])
+    context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
+    context.moveTo(pointAnchorInit[0], pointAnchorInit[1])
+    context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
 
     context.fillStrokeShape(shape)
   }

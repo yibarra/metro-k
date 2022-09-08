@@ -56,7 +56,10 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
       const posX = fixPositionCenter(Math.floor(Math.floor(x / sizeBox) * sizeBox), width, xGrid, sizeBox)
       const posY = fixPositionCenter(Math.floor(Math.floor(y / sizeBox) * sizeBox), height, yGrid, sizeBox)
       
-      return [posX, posY, sizeBox]
+      const posCellX = posX + sizeBox / 2
+      const posCellY = posY + sizeBox / 2
+
+      return [posCellX, posCellY, sizeBox, posX, posY]
     }
   }
 

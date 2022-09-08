@@ -50,8 +50,8 @@ const Point: React.FC<any> = ({
     const point = getCell(event.evt.clientX, event.evt.clientY, width, height)
 
     if (active && point && element.current) {
-      const posX = Math.floor(point[0] + point[2] / 2)
-      const posY = Math.floor(point[1] + point[2] / 2)
+      const posX = Math.floor(point[0])
+      const posY = Math.floor(point[1])
 
       element.current.to({
         x: posX,
@@ -76,8 +76,8 @@ const Point: React.FC<any> = ({
   }, [properties])
 
   // position
-  const xPoint = Math.floor(point[0] + point[2] / 2)
-  const yPoint = Math.floor(point[1] + point[2] / 2)
+  const xPoint = Math.floor(point[0])
+  const yPoint = Math.floor(point[1])
 
   // render
   return (

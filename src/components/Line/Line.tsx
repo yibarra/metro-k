@@ -55,8 +55,8 @@ const Line: React.FC<LineProps> = ({
 
       if (point) {
         const { element } = findPointCurve(index)
-        const x: number = Math.floor(point[0] + point[2] / 2)
-        const y: number = Math.floor(point[1] + point[2] / 2)
+        const x: number = Math.floor(point[0])
+        const y: number = Math.floor(point[1])
 
         if (!element) {
           result.push([x, y, 0])
