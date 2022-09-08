@@ -11,6 +11,7 @@ import type { PointTypePosition } from '../Point/interfaces'
 // layer
 const Layer: React.FC<LayerProps> = ({
   active,
+  createLayerCurve,
   curve = false,
   deleteLayerPoint,
   getCell,
@@ -73,6 +74,7 @@ const Layer: React.FC<LayerProps> = ({
           <LayerPoints
             active={active}
             curve={curve}
+            createLayerCurve={createLayerCurve}
             currentPoint={currentPoint}
             deleteLayerPoint={deleteLayerPoint}
             getCell={getCell}

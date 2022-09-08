@@ -11,6 +11,7 @@ import type { PointTypePosition } from '../../Point/interfaces'
 // layer points
 const LayerPoints: React.FC<LayerPointsProps> = ({
   active,
+  createLayerCurve,
   currentPoint,
   curve,
   deleteLayerPoint,
@@ -30,7 +31,11 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
   // check adjacent point
   const checkAdjacentPoint = (point: PointTypePosition, position: number) => {
     if (point && (point.position - 1 === position || point.position + 1 === position)) {
-      console.info(point.position, position, 'point index of')
+      const pointEnd = points[position]
+
+      if (pointEnd && typeof createLayerCurve === 'function') {
+        createLayerCurve(point, pointEnd)
+      }
     } else {
       console.error(`[POINT NOT ADJACENT TO CREATE CURVE] ${position}`)
     }

@@ -24,6 +24,7 @@ export interface LayerProps {
 
 export interface LayersContextProps {
   createLayer(layer: any): void
+  createLayerCurve(pointInit: PointTypePosition, pointEnd: PointTypePosition): void
   createLayerPoint: any
   current: number
   deleteLayer(index: number): void

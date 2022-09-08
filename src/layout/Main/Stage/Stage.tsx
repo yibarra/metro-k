@@ -20,6 +20,7 @@ const Stage: React.FC<StageProps> = ({
   setIsDragging,
 }) => {
   const {
+    createLayerCurve,
     createLayerPoint,
     deleteLayerPoint,
     current,
@@ -69,6 +70,7 @@ const Stage: React.FC<StageProps> = ({
         {Array.isArray(layers) && layers.map((layer: LayerProps, index: number) =>
           <Layer
             active={current === index}
+            createLayerCurve={createLayerCurve}
             curve={curve}
             deleteLayerPoint={deleteLayerPoint}
             fixPositionCenter={fixPositionCenter}

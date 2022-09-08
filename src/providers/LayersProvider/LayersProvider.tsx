@@ -26,6 +26,34 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     })
   }
 
+  // create curve
+  const createLayerCurve = (pointInit: PointTypePosition, pointEnd: PointTypePosition) => {
+    if (!pointInit || !pointEnd) {
+      return false
+    }
+
+    const curves = layers[current].curves ?? []
+
+    const checked = curves.filter(
+      (curve: any) => 
+        (curve.pointEnd === pointEnd.position && curve.pointInit === pointInit.position) ||
+        (curve.pointEnd === pointInit.position && curve.pointInit === pointEnd.position)
+    )
+
+    if (!checked.length) {
+      const curveX = (pointEnd.x + pointInit.x) / 2
+      const curveY = (pointEnd.y + pointInit.y) / 2
+  
+      curves.push({
+        pointInit: pointInit.position,
+        pointEnd: pointEnd.position,
+        curve: [curveX, curveY]
+      })
+  
+      updateLayer(current, { curves })
+    }
+  }
+
   // update layer points
   const createLayerPoint = (index: number, point: any): void | boolean => {
     if (!enable) {
@@ -130,6 +158,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     <LayersContext.Provider value={{
       createLayer,
       current,
+      createLayerCurve,
       createLayerPoint,
       deleteLayer,
       layers,
