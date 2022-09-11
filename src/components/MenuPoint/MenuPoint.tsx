@@ -24,8 +24,8 @@ const MenuPoint: React.FC<MenuPointProps> = ({
     <S.MenuPointDiv
       style={{ 
         opacity: !isDragging ? 1 : 0,
-        left: point.x,
-        top: point.y
+        left: point instanceof Object ? point.x : 0,
+        top: point instanceof Object ? point.y : 0
       }}
     >
       <button>create curve</button>

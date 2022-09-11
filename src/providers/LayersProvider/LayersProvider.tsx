@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 
 import { MainContext } from '../MainProvider/MainProvider'
-import { getPointByPosition, OrderPoints } from './LayersProviderTools'
+import { getCurveExist, getPointByPosition, getPointExistInCurve, orderPoints } from './LayersProviderTools'
 import type { MainContextProps } from '../MainProvider/interfaces'
 import type { PointTypePosition } from '../../components/Point/interfaces'
 import type { LayersContextProps, LayersProvidersProps } from './interfaces'
@@ -33,14 +33,9 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     }
 
     const curves = layers[current].curves ?? []
+    const checked = getCurveExist(curves, pointInit.position, pointEnd.position)
 
-    const checked = curves.filter(
-      (curve: any) => 
-        (curve.pointEnd === pointEnd.position && curve.pointInit === pointInit.position) ||
-        (curve.pointEnd === pointInit.position && curve.pointInit === pointEnd.position)
-    )
-
-    if (!checked.length) {
+    if (!checked) {
       const curveX = (pointEnd.x + pointInit.x) / 2
       const curveY = (pointEnd.y + pointInit.y) / 2
   
@@ -66,7 +61,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       currentPoint: index
     }
 
-    const pointsOrder = OrderPoints(layerSelected.points, index)
+    const pointsOrder = orderPoints(layerSelected.points, index)
 
     if (pointsOrder) {
       pointsOrder.push(point)
@@ -85,6 +80,25 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
     setLayers(resultLayers)
   }
 
+  // remove layer point item
+  const deleteLayerCurve = (index: number): any[] => {
+    const curves = []
+    const curvesRemoves = getPointExistInCurve(layers[current].curves, index)
+
+    if (Array.isArray(curvesRemoves)) {
+      for (let j = 0; j < curvesRemoves.length; j++) {
+        const curve = curvesRemoves[j]
+        const indexCurve = layers[current].curves.indexOf(curve)
+
+        if (indexCurve === -1) {
+          curves.push(curve)
+        }
+      }
+    }
+
+    return curves
+  }
+
   // remove layer point
   const deleteLayerPoint = (index: number): void | boolean => {
     if (!remove) {
@@ -93,8 +107,10 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
 
     const currentPoint = index > 0 ? index - 1 : 0
     const points: PointTypePosition[] = []
+    const curves = deleteLayerCurve(index)
 
     const temp = layers[current].points
+    
     delete temp[index]
 
     for(let i = 0; i < temp.length; i++) {
@@ -109,7 +125,7 @@ const LayersProvider: React.FC<LayersProvidersProps> = ({ children }) => {
       }
     }
 
-    updateLayer(current, { points, currentPoint })
+    updateLayer(current, { curves, points, currentPoint })
   }
 
   // update layer

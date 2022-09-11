@@ -5,10 +5,8 @@ import type { KonvaEventObject } from 'konva/lib/Node'
 import type { Shape as ShapeType } from 'konva/lib/Shape'
 
 const LineCurveAnchorPoint: React.FC<any> = ({
-  curve,
   getCell,
   index,
-  point,
   pointEnd,
   pointInit,
   setIsDragging,
@@ -18,7 +16,6 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   y,
 }) => {
   const element = useRef<any>(null)
-  const { innerWidth, innerHeight } = window
 
   // on drag start point
   const onDragStartPoint = (event: KonvaEventObject<DragEvent>) => {
@@ -31,8 +28,9 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   const onDragMovePoint = (event: KonvaEventObject<DragEvent>) => {
     event.cancelBubble = true
 
-    const xPos = event.evt.clientX
-    const yPos = event.evt.clientY
+    const { evt: { clientX, clientY }} = event
+    const xPos = clientX
+    const yPos = clientY
 
     setXY({ x: xPos, y: yPos })
   }
@@ -40,8 +38,9 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   // on drag end point
   const onDragEndPoint = (event: KonvaEventObject<DragEvent>) => {
     event.cancelBubble = true
-    
-    const point = getCell(event.evt.clientX, event.evt.clientY, innerWidth, innerHeight)
+
+    const { evt: { clientX, clientY } } = event
+    const point = getCell(clientX, clientY)
 
     if (point) {
       const posX = point[0]
@@ -56,9 +55,9 @@ const LineCurveAnchorPoint: React.FC<any> = ({
 
   // draw point anchor
   const drawPointAnchor = (context: Context, shape: ShapeType) => {
-    const pointAnchorEnd = getCell(pointInit.x, pointInit.y, innerWidth, innerHeight)
-    const pointAnchorInit = getCell(pointEnd.x, pointEnd.y, innerWidth, innerHeight)
-    const pointAnchorCurve = getCell(x, y, innerWidth, innerHeight)
+    const pointAnchorEnd = getCell(pointInit.x, pointInit.y)
+    const pointAnchorInit = getCell(pointEnd.x, pointEnd.y)
+    const pointAnchorCurve = getCell(x, y)
 
     // position
     context.beginPath()
@@ -71,31 +70,27 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     context.fillStrokeShape(shape)
   }
 
-  const posPoint = getCell(x, y, innerWidth, innerHeight)
-
   // render
   return (
     <>
       <Shape
-        fill="red"
-        ref={element}
         sceneFunc={drawPointAnchor}
         stroke="green"
         strokeWidth={2}
       />
 
       <Rect
-        height={10}
         draggable
-        ref={element}
+        fill="blue"
+        height={8}
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
-        x={posPoint[0]}
-        y={posPoint[1]}
-        rotation={45}
-        width={10}
-        fill="red"
+        ref={element}
+        x={x}
+        y={y}
+        width={8}
+        zIndex={10}
       />  
     </>
   )

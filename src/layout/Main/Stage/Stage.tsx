@@ -41,7 +41,7 @@ const Stage: React.FC<StageProps> = ({
     event.cancelBubble = true
 
     const position = Number(layers[current].currentPoint) + 1
-    const values = getCell(event.evt.clientX, event.evt.clientY, size.width, size.height)
+    const values = getCell(event.evt.clientX, event.evt.clientY)
     
     if (values) {
       createLayerPoint(

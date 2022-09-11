@@ -49,7 +49,9 @@ const GridProvider: React.FC<GridProviderProps> = ({ children }) => {
   }, [getGridAxis, sizeBox])
 
   // get cell
-  const getCell = (x: number, y: number, width: number, height: number): AxisType | void => {
+  const getCell = (x: number, y: number): AxisType | void => {
+    const { innerWidth: width, innerHeight: height } = window
+
     const { xGrid, yGrid } = getGridAxis(width, height)
 
     if (xGrid && yGrid) {

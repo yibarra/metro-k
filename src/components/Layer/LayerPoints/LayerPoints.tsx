@@ -15,8 +15,8 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
   currentPoint,
   curve,
   deleteLayerPoint,
-  isDragging,
   getCell,
+  isDragging,
   newPoint,
   points,
   properties,
@@ -45,10 +45,8 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
   const drawPoints = (context: Context, shape: ShapeType) => {
     context.beginPath()
 
-    const { innerHeight, innerWidth } = window
-
     for (const point of points) {
-      const values = getCell(point.x, point.y, innerWidth, innerHeight)
+      const values = getCell(point.x, point.y)
         
       if (values) {
         const x = values[0]
@@ -66,16 +64,14 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
 
   // on click
   const onClickPoint = (event: KonvaEventObject<MouseEvent>) => {
-    const { innerHeight, innerWidth } = window
     const { evt: { clientX, clientY }} = event
 
-    const values = getCell(clientX, clientY, innerWidth, innerHeight)
+    const values = getCell(clientX, clientY)
 
     if (values) {
       for (const [index, point] of points.entries()) {
-        const valuesPoint = getCell(point.x, point.y, innerWidth, innerHeight)
+        const valuesPoint = getCell(point.x, point.y)
 
-        console.info('quehlfaisdf', remove, valuesPoint, values)
         if (valuesPoint[0] === values[0] && valuesPoint[1] === values[1]) {
           if (remove) {
             deleteLayerPoint(index)

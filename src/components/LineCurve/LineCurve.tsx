@@ -17,12 +17,10 @@ const LineCurve: React.FC<any> = ({
   properties,
   updateLayerCurvePoint,
 }) => {
-  const { innerHeight, innerWidth } = window
+  const x = curve[0]
+  const y = curve[1]
 
-  const x = curve[0] ?? ((pointInit.x + pointEnd.x) / 2)
-  const y = curve[1] ?? ((pointInit.y + pointEnd.y) / 2)
-
-  const point = getCell(x, y, innerWidth, innerHeight)
+  const point = getCell(x, y)
   
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 

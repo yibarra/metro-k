@@ -44,7 +44,7 @@ const Layer: React.FC<LayerProps> = ({
     <Group>
       {Array.isArray(points) && 
         <>
-          {curves.map((curve: any, index: number) => (
+          {Array.isArray(curves) && curves.map((curve: any, index: number) => (
             <LineCurve
               active={active}
               curve={curve?.curve}

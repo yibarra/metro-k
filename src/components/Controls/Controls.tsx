@@ -34,6 +34,7 @@ const Controls: React.FC<any> = () => {
           id: nextId('layer-'),
           name: `New Layer ${layers.length}`,
           currentPoint: 0,
+          curves: [],
           lineProperties: {
             border: '#222333',
             dash: [0, 0],
