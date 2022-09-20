@@ -20,17 +20,20 @@ const LineCurve: React.FC<any> = ({
   const [x, y] = curve
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
+  const pointCurveInit = getCell(pointInit.x, pointInit.y)
+  const pointCurveEnd = getCell(pointEnd.x, pointEnd.y)
+
   // draw lines
   const drawLines = (context: Context, shape: ShapeType) => {
     context.beginPath()
 
-    context.moveTo(pointInit.x, pointInit.y)
+    context.moveTo(pointCurveInit[0], pointCurveInit[1])
 
     context.quadraticCurveTo(
       xy.x,
       xy.y,
-      pointEnd.x,
-      pointEnd.y,
+      pointCurveEnd[0],
+      pointCurveEnd[1],
     )
 
     context.fillStrokeShape(shape)
@@ -45,6 +48,8 @@ const LineCurve: React.FC<any> = ({
           getCell={getCell}
           index={index}
           isDragging={isDragging}
+          pointCurveInit={pointCurveInit}
+          pointCurveEnd={pointCurveEnd}
           pointEnd={pointEnd}
           pointInit={pointInit}
           setIsDragging={setIsDragging}

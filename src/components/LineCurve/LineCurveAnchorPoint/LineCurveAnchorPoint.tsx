@@ -9,6 +9,8 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   index,
   isDragging,
   point,
+  pointCurveInit,
+  pointCurveEnd,
   pointEnd,
   pointInit,
   setIsDragging,
@@ -47,22 +49,20 @@ const LineCurveAnchorPoint: React.FC<any> = ({
 
   // draw point anchor
   const drawPointAnchor = (context: Context, shape: ShapeType) => {
-    const pointAnchorEnd = getCell(pointInit.x, pointInit.y)
-    const pointAnchorInit = getCell(pointEnd.x, pointEnd.y)
     const pointAnchorCurve = getCell(x, y)
 
     // position
     context.beginPath()
 
     if (isDragging) {
-      context.moveTo(pointAnchorEnd[0], pointAnchorEnd[1])
+      context.moveTo(pointCurveInit[0], pointCurveInit[1])
       context.lineTo(x, y)
-      context.moveTo(pointAnchorInit[0], pointAnchorInit[1])
+      context.moveTo(pointCurveEnd[0], pointCurveEnd[1])
       context.lineTo(x, y)
     } else {
-      context.moveTo(pointInit.x, pointInit.y)
+      context.moveTo(pointCurveInit[0], pointCurveInit[1])
       context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
-      context.moveTo(pointEnd.x, pointEnd.y)
+      context.moveTo(pointCurveEnd[0], pointCurveEnd[1])
       context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
     }
 
