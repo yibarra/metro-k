@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Rect, Shape } from 'react-konva'
 import { Context } from 'konva/lib/Context'
 import type { KonvaEventObject } from 'konva/lib/Node'
@@ -7,6 +7,8 @@ import type { Shape as ShapeType } from 'konva/lib/Shape'
 const LineCurveAnchorPoint: React.FC<any> = ({
   getCell,
   index,
+  isDragging,
+  point,
   pointEnd,
   pointInit,
   setIsDragging,
@@ -15,6 +17,7 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   x,
   y,
 }) => {
+  const posXY = getCell(x, y)
   const element = useRef<any>(null)
 
   // on drag start point
@@ -29,10 +32,7 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     event.cancelBubble = true
 
     const { evt: { clientX, clientY }} = event
-    const xPos = clientX
-    const yPos = clientY
-
-    setXY({ x: xPos, y: yPos })
+    setXY({ x: clientX, y: clientY })
   }
 
   // on drag end point
@@ -40,17 +40,9 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     event.cancelBubble = true
 
     const { evt: { clientX, clientY } } = event
-    const point = getCell(clientX, clientY)
 
-    if (point) {
-      const posX = point[0]
-      const posY = point[1]
-      
-      updateLayerCurvePoint(index, pointInit.position, pointEnd.position, [posX, posY])
-      setIsDragging(false)
-    } else {
-      element.current.to({ x, y, duration: 0.2 })
-    }
+    updateLayerCurvePoint(index, pointInit.position, pointEnd.position, [clientX, clientY])
+    setIsDragging(false)
   }
 
   // draw point anchor
@@ -62,13 +54,30 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     // position
     context.beginPath()
 
-    context.moveTo(pointAnchorEnd[0], pointAnchorEnd[1])
-    context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
-    context.moveTo(pointAnchorInit[0], pointAnchorInit[1])
-    context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
+    if (isDragging) {
+      context.moveTo(pointAnchorEnd[0], pointAnchorEnd[1])
+      context.lineTo(x, y)
+      context.moveTo(pointAnchorInit[0], pointAnchorInit[1])
+      context.lineTo(x, y)
+    } else {
+      context.moveTo(pointInit.x, pointInit.y)
+      context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
+      context.moveTo(pointEnd.x, pointEnd.y)
+      context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
+    }
+
+    context.closePath()
 
     context.fillStrokeShape(shape)
   }
+
+  
+  // use effect
+  useEffect(() => {
+    if (element.current && !isDragging) {
+      element.current.to({ x: posXY[0] - 5 ?? x, y: posXY[1] - 5 ?? y, duration: 0.2 })
+    }
+  }, [element, x, y, getCell, isDragging, posXY])
 
   // render
   return (
@@ -76,22 +85,19 @@ const LineCurveAnchorPoint: React.FC<any> = ({
       <Shape
         sceneFunc={drawPointAnchor}
         stroke="green"
-        strokeWidth={2}
+        strokeWidth={1}
       />
 
       <Rect
         draggable
-        fill="blue"
-        height={8}
+        height={10}
+        fill="red"
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
         ref={element}
-        x={x}
-        y={y}
-        width={8}
-        zIndex={10}
-      />  
+        width={10}
+      />
     </>
   )
 }

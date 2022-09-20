@@ -18,9 +18,9 @@ const Controls: React.FC<any> = () => {
 
   return (
     <S.ControlsDiv>
-      <p><small>{curve ? 'ADD CURVE' : 'REMOVE CURVE'}</small></p> -
-      <p><small>{enable ? 'ENABLED' : 'DISABLED'}</small></p> -
-      <p><small>{remove ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</small></p>
+      <p style={{ display: 'inline-block' }}><small>{curve ? 'ADD CURVE' : 'REMOVE CURVE'}</small></p> -
+      <p style={{ display: 'inline-block' }}><small>{enable ? 'ENABLED' : 'DISABLED'}</small></p> -
+      <p style={{ display: 'inline-block' }}><small>{remove ? 'REMOVE ENABLED' : 'REMOVE DISABLED'}</small></p>
 
       <button onClick={() => {
         console.info(layers, data, 'LAYERS')

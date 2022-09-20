@@ -17,11 +17,7 @@ const LineCurve: React.FC<any> = ({
   properties,
   updateLayerCurvePoint,
 }) => {
-  const x = curve[0]
-  const y = curve[1]
-
-  const point = getCell(x, y)
-  
+  const [x, y] = curve
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
   // draw lines
@@ -48,7 +44,7 @@ const LineCurve: React.FC<any> = ({
           curve={curve}
           getCell={getCell}
           index={index}
-          point={point}
+          isDragging={isDragging}
           pointEnd={pointEnd}
           pointInit={pointInit}
           setIsDragging={setIsDragging}
