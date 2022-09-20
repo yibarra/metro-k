@@ -85,7 +85,7 @@ const Line: React.FC<LineProps> = ({
 
       if (line) {
         const [ x, y, move ] = line
-  
+
         if (move) {
           context.moveTo(x, y)
         } else {

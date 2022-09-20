@@ -48,12 +48,13 @@ const Layer: React.FC<LayerProps> = ({
             <LineCurve
               active={active}
               curve={curve?.curve}
-              pointInit={getPointByPosition(points, curve?.pointInit)}
-              pointEnd={getPointByPosition(points, curve?.pointEnd)}
-              isDragging={isDragging}
               getCell={getCell}
               index={index}
+              point={points[currentPoint]}
+              isDragging={isDragging}
               key={index}
+              pointInit={getPointByPosition(points, curve?.pointInit)}
+              pointEnd={getPointByPosition(points, curve?.pointEnd)}
               properties={lineProperties}
               setIsDragging={setIsDragging}
               updateLayerCurvePoint={updateLayerCurvePoint}

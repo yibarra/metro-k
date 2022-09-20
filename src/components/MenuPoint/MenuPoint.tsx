@@ -28,10 +28,10 @@ const MenuPoint: React.FC<MenuPointProps> = ({
         top: point instanceof Object ? point.y : 0
       }}
     >
-      <button>create curve</button>
-      <button>add text</button>
-      <button>add icon</button>
-      <button>point hidden - visible</button>
+      <button>cc</button>
+      <button>at</button>
+      <button>ai</button>
+      <button>h - v</button>
     </S.MenuPointDiv>
   )
 }

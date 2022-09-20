@@ -8,13 +8,14 @@ import LineCurveAnchorPoint from './LineCurveAnchorPoint'
 const LineCurve: React.FC<any> = ({
   active,
   curve,
+  getCell,
   isDragging,
   index,
-  getCell,
-  setIsDragging,
+  point,
   pointInit,
   pointEnd,
   properties,
+  setIsDragging,
   updateLayerCurvePoint,
 }) => {
   const [x, y] = curve
@@ -26,15 +27,24 @@ const LineCurve: React.FC<any> = ({
   // draw lines
   const drawLines = (context: Context, shape: ShapeType) => {
     context.beginPath()
-
+    
     context.moveTo(pointCurveInit[0], pointCurveInit[1])
-
-    context.quadraticCurveTo(
-      xy.x,
-      xy.y,
-      pointCurveEnd[0],
-      pointCurveEnd[1],
-    )
+    
+    if (isDragging) {
+      context.quadraticCurveTo(
+        xy.x,
+        xy.y,
+        pointCurveEnd[0],
+        pointCurveEnd[1],
+      )
+    } else {
+      context.quadraticCurveTo(
+        xy.x,
+        xy.y,
+        pointCurveEnd[0],
+        pointCurveEnd[1],
+      )
+    }
 
     context.fillStrokeShape(shape)
   }

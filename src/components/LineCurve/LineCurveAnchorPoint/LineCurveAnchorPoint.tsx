@@ -4,11 +4,12 @@ import { Context } from 'konva/lib/Context'
 import type { KonvaEventObject } from 'konva/lib/Node'
 import type { Shape as ShapeType } from 'konva/lib/Shape'
 
+const SIZE_ITEM = 8
+
 const LineCurveAnchorPoint: React.FC<any> = ({
   getCell,
   index,
   isDragging,
-  point,
   pointCurveInit,
   pointCurveEnd,
   pointEnd,
@@ -75,7 +76,7 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   // use effect
   useEffect(() => {
     if (element.current && !isDragging) {
-      element.current.to({ x: posXY[0] - 5 ?? x, y: posXY[1] - 5 ?? y, duration: 0.2 })
+      element.current.to({ x: posXY[0] - SIZE_ITEM / 2 ?? x, y: posXY[1] - SIZE_ITEM / 2 ?? y, duration: 0.2 })
     }
   }, [element, x, y, getCell, isDragging, posXY])
 
@@ -90,13 +91,13 @@ const LineCurveAnchorPoint: React.FC<any> = ({
 
       <Rect
         draggable
-        height={10}
+        height={SIZE_ITEM}
         fill="red"
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
         ref={element}
-        width={10}
+        width={SIZE_ITEM}
       />
     </>
   )
