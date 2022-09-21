@@ -7,11 +7,12 @@ import LineCurveAnchorPoint from './LineCurveAnchorPoint'
 // line curve
 const LineCurve: React.FC<any> = ({
   active,
+  currentPoint,
   curve,
   getCell,
   isDragging,
   index,
-  point,
+  newPoint,
   pointInit,
   pointEnd,
   properties,
@@ -24,20 +25,37 @@ const LineCurve: React.FC<any> = ({
   const pointCurveInit = getCell(pointInit.x, pointInit.y)
   const pointCurveEnd = getCell(pointEnd.x, pointEnd.y)
 
+  // find point => 1: init 2: end 0: not point
+  const findPoint = (): number => {
+    if (currentPoint === pointInit.position) {
+      return 1
+    } else if (currentPoint === pointEnd.position) {
+      return 2
+    }
+
+    return 0
+  }
+
   // draw lines
   const drawLines = (context: Context, shape: ShapeType) => {
     context.beginPath()
+
+    const point = findPoint()
     
-    context.moveTo(pointCurveInit[0], pointCurveInit[1])
-    
-    if (isDragging) {
+    if (isDragging && active && point) {
+      const postInit = point === 1 ? newPoint : pointInit
+
+      context.moveTo(postInit.x, postInit.y)
+      
       context.quadraticCurveTo(
         xy.x,
         xy.y,
-        pointCurveEnd[0],
-        pointCurveEnd[1],
+        point === 1 ? pointCurveEnd[0] : newPoint.x,
+        point === 1 ? pointCurveEnd[1] : newPoint.y,
       )
     } else {
+      context.moveTo(pointCurveInit[0], pointCurveInit[1])
+
       context.quadraticCurveTo(
         xy.x,
         xy.y,

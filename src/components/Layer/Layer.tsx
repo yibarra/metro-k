@@ -47,12 +47,13 @@ const Layer: React.FC<LayerProps> = ({
           {Array.isArray(curves) && curves.map((curve: any, index: number) => (
             <LineCurve
               active={active}
+              currentPoint={currentPoint}
               curve={curve?.curve}
               getCell={getCell}
               index={index}
-              point={points[currentPoint]}
               isDragging={isDragging}
               key={index}
+              newPoint={newPoint}
               pointInit={getPointByPosition(points, curve?.pointInit)}
               pointEnd={getPointByPosition(points, curve?.pointEnd)}
               properties={lineProperties}
