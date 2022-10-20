@@ -52,8 +52,15 @@ const LayerPoints: React.FC<LayerPointsProps> = ({
         const x = values[0]
         const y = values[1]
 
-        shape.fill(properties.fill.toString())
-        context.arc(x, y, properties.radius, 0, 2 * Math.PI, false)
+        if (active && isDragging) {
+          if (currentPoint !== point.position) {
+            shape.fill(properties.fill.toString())
+            context.arc(x, y, properties.radius, 0, 2 * Math.PI, false)
+          }
+        } else {
+          shape.fill(properties.fill.toString())
+          context.arc(x, y, properties.radius, 0, 2 * Math.PI, false)
+        }
       }
       
       context.closePath()

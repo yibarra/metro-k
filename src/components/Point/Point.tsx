@@ -87,14 +87,14 @@ const Point: React.FC<any> = ({
 
       <Circle
         {...properties}
-        x={xPoint ?? x}
-        y={yPoint ?? y}
         draggable={active}
-        ref={element}
         onDragStart={onDragStartPoint}
         onDragMove={onDragMovePoint}
         onDragEnd={onDragEndPoint}
+        ref={element}
         stroke={(currentPoint === index) ? properties.active : properties.stroke }
+        x={xPoint ?? x}
+        y={yPoint ?? y}
       />
     </Group>
   )

@@ -50,7 +50,7 @@ const Line: React.FC<LineProps> = ({
 
     for (let index = 0; index < items.length; index++) {
       const item = items[index]
-      const point = getCell(item[0], item[1])
+      const point = [item[0], item[1]]
 
       if (point) {
         const { element } = findPointCurve(index)

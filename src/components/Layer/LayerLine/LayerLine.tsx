@@ -7,13 +7,12 @@ import type { LayerLineProps } from './interfaces'
 // layer line
 const LayerLine: React.FC<LayerLineProps> = ({
   active,
-  curves,
   currentPoint,
-  getCell,
   isDragging,
   points,
   properties,
   newPoint,
+  ...props
 }) => {
   // update points line
   const pointUpdate = (points: PointTypePosition[], type: string = ''): number[][] => {
@@ -45,29 +44,25 @@ const LayerLine: React.FC<LayerLineProps> = ({
   return (
     <>
       <Line
+        {...props}
         active={active}
-        curves={curves}
-        getCell={getCell}
         isDragging={isDragging}
         points={pointUpdate(orderPoints())}
         properties={{
           ...properties,
-          opacity: isDragging || !active ? 0.4 : 1,
+          opacity: isDragging || !active ? 0 : 1,
           shadowColor: "#2f5ada"
         }}
       />
 
       <Line
+        {...props}
         active={active}
-        curves={curves}
-        getCell={getCell}
         isDragging={isDragging}
         points={pointUpdate(orderPoints(), 'ref')}
         properties={{
           ...properties,
-          strokeWidth: properties?.strokeWidth ?? 5 / 3,
-          dash: [3, 3],
-          opacity: isDragging && active ? 0.5 : 0,
+          opacity: isDragging && active ? 1 : 0,
           shadowColor: "#2f5ada",
         }}
       />
