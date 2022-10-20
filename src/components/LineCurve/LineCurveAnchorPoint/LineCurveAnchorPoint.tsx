@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { Rect, Shape } from 'react-konva'
-import { Context } from 'konva/lib/Context'
+import { Line, Rect } from 'react-konva'
 import type { KonvaEventObject } from 'konva/lib/Node'
-import type { Shape as ShapeType } from 'konva/lib/Shape'
 
 const SIZE_ITEM = 8
 
@@ -14,6 +12,7 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   pointCurveEnd,
   pointEnd,
   pointInit,
+  setIsAnchor,
   setIsDragging,
   setXY,
   updateLayerCurvePoint,
@@ -28,6 +27,7 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     event.cancelBubble = true
 
     setIsDragging(true)
+    setIsAnchor(true)
   }
 
   // on grad point
@@ -45,49 +45,42 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     const { evt: { clientX, clientY } } = event
 
     updateLayerCurvePoint(index, pointInit.position, pointEnd.position, [clientX, clientY])
+    setIsAnchor(false)
     setIsDragging(false)
   }
 
-  // draw point anchor
-  const drawPointAnchor = (context: Context, shape: ShapeType) => {
+  // line
+  const getLinePoints = (point: any) => {
     const pointAnchorCurve = getCell(x, y)
 
-    // position
-    context.beginPath()
-
-    if (isDragging) {
-      context.moveTo(pointCurveInit[0], pointCurveInit[1])
-      context.lineTo(x, y)
-      context.moveTo(pointCurveEnd[0], pointCurveEnd[1])
-      context.lineTo(x, y)
-    } else {
-      context.moveTo(pointCurveInit[0], pointCurveInit[1])
-      context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
-      context.moveTo(pointCurveEnd[0], pointCurveEnd[1])
-      context.lineTo(pointAnchorCurve[0], pointAnchorCurve[1])
+    return {
+      points: [
+        point[0],
+        point[1],
+        isDragging ? x : pointAnchorCurve[0],
+        isDragging ? y : pointAnchorCurve[1]
+      ],
+      stroke: 'purple',
+      strokeWidth: 1,
     }
-
-    context.closePath()
-
-    context.fillStrokeShape(shape)
   }
-
   
   // use effect
   useEffect(() => {
     if (element.current && !isDragging) {
-      element.current.to({ x: posXY[0] - SIZE_ITEM / 2 ?? x, y: posXY[1] - SIZE_ITEM / 2 ?? y, duration: 0.2 })
+      element.current.to({
+        duration: 0.2,
+        x: posXY[0] - SIZE_ITEM / 2 ?? x,
+        y: posXY[1] - SIZE_ITEM / 2 ?? y,
+      })
     }
   }, [element, x, y, getCell, isDragging, posXY])
 
   // render
   return (
     <>
-      <Shape
-        sceneFunc={drawPointAnchor}
-        stroke="green"
-        strokeWidth={1}
-      />
+      <Line {...getLinePoints(pointCurveInit)} />
+      <Line {...getLinePoints(pointCurveEnd)} />
 
       <Rect
         draggable
