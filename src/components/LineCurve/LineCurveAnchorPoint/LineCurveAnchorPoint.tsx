@@ -7,7 +7,10 @@ const SIZE_ITEM = 8
 const LineCurveAnchorPoint: React.FC<any> = ({
   getCell,
   index,
+  isAnchor,
   isDragging,
+  newPoint,
+  point,
   pointCurveInit,
   pointCurveEnd,
   pointEnd,
@@ -49,19 +52,43 @@ const LineCurveAnchorPoint: React.FC<any> = ({
     setIsDragging(false)
   }
 
-  // line
-  const getLinePoints = (point: any) => {
+  // line type: 0 - init, 1 - end
+  const getLinePoints = (itemPoint: any, type: number) => {
     const pointAnchorCurve = getCell(x, y)
+
+    if (isDragging && !isAnchor) {
+      if (point === 1 && type === 0) {
+        return {
+          points: [
+            newPoint.x,
+            newPoint.y,
+            pointAnchorCurve[0],
+            pointAnchorCurve[1],
+          ],
+        }
+      }
+
+      if (point === 2 && type === 1) {
+        return {
+          points: [
+            pointAnchorCurve[0],
+            pointAnchorCurve[1],
+            newPoint.x,
+            newPoint.y,
+          ],
+        }
+      }
+
+      console.info(newPoint, point, 'VEAMOS')
+    }
 
     return {
       points: [
-        point[0],
-        point[1],
-        isDragging ? x : pointAnchorCurve[0],
-        isDragging ? y : pointAnchorCurve[1]
+        itemPoint[0],
+        itemPoint[1],
+        pointAnchorCurve[0],
+        pointAnchorCurve[1]
       ],
-      stroke: 'purple',
-      strokeWidth: 1,
     }
   }
   
@@ -79,8 +106,18 @@ const LineCurveAnchorPoint: React.FC<any> = ({
   // render
   return (
     <>
-      <Line {...getLinePoints(pointCurveInit)} />
-      <Line {...getLinePoints(pointCurveEnd)} />
+      <Line
+        {...getLinePoints(pointCurveInit, 0)}
+        listening={false}
+        stroke="purple"
+        strokeWidth={1}
+      />
+      <Line
+        {...getLinePoints(pointCurveEnd, 1)}
+        listening={false}
+        stroke="purple"
+        strokeWidth={1}
+      />
 
       <Rect
         draggable

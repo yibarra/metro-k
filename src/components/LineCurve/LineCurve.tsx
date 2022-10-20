@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { Shape } from 'react-konva'
 import type { Context } from 'konva/lib/Context'
 
@@ -22,13 +22,14 @@ const LineCurve: React.FC<any> = ({
 }) => {
   const [x, y] = curve
   const [isAnchor, setIsAnchor] = useState<boolean>(false)
+  const [newPointAnchor, setNewPointAnchor] = useState<any>({ point: null, newPoint })
   const [xy, setXY] = useState<{ x: number, y: number }>({ x, y })
 
   const pointCurveInit = getCell(pointInit.x, pointInit.y)
   const pointCurveEnd = getCell(pointEnd.x, pointEnd.y)
 
   // find point => 1: init 2: end 0: not point // retornar tambem a posicao pra comparar com o newpoint.position
-  const findPoint = useCallback((): number => {
+  const findPoint = (): number => {
     if (currentPoint === pointInit.position) {
       return 1
     } else if (currentPoint === pointEnd.position) {
@@ -36,10 +37,10 @@ const LineCurve: React.FC<any> = ({
     }
 
     return 0
-  }, [currentPoint, pointEnd, pointInit])
+  }
 
   // draw lines
-  const drawLines = useCallback((context: Context, shape: ShapeType) => {
+  const drawLines = (context: Context, shape: ShapeType) => {
     context.beginPath()
 
     const point = findPoint()
@@ -78,6 +79,8 @@ const LineCurve: React.FC<any> = ({
               newPoint.y,
             )
           }
+
+          setNewPointAnchor({ point, newPoint })
         } else {
           context.moveTo(pointCurveInit[0], pointCurveInit[1])
 
@@ -101,27 +104,28 @@ const LineCurve: React.FC<any> = ({
     }
 
     context.fillStrokeShape(shape)
-  }, [active, findPoint, isAnchor, isDragging, newPoint, pointCurveEnd, pointCurveInit, xy])
+  }
 
   // render
   return (
     <>
       {active && (
         <LineCurveAnchorPoint
+          {...newPointAnchor}
+          {...xy}
           curve={curve}
           getCell={getCell}
           index={index}
-          setIsAnchor={setIsAnchor}
+          isAnchor={isAnchor}
           isDragging={isDragging}
           pointCurveInit={pointCurveInit}
           pointCurveEnd={pointCurveEnd}
           pointEnd={pointEnd}
           pointInit={pointInit}
+          setIsAnchor={setIsAnchor}
           setIsDragging={setIsDragging}
           setXY={setXY}
           updateLayerCurvePoint={updateLayerCurvePoint}
-          x={xy.x}
-          y={xy.y}
         />
       )}
 
